@@ -73,9 +73,12 @@
 
     .kpi-group-label { font-size: 16px; font-weight: 600; color: var(--text); margin-bottom: 16px; margin-top: 8px; }
     .kpi-grid { display: grid; gap: 16px; margin-bottom: 8px; }
-    .kpi-grid.row7 { grid-template-columns: repeat(7,1fr); }
-    .kpi-grid.row6 { grid-template-columns: repeat(6,1fr); }
-    .kpi-grid.row3 { grid-template-columns: repeat(3,1fr); }
+    
+    /* Changed row7 to 4 columns to force 2 rows (4 on top, 3 on bottom) */
+    .kpi-grid.row7 { grid-template-columns: repeat(4, 1fr); }
+    .kpi-grid.row6 { grid-template-columns: repeat(6, 1fr); }
+    .kpi-grid.row3 { grid-template-columns: repeat(3, 1fr); }
+    
     .kpi-card { background: var(--card); border: 1px solid var(--border); border-radius: 12px; padding: 20px; box-shadow: var(--shadow-sm); display: grid; grid-template-areas: "label icon" "value icon" "sub sub" "bench bench"; grid-template-columns: 1fr auto; align-items: start; transition: transform .2s, box-shadow .2s; }
     .kpi-card:hover { transform: translateY(-2px); box-shadow: var(--shadow); }
     .kpi-icon { grid-area: icon; width: 44px; height: 44px; border-radius: 10px; display: flex; align-items: center; justify-content: center; }
@@ -113,8 +116,14 @@
     .top-ad-metric-lbl { font-size: 11px; color: var(--muted); }
     .empty-state { display: flex; align-items: center; justify-content: center; height: 100%; color: var(--muted); font-size: 13px; }
 
+    /* Tabs Style */
+    .tabs-container { display: flex; gap: 4px; background: var(--surface); padding: 4px; border-radius: 8px; border: 1px solid var(--border); display: inline-flex; }
+    .tab-btn { background: transparent; border: none; padding: 8px 16px; border-radius: 6px; cursor: pointer; font-size: 13px; font-weight: 600; color: var(--text-secondary); transition: all 0.2s; font-family: 'Inter', 'Noto Sans Thai', sans-serif; }
+    .tab-btn.active { background: var(--card); color: var(--text); box-shadow: var(--shadow-sm); }
+    .tab-btn:hover:not(.active) { color: var(--primary); }
+
     .table-card { background: var(--card); border: 1px solid var(--border); border-radius: 12px; padding: 0; box-shadow: var(--shadow-sm); overflow: hidden; margin-top: 24px; }
-    .table-header { padding: 24px 24px 0; display: flex; align-items: center; justify-content: space-between; margin-bottom: 16px; }
+    .table-header { padding: 24px 24px 16px; display: flex; flex-direction: column; gap: 16px; border-bottom: 1px solid var(--border); }
     .table-responsive { width: 100%; overflow-x: auto; }
     table { width: 100%; border-collapse: collapse; min-width: 900px; text-align: left; }
     th { font-size: 12px; font-weight: 600; color: var(--text-secondary); padding: 12px 24px; border-bottom: 1px solid var(--border); background: var(--surface); white-space: nowrap; }
@@ -160,8 +169,8 @@
     body.dark-mode .slider { background-color: #334155; }
     body.dark-mode input:checked + .slider { background-color: var(--primary); }
 
-  @media (max-width: 1400px) { .kpi-grid.row7 { grid-template-columns: repeat(4,1fr); } }
-  @media (max-width: 1200px) { .kpi-grid.row7, .kpi-grid.row6 { grid-template-columns: repeat(3,1fr); } }
+  @media (max-width: 1400px) { .kpi-grid.row7 { grid-template-columns: repeat(3,1fr); } }
+  @media (max-width: 1200px) { .kpi-grid.row7, .kpi-grid.row6 { grid-template-columns: repeat(2,1fr); } }
   @media (max-width: 900px) {
     .main { padding: 16px; gap: 16px; }
     .charts-grid { grid-template-columns: 1fr; }
@@ -257,7 +266,7 @@
     <!-- Monthly Performance (Auto updated from cached months) -->
     <div class="chart-card wide" style="margin-top: 24px;">
       <div class="chart-title" style="font-size: 18px; margin-bottom: 8px;">Monthly Performance</div>
-      <div class="chart-sub" style="margin-bottom: 16px;">เปรียบเทียบแนวโน้มประสิทธิภาพแคมเปญในแต่ละเดือนที่มีข้อมูลอยู่ในระบบ</div>
+      <div class="chart-sub" style="margin-bottom: 16px;">เปรียบเทียบแนวโน้มประสิทธิภาพแคมเปญในแต่ละเดือนที่มีข้อมูลอยู่ในระบบ (ดึงข้อมูลให้อัตโนมัติ)</div>
       <div class="charts-grid" style="margin-top: 0; gap: 16px;">
         <div class="chart-card" style="padding: 16px; box-shadow: none; border-color: var(--border);">
            <div class="chart-title" style="font-size: 14px; margin-bottom: 16px;">1. Spending vs Engagement</div>
@@ -286,29 +295,22 @@
       </div>
     </div>
 
-    <!-- Data Table -->
-    <div class="table-card" style="margin-top:24px;">
+    <!-- Data Table (Tabs) -->
+    <div class="table-card">
       <div class="table-header">
-        <div>
-          <div class="chart-title">Ad Performance</div>
+        <div style="display: flex; align-items: center; justify-content: space-between; flex-wrap: wrap; gap: 12px; width: 100%;">
+          <div class="tabs-container">
+            <button class="tab-btn active" id="tab-campaign" onclick="switchTableTab('campaign')">Campaign Performance</button>
+            <button class="tab-btn" id="tab-ad" onclick="switchTableTab('ad')">Ad Performance</button>
+          </div>
           <div class="chart-sub" id="tableCount" style="margin-bottom:0;"></div>
         </div>
       </div>
       <div class="table-responsive">
         <table>
-          <thead><tr>
-            <th class="sortable" onclick="handleSort('ad')">Ad Name <span class="sort-icon" id="sortIcon-ad"></span></th>
-            <th class="sortable" onclick="handleSort('spend')">Spend (฿) <span class="sort-icon" id="sortIcon-spend"></span></th>
-            <th class="sortable" onclick="handleSort('reach')">Reach <span class="sort-icon" id="sortIcon-reach"></span></th>
-            <th class="sortable" onclick="handleSort('impressions')">Impressions <span class="sort-icon" id="sortIcon-impressions"></span></th>
-            <th class="sortable" onclick="handleSort('views')">Views <span class="sort-icon" id="sortIcon-views"></span></th>
-            <th class="sortable" onclick="handleSort('engagements')">Engagements <span class="sort-icon" id="sortIcon-engagements"></span></th>
-            <th class="sortable" onclick="handleSort('fbLikes')">FB Likes <span class="sort-icon" id="sortIcon-fbLikes"></span></th>
-            <th class="sortable" onclick="handleSort('reactions')">Reactions <span class="sort-icon" id="sortIcon-reactions"></span></th>
-            <th class="sortable" onclick="handleSort('comments')">Comments <span class="sort-icon" id="sortIcon-comments"></span></th>
-            <th class="sortable" onclick="handleSort('shares')">Shares <span class="sort-icon" id="sortIcon-shares"></span></th>
-            <th class="sortable" onclick="handleSort('saves')">Saves <span class="sort-icon" id="sortIcon-saves"></span></th>
-          </tr></thead>
+          <thead id="tableHead">
+            <!-- Rendered by JS -->
+          </thead>
           <tbody id="tableBody"></tbody>
         </table>
       </div>
@@ -386,6 +388,10 @@ let currentGlobalMonth = 'January';
 let filteredData = [];
 let charts = {};
 
+let currentTableTab = 'campaign'; // 'campaign' or 'ad'
+let currentSortCol = 'spend';
+let currentSortAsc = false;
+
 // โหลด Settings จาก localStorage
 try {
   const savedLinks = localStorage.getItem('hiaLhomAdLinks');
@@ -452,7 +458,7 @@ function cleanMainData(rows) {
         messages: parseInt(r['Messaging conversations started'] || r['New messaging connections'] || r['Messages'] || r['messages'] || 0) || 0,
         objective: parseObjective(campaign)
       };
-    }).filter(r => r.ad && r.ad !== '-');
+    }).filter(r => (r.ad && r.ad !== '-') || (r.campaign && r.campaign !== '-'));
 }
 
 function cleanRegionData(rows) {
@@ -460,6 +466,29 @@ function cleanRegionData(rows) {
       region: r['Region'] || r['ภูมิภาค'] || r['region'] || 'Unknown',
       reach: parseInt(r['Reach'] || r['reach'] || 0) || 0
     })).filter(r => r.reach > 0);
+}
+
+// Background process to preload all available months for charts
+let isFetchingAllMonths = false;
+async function fetchAllAvailableMonths() {
+    if (isFetchingAllMonths) return;
+    isFetchingAllMonths = true;
+    
+    // Sequential load to not overload network
+    for (const m of monthNames) {
+        if (!mainDataByMonth[m]) {
+            let raw = await fetchFile(`data/${m}.csv`) || await fetchFile(`data/${m}.xlsx`);
+            if (raw) {
+                mainDataByMonth[m] = cleanMainData(raw);
+            } else {
+                mainDataByMonth[m] = []; // Mark as fetched but missing
+            }
+        }
+    }
+    
+    updateDataStatusUI();
+    renderCharts(); // Re-render to update monthly trend charts
+    isFetchingAllMonths = false;
 }
 
 async function loadAllData() {
@@ -470,21 +499,21 @@ async function loadAllData() {
     showStatus(`กำลังค้นหาข้อมูลเดือน ${month}...`, 'info');
 
     // 1. ลองดึงข้อมูลของเดือนที่เลือก
-    let mainRaw = await fetchFile(`data/${month}.csv`) || await fetchFile(`data/${month}.xlsx`);
-    let regRaw = await fetchFile(`data/region/Region${month}.csv`) || await fetchFile(`data/region/Region${month}.xlsx`);
-
-    if (mainRaw) {
-        mainDataByMonth[month] = cleanMainData(mainRaw);
+    if (!mainDataByMonth[month] || mainDataByMonth[month].length === 0) {
+        let mainRaw = await fetchFile(`data/${month}.csv`) || await fetchFile(`data/${month}.xlsx`);
+        if (mainRaw) mainDataByMonth[month] = cleanMainData(mainRaw);
     }
-    if (regRaw) {
-        regionDataByMonth[month] = cleanRegionData(regRaw);
+    
+    if (!regionDataByMonth[month] || regionDataByMonth[month].length === 0) {
+        let regRaw = await fetchFile(`data/region/Region${month}.csv`) || await fetchFile(`data/region/Region${month}.xlsx`);
+        if (regRaw) regionDataByMonth[month] = cleanRegionData(regRaw);
     }
 
     // 2. ลองดึงข้อมูลของเดือนก่อนหน้า (เพื่อใช้ทำ MoM Comparison)
     const prevMonthIndex = monthNames.indexOf(month) - 1;
     if (prevMonthIndex >= 0) {
         const prevMonth = monthNames[prevMonthIndex];
-        if (!mainDataByMonth[prevMonth]) {
+        if (!mainDataByMonth[prevMonth] || mainDataByMonth[prevMonth].length === 0) {
              let prevMain = await fetchFile(`data/${prevMonth}.csv`) || await fetchFile(`data/${prevMonth}.xlsx`);
              if (prevMain) mainDataByMonth[prevMonth] = cleanMainData(prevMain);
         }
@@ -508,12 +537,15 @@ async function loadAllData() {
     populateFilters();
     renderAdLinkInputs();
     renderAll();
+    
+    // 3. เริ่มโหลดเดือนอื่นๆที่เหลือแบบ Background ทันที
+    fetchAllAvailableMonths();
 }
 
 function updateDataStatusUI() {
   const mainContainer = document.getElementById('mainDataStatus');
   if (mainContainer) {
-    const mainMonths = Object.keys(mainDataByMonth).filter(m => mainDataByMonth[m].length > 0);
+    const mainMonths = Object.keys(mainDataByMonth).filter(m => mainDataByMonth[m] && mainDataByMonth[m].length > 0);
     mainContainer.innerHTML = mainMonths.length > 0 
       ? '<strong>มีข้อมูลในระบบ:</strong> ' + mainMonths.join(', ')
       : 'ยังไม่มีข้อมูลในระบบ (กรุณานำไฟล์ไปวางในโฟลเดอร์)';
@@ -637,7 +669,7 @@ function renderKPIs() {
 
   document.getElementById('kpiSection').innerHTML = `
     <div class="kpi-group-label">Overview</div>
-    <div class="kpi-grid row3">${g1.join('')}</div>
+    <div class="kpi-grid row6">${g1.join('')}</div>
     <div class="kpi-group-label">Cost Efficiency</div>
     <div class="kpi-grid row7" style="margin-bottom:8px;">${g3.join('')}</div>
     <div style="text-align:right;font-size:11px;color:var(--muted);margin-bottom:8px;">
@@ -795,7 +827,7 @@ function renderCharts() {
     });
   }
 
-  // Monthly Performance Charts
+  // Monthly Performance Charts (Pull from ALL available months dynamically)
   const activeMonthLabels = monthNames.filter(m => mainDataByMonth[m] && mainDataByMonth[m].length > 0);
   const displayLabels = activeMonthLabels.length > 0 ? activeMonthLabels : ['ไม่มีข้อมูล'];
 
@@ -864,35 +896,54 @@ function renderCharts() {
   });
 }
 
-let currentSortCol = 'spend';
-let currentSortAsc = false;
+// ─── TAB & TABLE LOGIC ──────────────────────────────
+window.switchTableTab = function(tab) {
+  currentTableTab = tab;
+  currentSortCol = 'spend';
+  currentSortAsc = false;
+  
+  document.querySelectorAll('.tabs-container .tab-btn').forEach(btn => btn.classList.remove('active'));
+  document.getElementById(`tab-${tab}`).classList.add('active');
+  
+  renderTable();
+};
 
 window.handleSort = function(col) {
   if (currentSortCol === col) {
     currentSortAsc = !currentSortAsc;
   } else {
     currentSortCol = col;
-    currentSortAsc = col === 'ad' ? true : false;
+    currentSortAsc = (col === 'ad' || col === 'campaign') ? true : false;
   }
   renderTable();
 };
 
 function renderTable() {
+  const isAd = currentTableTab === 'ad';
+  const groupKey = isAd ? 'ad' : 'campaign';
+
   const groupedObj = {};
   filteredData.forEach(r => {
-    if (!groupedObj[r.ad]) {
-      groupedObj[r.ad] = { ad: r.ad, spend: 0, reach: 0, impressions: 0, views: 0, engagements: 0, fbLikes: 0, reactions: 0, comments: 0, shares: 0, saves: 0 };
+    const keyVal = r[groupKey];
+    if (!keyVal) return;
+    
+    if (!groupedObj[keyVal]) {
+      groupedObj[keyVal] = {
+        [groupKey]: keyVal,
+        spend: 0, reach: 0, impressions: 0, views: 0, engagements: 0, 
+        fbLikes: 0, reactions: 0, comments: 0, shares: 0, saves: 0 
+      };
     }
-    groupedObj[r.ad].spend += r.spend;
-    groupedObj[r.ad].reach += r.reach;
-    groupedObj[r.ad].impressions += r.impressions;
-    groupedObj[r.ad].views += (r.views || 0);
-    groupedObj[r.ad].engagements += r.engagements;
-    groupedObj[r.ad].fbLikes += r.fbLikes;
-    groupedObj[r.ad].reactions += r.reactions;
-    groupedObj[r.ad].comments += r.comments;
-    groupedObj[r.ad].shares += r.shares;
-    groupedObj[r.ad].saves += r.saves;
+    groupedObj[keyVal].spend += r.spend;
+    groupedObj[keyVal].reach += r.reach;
+    groupedObj[keyVal].impressions += r.impressions;
+    groupedObj[keyVal].views += (r.views || 0);
+    groupedObj[keyVal].engagements += r.engagements;
+    groupedObj[keyVal].fbLikes += r.fbLikes;
+    groupedObj[keyVal].reactions += r.reactions;
+    groupedObj[keyVal].comments += r.comments;
+    groupedObj[keyVal].shares += r.shares;
+    groupedObj[keyVal].saves += r.saves;
   });
 
   const groupedData = Object.values(groupedObj).sort((a, b) => {
@@ -901,25 +952,48 @@ function renderTable() {
     return currentSortAsc ? valA - valB : valB - valA;
   });
 
-  ['ad','spend','reach','impressions','views','engagements','fbLikes','reactions','comments','shares','saves'].forEach(c => {
-    const el = document.getElementById(`sortIcon-${c}`);
-    if (el) el.innerHTML = c === currentSortCol ? (currentSortAsc ? '▲' : '▼') : '';
-  });
+  // Render Thead
+  const metrics = [
+      {id: groupKey, label: isAd ? 'Ad Name' : 'Campaign Name'},
+      {id: 'spend', label: 'Spend (฿)'},
+      {id: 'reach', label: 'Reach'},
+      {id: 'impressions', label: 'Impressions'},
+      {id: 'views', label: 'Views'},
+      {id: 'engagements', label: 'Engagements'},
+      {id: 'fbLikes', label: 'FB Likes'},
+      {id: 'reactions', label: 'Reactions'},
+      {id: 'comments', label: 'Comments'},
+      {id: 'shares', label: 'Shares'},
+      {id: 'saves', label: 'Saves'}
+  ];
+
+  document.getElementById('tableHead').innerHTML = `<tr>${metrics.map(m => `
+      <th class="sortable" onclick="handleSort('${m.id}')">
+          ${m.label} <span class="sort-icon" id="sortIcon-${m.id}">${currentSortCol === m.id ? (currentSortAsc ? '▲' : '▼') : ''}</span>
+      </th>
+  `).join('')}</tr>`;
 
   document.getElementById('tableCount').textContent = `แสดง ${groupedData.length} รายการ`;
+  
+  // Render Tbody
   document.getElementById('tableBody').innerHTML = groupedData.map(r=>{
-    const link = adLinks[r.ad];
-    const adDisplay = link 
-      ? `<div style="display: flex; align-items: center; gap: 8px;">
-           <a href="${link}" target="_blank" style="color: var(--primary); flex-shrink: 0; display: flex; align-items: center; justify-content: center; padding: 4px; border-radius: 6px; margin-left: -4px; transition: background 0.2s;" onmouseover="this.style.backgroundColor='rgba(37,99,235,0.1)'" onmouseout="this.style.backgroundColor='transparent'" title="เปิดดูชิ้นงานโฆษณา">
-             <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="3" width="18" height="18" rx="2" ry="2"/><circle cx="8.5" cy="8.5" r="1.5"/><polyline points="21 15 16 10 5 21"/></svg>
-           </a>
-           <span style="overflow: hidden; text-overflow: ellipsis; white-space: nowrap;">${r.ad}</span>
-         </div>` 
-      : `<div style="overflow: hidden; text-overflow: ellipsis; white-space: nowrap;">${r.ad}</div>`;
+    let primaryCell = '';
+    if (isAd) {
+      const link = adLinks[r.ad];
+      primaryCell = link 
+        ? `<div style="display: flex; align-items: center; gap: 8px;">
+             <a href="${link}" target="_blank" style="color: var(--primary); flex-shrink: 0; display: flex; align-items: center; justify-content: center; padding: 4px; border-radius: 6px; margin-left: -4px; transition: background 0.2s;" onmouseover="this.style.backgroundColor='rgba(37,99,235,0.1)'" onmouseout="this.style.backgroundColor='transparent'" title="เปิดดูชิ้นงานโฆษณา">
+               <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="3" width="18" height="18" rx="2" ry="2"/><circle cx="8.5" cy="8.5" r="1.5"/><polyline points="21 15 16 10 5 21"/></svg>
+             </a>
+             <span style="overflow: hidden; text-overflow: ellipsis; white-space: nowrap;">${r.ad}</span>
+           </div>` 
+        : `<div style="overflow: hidden; text-overflow: ellipsis; white-space: nowrap;">${r.ad}</div>`;
+    } else {
+        primaryCell = `<div style="overflow: hidden; text-overflow: ellipsis; white-space: nowrap; font-weight: 500;">${r.campaign}</div>`;
+    }
       
     return `<tr>
-      <td title="${r.ad}" style="max-width:240px; padding-right:12px;">${adDisplay}</td>
+      <td title="${r[groupKey]}" style="max-width:240px; padding-right:12px;">${primaryCell}</td>
       <td class="cost-cell">฿${r.spend.toFixed(2)}</td>
       <td class="num">${r.reach.toLocaleString()}</td>
       <td class="num">${r.impressions.toLocaleString()}</td>
