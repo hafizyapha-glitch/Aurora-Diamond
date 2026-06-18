@@ -76,7 +76,8 @@
     
     /* Changed row7 to 4 columns to force 2 rows (4 on top, 3 on bottom) */
     .kpi-grid.row7 { grid-template-columns: repeat(4, 1fr); }
-    .kpi-grid.row6 { grid-template-columns: repeat(6, 1fr); }
+    /* Changed row6 to 3 columns to force 2 rows (3 on top, 3 on bottom) */
+    .kpi-grid.row6 { grid-template-columns: repeat(3, 1fr); }
     .kpi-grid.row3 { grid-template-columns: repeat(3, 1fr); }
     
     .kpi-card { background: var(--card); border: 1px solid var(--border); border-radius: 12px; padding: 20px; box-shadow: var(--shadow-sm); display: grid; grid-template-areas: "label icon" "value icon" "sub sub" "bench bench"; grid-template-columns: 1fr auto; align-items: start; transition: transform .2s, box-shadow .2s; }
