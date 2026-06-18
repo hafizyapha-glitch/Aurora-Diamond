@@ -117,6 +117,18 @@
     .top-ad-metric-lbl { font-size: 11px; color: var(--muted); }
     .empty-state { display: flex; align-items: center; justify-content: center; height: 100%; color: var(--muted); font-size: 13px; }
 
+    /* Comparison 3-Box Styles */
+    .charts-grid.cols-3 { grid-template-columns: repeat(3, 1fr); }
+    .cmp-select { width: 100%; padding: 10px 12px; margin-bottom: 16px; border-radius: 8px; border: 1px solid var(--border); background: var(--surface); color: var(--text); font-family: 'Inter', 'Noto Sans Thai', sans-serif; font-size: 13px; outline: none; transition: border-color 0.2s; cursor: pointer; }
+    .cmp-select:focus { border-color: var(--primary); }
+    .cmp-list { display: flex; flex-direction: column; gap: 10px; flex-grow: 1;}
+    .cmp-item { display: flex; justify-content: space-between; align-items: center; padding-bottom: 8px; border-bottom: 1px dashed var(--border); }
+    .cmp-item:last-child { border-bottom: none; padding-bottom: 0; }
+    .cmp-lbl { font-size: 13px; color: var(--text-secondary); }
+    .cmp-val { font-size: 14px; font-weight: 600; color: var(--text); font-family: 'Inter', sans-serif; }
+    .campaign-img-preview { width: 100%; height: 100%; max-height: 400px; object-fit: contain; border-radius: 8px; background: var(--surface); border: 1px solid var(--border); }
+    .img-placeholder { width: 100%; height: 100%; min-height: 250px; display: flex; flex-direction: column; align-items: center; justify-content: center; background: var(--surface); border: 1px dashed var(--border); border-radius: 8px; color: var(--muted); gap: 12px; text-align: center; padding: 24px;}
+
     /* Tabs Style */
     .tabs-container { display: flex; gap: 4px; background: var(--surface); padding: 4px; border-radius: 8px; border: 1px solid var(--border); display: inline-flex; }
     .tab-btn { background: transparent; border: none; padding: 8px 16px; border-radius: 6px; cursor: pointer; font-size: 13px; font-weight: 600; color: var(--text-secondary); transition: all 0.2s; font-family: 'Inter', 'Noto Sans Thai', sans-serif; }
@@ -233,21 +245,41 @@
 
     <div id="kpiSection"></div>
 
-    <div class="charts-grid" style="margin-top: 16px;">
-      <!-- กล่อง Top Ad by Engagement -->
+    <div class="charts-grid cols-3" style="margin-top: 16px;">
+      <!-- กล่อง 1: Image -->
       <div class="chart-card">
-        <div class="chart-title">Top Ad performance by Engagement</div>
-        <div class="chart-sub">3 อันดับโฆษณาที่มีส่วนร่วม (Engagement) สูงสุด</div>
-        <div class="chart-wrap" id="topEngContainer" style="overflow-y: auto; padding-right: 4px;"></div>
+        <div class="chart-title">Campaign Visual</div>
+        <div class="chart-sub">ภาพประกอบแคมเปญ (จาก ./data/picture/)</div>
+        <div class="chart-wrap" style="height: auto; min-height: 250px; display: flex; align-items: center; justify-content: center;" id="campImgContainer">
+          <div class="img-placeholder">
+             <svg width="40" height="40" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><rect x="3" y="3" width="18" height="18" rx="2" ry="2"/><circle cx="8.5" cy="8.5" r="1.5"/><polyline points="21 15 16 10 5 21"/></svg>
+             <span style="font-size: 13px;">กรุณาเลือกแคมเปญในกล่องตรงกลาง<br>เพื่อแสดงรูปภาพ</span>
+          </div>
+        </div>
       </div>
       
-      <!-- กล่อง Top Ad by Message -->
+      <!-- กล่อง 2: Campaign 1 -->
       <div class="chart-card">
-        <div class="chart-title">Top Ad performance by Message</div>
-        <div class="chart-sub">3 อันดับโฆษณาที่มีการทักข้อความ (Message) สูงสุด</div>
-        <div class="chart-wrap" id="topMsgContainer" style="overflow-y: auto; padding-right: 4px;"></div>
+        <div class="chart-title">Campaign Performance</div>
+        <div class="chart-sub">เลือกแคมเปญเพื่อดูประสิทธิภาพ</div>
+        <select id="cmpSelectA" class="cmp-select" onchange="renderCampaignCompare()">
+          <option value="">-- เลือก Campaign --</option>
+        </select>
+        <div id="cmpDataA" class="cmp-list"></div>
       </div>
 
+      <!-- กล่อง 3: Campaign 2 (Compare) -->
+      <div class="chart-card">
+        <div class="chart-title">Compare Campaign</div>
+        <div class="chart-sub">เลือกอีกแคมเปญเพื่อเปรียบเทียบ</div>
+        <select id="cmpSelectB" class="cmp-select" onchange="renderCampaignCompare()">
+          <option value="">-- เลือก Campaign --</option>
+        </select>
+        <div id="cmpDataB" class="cmp-list"></div>
+      </div>
+    </div>
+
+    <div class="charts-grid" style="margin-top: 24px;">
       <div class="chart-card wide">
         <div class="chart-title">Demographics - Age & Gender</div>
         <div class="chart-sub">การเข้าถึง (Reach) สะสมแยกตามกลุ่มอายุและเพศ</div>
@@ -610,7 +642,85 @@ function generateMoMBadge(currentVal, prevVal, isCostMetric = false) {
 }
 
 // ─── RENDERING ──────────────────────────────
-function renderAll() { renderKPIs(); renderCharts(); renderTable(); }
+function renderAll() { 
+  renderKPIs(); 
+  updateCampaignCompareOptions();
+  renderCharts(); 
+  renderTable(); 
+  renderCampaignCompare();
+}
+
+function updateCampaignCompareOptions() {
+  const campaigns = [...new Set(allData.map(r=>r.campaign))].filter(c => c).sort();
+  const selA = document.getElementById('cmpSelectA');
+  const selB = document.getElementById('cmpSelectB');
+  
+  if (!selA || !selB) return;
+  
+  const valA = selA.value;
+  const valB = selB.value;
+  
+  const opts = '<option value="">-- เลือก Campaign --</option>' + campaigns.map(c => `<option value="${c}">${c}</option>`).join('');
+  
+  selA.innerHTML = opts;
+  selB.innerHTML = opts;
+  
+  if(campaigns.includes(valA)) selA.value = valA;
+  if(campaigns.includes(valB)) selB.value = valB;
+}
+
+function renderCampaignCompare() {
+  const selA = document.getElementById('cmpSelectA')?.value;
+  const selB = document.getElementById('cmpSelectB')?.value;
+  
+  // Update Image (Box 1)
+  const imgContainer = document.getElementById('campImgContainer');
+  if (imgContainer) {
+    if (selA) {
+      const safeName = encodeURI(selA);
+      // พยายามโหลดไฟล์ .jpg ถ้าไม่เจอให้ลอง .png ถ้าไม่เจออีกเป็น .jpeg และถ้าไม่มีเลยให้แสดงแจ้งเตือน
+      imgContainer.innerHTML = `<img class="campaign-img-preview" src="./data/picture/${safeName}.jpg" onerror="if(this.src.endsWith('.jpg')){ this.src='./data/picture/${safeName}.png'; } else if(this.src.endsWith('.png')){ this.src='./data/picture/${safeName}.jpeg'; } else { this.parentElement.innerHTML='<div class=\\'img-placeholder\\'>ไม่พบรูปภาพสำหรับแคมเปญนี้<br><small>(${selA})</small><br><small style=\\'font-size:11px;color:#9ca3af;margin-top:8px;\\'>*กรุณาตั้งชื่อไฟล์รูปให้ตรงกับ Campaign</small></div>'; }" alt="${selA}">`;
+    } else {
+      imgContainer.innerHTML = `<div class="img-placeholder">
+           <svg width="40" height="40" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><rect x="3" y="3" width="18" height="18" rx="2" ry="2"/><circle cx="8.5" cy="8.5" r="1.5"/><polyline points="21 15 16 10 5 21"/></svg>
+           <span style="font-size: 13px;">กรุณาเลือกแคมเปญในกล่องตรงกลาง<br>เพื่อแสดงรูปภาพ</span>
+        </div>`;
+    }
+  }
+
+  // Render Box 2 & 3
+  const dataAContainer = document.getElementById('cmpDataA');
+  const dataBContainer = document.getElementById('cmpDataB');
+  if(dataAContainer) dataAContainer.innerHTML = generateCampaignMetricsHTML(selA);
+  if(dataBContainer) dataBContainer.innerHTML = generateCampaignMetricsHTML(selB);
+}
+
+function generateCampaignMetricsHTML(campaignName) {
+  if (!campaignName) return `<div class="empty-state">กรุณาเลือก Campaign</div>`;
+  
+  const d = allData.filter(r => r.campaign === campaignName);
+  if (d.length === 0) return `<div class="empty-state">ไม่มีข้อมูลในเดือนนี้</div>`;
+  
+  const agg = getAggregatedMetrics(d);
+  const der = getDerivedMetrics(agg);
+  
+  const formatCurrency = (val) => '฿' + (val || 0).toLocaleString(undefined, {minimumFractionDigits: 2, maximumFractionDigits: 2});
+  const formatNum = (val) => (val || 0).toLocaleString();
+  const formatPct = (val) => (val || 0).toFixed(2) + '%';
+  
+  return `
+    <div class="cmp-item"><span class="cmp-lbl">Amount spent</span><span class="cmp-val">${formatCurrency(agg.spend)}</span></div>
+    <div class="cmp-item"><span class="cmp-lbl">Reach</span><span class="cmp-val">${formatNum(agg.reach)}</span></div>
+    <div class="cmp-item"><span class="cmp-lbl">Impressions</span><span class="cmp-val">${formatNum(agg.impr)}</span></div>
+    <div class="cmp-item"><span class="cmp-lbl">Post engagements</span><span class="cmp-val">${formatNum(agg.eng)}</span></div>
+    <div class="cmp-item"><span class="cmp-lbl">Message</span><span class="cmp-val">${formatNum(agg.msg)}</span></div>
+    <div class="cmp-item"><span class="cmp-lbl">Clicks (all)</span><span class="cmp-val">${formatNum(agg.clicks)}</span></div>
+    <div class="cmp-item"><span class="cmp-lbl">CTR (all)</span><span class="cmp-val">${formatPct(der.ctr)}</span></div>
+    <div class="cmp-item"><span class="cmp-lbl">Cost per engagement</span><span class="cmp-val">${formatCurrency(der.cpe)}</span></div>
+    <div class="cmp-item"><span class="cmp-lbl">Cost Per Message</span><span class="cmp-val">${formatCurrency(der.cpmsg)}</span></div>
+    <div class="cmp-item"><span class="cmp-lbl">Engagement Rate</span><span class="cmp-val">${formatPct(der.engRate)}</span></div>
+  `;
+}
 
 function renderKPIs() {
   const currentMonthIdx = monthNames.indexOf(currentGlobalMonth);
@@ -706,55 +816,6 @@ function renderCharts() {
   const gendersDemo = ['male', 'female', 'unknown'];
   const genderColorsDemo = ['#3B82F6', '#F43F5E', '#94A3B8'];
   
-  // --- Data for Top Ads ---
-  const adStats = {};
-  d.forEach(r => {
-    if (r.ad) {
-      if (!adStats[r.ad]) adStats[r.ad] = { spend: 0, impr: 0, clicks: 0, eng: 0, msg: 0 };
-      adStats[r.ad].spend += r.spend;
-      adStats[r.ad].impr += r.impressions;
-      adStats[r.ad].clicks += (r.clicks || 0);
-      adStats[r.ad].eng += (r.engagements || 0);
-      adStats[r.ad].msg += (r.messages || 0);
-    }
-  });
-
-  const imgPlaceholder = `<svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="3" width="18" height="18" rx="2" ry="2"/><circle cx="8.5" cy="8.5" r="1.5"/><polyline points="21 15 16 10 5 21"/></svg>`;
-
-  // Top Ads Rendering
-  const renderTopAd = (containerId, metric, label, iconColor) => {
-      const sorted = Object.entries(adStats).sort((a,b)=>b[1][metric] - a[1][metric]).slice(0, 3);
-      const container = document.getElementById(containerId);
-      if (sorted.length > 0 && sorted[0][1][metric] > 0) {
-        let html = '<div class="top-ad-list">';
-        sorted.forEach(([ad, stats]) => {
-          const ctr = stats.impr ? ((stats.clicks / stats.impr) * 100).toFixed(2) : '0.00';
-          const costPer = stats[metric] ? (stats.spend / stats[metric]).toFixed(2) : '0.00';
-          const imgUrl = adImages[ad] || '';
-          const imgEl = imgUrl ? `<img src="${imgUrl}" class="top-ad-img" alt="Ad">` : `<div class="top-ad-img">${imgPlaceholder}</div>`;
-          
-          html += `
-            <div class="top-ad-item">
-              ${imgEl}
-              <div class="top-ad-body">
-                <div class="top-ad-name" title="${ad}">${ad}</div>
-              </div>
-              <div class="top-ad-metrics">
-                <div class="top-ad-metric"><span class="top-ad-metric-val" style="color: ${iconColor}">${stats[metric].toLocaleString()}</span><span class="top-ad-metric-lbl">${label}</span></div>
-                <div class="top-ad-metric"><span class="top-ad-metric-val">${ctr}%</span><span class="top-ad-metric-lbl">CTR</span></div>
-                <div class="top-ad-metric"><span class="top-ad-metric-val">฿${costPer}</span><span class="top-ad-metric-lbl">CP${label.charAt(0)}</span></div>
-              </div>
-            </div>`;
-        });
-        container.innerHTML = html + '</div>';
-      } else {
-        container.innerHTML = `<div class="empty-state">ไม่มีข้อมูล ${label}</div>`;
-      }
-  };
-
-  renderTopAd('topEngContainer', 'eng', 'Eng', '#8B5CF6');
-  renderTopAd('topMsgContainer', 'msg', 'Msg', '#06B6D4');
-
   charts.demo = new Chart(document.getElementById('demoChart'), {
     type:'bar',
     data:{
