@@ -735,14 +735,20 @@ window.renderTopAdsUI = function() {
     if (sorted.length > 0 && sorted[0][1][metricKey] > 0) {
       let html = '<div class="top-ad-list">';
       sorted.forEach(([ad, stats]) => {
-        const ctr = stats.impr ? ((stats.clicks / stats.impr) * 100).toFixed(2) : '0.00';
-        
         let costPer = '0.00';
-        let cpLabel = `CP${label.charAt(0)}`;
+        let cpLabel = '';
+
+        if (metricKey === 'eng') {
+          cpLabel = 'CPE';
+        } else if (metricKey === 'msg') {
+          cpLabel = 'CPMsg';
+        } else if (metricKey === 'reach') {
+          cpLabel = 'CPR';
+        }
+
         if (stats[metricKey]) {
           if (metricKey === 'reach') {
             costPer = ((stats.spend / stats[metricKey]) * 1000).toFixed(2);
-            cpLabel = 'CPR'; 
           } else {
             costPer = (stats.spend / stats[metricKey]).toFixed(2);
           }
@@ -759,7 +765,6 @@ window.renderTopAdsUI = function() {
             </div>
             <div class="top-ad-metrics">
               <div class="top-ad-metric"><span class="top-ad-metric-val" style="color: ${iconColor}">${stats[metricKey].toLocaleString()}</span><span class="top-ad-metric-lbl">${label}</span></div>
-              <div class="top-ad-metric"><span class="top-ad-metric-val">${ctr}%</span><span class="top-ad-metric-lbl">CTR</span></div>
               <div class="top-ad-metric"><span class="top-ad-metric-val">฿${costPer}</span><span class="top-ad-metric-lbl">${cpLabel}</span></div>
             </div>
           </div>`;
