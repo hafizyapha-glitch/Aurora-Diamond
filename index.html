@@ -147,7 +147,7 @@
     .popover-arrows button:hover { background: var(--surface); color: var(--text); }
     .popover-grid { display: grid; grid-template-columns: repeat(4, 1fr); gap: 4px 0; }
     .month-btn { padding: 10px 4px; text-align: center; cursor: pointer; border: none; background: transparent; font-size: 12px; font-weight: 500; color: var(--text); transition: all 0.2s; font-family: 'Inter', sans-serif; text-transform: uppercase; margin: 2px 0; }
-    .month-btn:hover:not(.selected-start):not(.selected-end):not(.selected-single) { background: var(--surface); border-radius: 20px; }
+    .month-btn:hover:not(.selected-start):not(.selected-end):not(.selected-single):not(.in-range) { background: var(--surface); border-radius: 20px; }
     .month-btn.in-range { background: rgba(37,99,235,0.1); color: var(--primary); }
     .month-btn.selected-start { background: var(--primary); color: white; border-radius: 20px 0 0 20px; }
     .month-btn.selected-end { background: var(--primary); color: white; border-radius: 0 20px 20px 0; }
@@ -490,7 +490,8 @@ let compareState = {
     activePicker: null, // 'base' or 'comp'
     pickerYear: parseInt(DATA_YEAR) || new Date().getFullYear(),
     pickerStep: 0, // 0 = select start, 1 = select end
-    tempStart: 0
+    tempStart: 0,
+    tempEnd: 0
 };
 const shortMonthNames = ['JAN','FEB','MAR','APR','MAY','JUN','JUL','AUG','SEP','OCT','NOV','DEC'];
 
@@ -759,24 +760,30 @@ function changePickerYear(delta) {
 function selectPickerMonth(idx) {
     if (compareState.pickerStep === 0) {
         compareState.tempStart = idx;
+        compareState.tempEnd = idx; // Initialize temp end for hover effect
         compareState.pickerStep = 1;
+        renderMonthPickerGrid();
     } else {
         const type = compareState.activePicker;
-        if (idx >= compareState.tempStart) {
-            compareState[type].startMonth = compareState.tempStart;
-            compareState[type].endMonth = idx;
-        } else {
-            compareState[type].startMonth = idx;
-            compareState[type].endMonth = compareState.tempStart;
-        }
+        const s = Math.min(compareState.tempStart, idx);
+        const e = Math.max(compareState.tempStart, idx);
+        
+        compareState[type].startMonth = s;
+        compareState[type].endMonth = e;
         compareState[type].year = compareState.pickerYear;
         compareState.pickerStep = 0;
         
         updateMonthRangeBtnText();
         document.getElementById('monthPickerPopover').classList.remove('show');
     }
-    renderMonthPickerGrid();
 }
+
+window.hoverPickerMonth = function(idx) {
+    if (compareState.pickerStep === 1 && compareState.tempEnd !== idx) {
+        compareState.tempEnd = idx;
+        renderMonthPickerGrid();
+    }
+};
 
 function renderMonthPickerGrid() {
     document.getElementById('popoverYearStr').textContent = compareState.pickerYear;
@@ -790,21 +797,26 @@ function renderMonthPickerGrid() {
     for (let i = 0; i < 12; i++) {
         let classes = ['month-btn'];
         
-        // Render states based on current selection
-        if (compareState.pickerYear === stateObj.year) {
-            if (compareState.pickerStep === 0) {
-                // Completed selection view
+        if (compareState.pickerStep === 0) {
+            // Completed selection view
+            if (compareState.pickerYear === stateObj.year) {
                 if (i === stateObj.startMonth && i === stateObj.endMonth) classes.push('selected-single');
                 else if (i === stateObj.startMonth) classes.push('selected-start');
                 else if (i === stateObj.endMonth) classes.push('selected-end');
                 else if (i > stateObj.startMonth && i < stateObj.endMonth) classes.push('in-range');
-            } else {
-                // In-progress selection view
-                if (i === compareState.tempStart) classes.push('selected-single');
             }
+        } else {
+            // In-progress selection view (Hover active)
+            const s = Math.min(compareState.tempStart, compareState.tempEnd);
+            const e = Math.max(compareState.tempStart, compareState.tempEnd);
+            
+            if (i === s && i === e) classes.push('selected-single');
+            else if (i === s) classes.push('selected-start');
+            else if (i === e) classes.push('selected-end');
+            else if (i > s && i < e) classes.push('in-range');
         }
         
-        html += `<button class="${classes.join(' ')}" onclick="selectPickerMonth(${i})">${shortMonthNames[i]}</button>`;
+        html += `<button class="${classes.join(' ')}" onclick="selectPickerMonth(${i})" onmouseover="hoverPickerMonth(${i})">${shortMonthNames[i]}</button>`;
     }
     grid.innerHTML = html;
 }
