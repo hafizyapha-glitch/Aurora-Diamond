@@ -17,11 +17,19 @@
 
   <style>
     :root {
-      --primary: #2563EB; --primary-dark: #1D4ED8;
-      --bg: #F3F4F6; --surface: #F9FAFB; --card: #FFFFFF;
-      --border: #E5E7EB; --text: #111827; --text-secondary: #4B5563;
-      --muted: #6B7280; --accent: #F59E0B; --green: #10B981;
-      --red: #EF4444; --blue: #3B82F6;
+      --primary: #2563EB;
+      --primary-dark: #1D4ED8;
+      --bg: #F3F4F6;
+      --surface: #F9FAFB;
+      --card: #FFFFFF;
+      --border: #E5E7EB;
+      --text: #111827;
+      --text-secondary: #4B5563;
+      --muted: #6B7280;
+      --accent: #F59E0B;
+      --green: #10B981;
+      --red: #EF4444;
+      --blue: #3B82F6;
       --shadow-sm: 0 1px 2px 0 rgba(0,0,0,0.05);
       --shadow: 0 4px 6px -1px rgba(0,0,0,0.1), 0 2px 4px -1px rgba(0,0,0,0.06);
     }
@@ -35,21 +43,76 @@
     * { box-sizing: border-box; margin: 0; padding: 0; }
     body { background: var(--bg); color: var(--text); font-family: 'Inter','Noto Sans Thai',sans-serif; min-height: 100vh; line-height: 1.5; }
 
-    /* Header & UI Styles... (คงเดิมจากเวอร์ชั่นของคุณ) */
     .header { background: var(--card); border-bottom: 1px solid var(--border); padding: 16px 32px; display: flex; align-items: center; justify-content: space-between; position: sticky; top: 0; z-index: 100; box-shadow: var(--shadow-sm); }
     .logo-area { display: flex; align-items: center; gap: 16px; }
+    
     .logo-icon { width: 56px; height: 56px; border-radius: 12px; overflow: hidden; display: flex; align-items: center; justify-content: center; border: 1px solid var(--border); background: var(--surface); box-shadow: var(--shadow-sm); }
     .logo-icon img { width: 100%; height: 100%; object-fit: cover; }
+    
     .logo-title { font-size: 20px; font-weight: 700; color: var(--text); letter-spacing: -0.5px; }
     .logo-sub { font-size: 13px; color: var(--muted); font-weight: 500; }
-    .header-month-select { appearance: none; background-color: var(--surface); border: 1px solid var(--border); border-radius: 20px; color: var(--text); padding: 8px 32px 8px 16px; font-size: 13px; font-weight: 600; cursor: pointer; outline: none; transition: all 0.2s; background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='12' height='8'%3E%3Cpath d='M1 1l5 5 5-5' stroke='%2364748B' stroke-width='2' fill='none' stroke-linecap='round' stroke-linejoin='round'/%3E%3C/svg%3E"); background-repeat: no-repeat; background-position: right 12px center; box-shadow: var(--shadow-sm); }
+    
+    .header-month-select { appearance: none; background-color: var(--surface); border: 1px solid var(--border); border-radius: 20px; color: var(--text); padding: 8px 32px 8px 16px; font-size: 13px; font-weight: 600; font-family: 'Inter', 'Noto Sans Thai', sans-serif; cursor: pointer; outline: none; transition: all 0.2s; background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='12' height='8'%3E%3Cpath d='M1 1l5 5 5-5' stroke='%2364748B' stroke-width='2' fill='none' stroke-linecap='round' stroke-linejoin='round'/%3E%3C/svg%3E"); background-repeat: no-repeat; background-position: right 12px center; box-shadow: var(--shadow-sm); }
     body.dark-mode .header-month-select { background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='12' height='8'%3E%3Cpath d='M1 1l5 5 5-5' stroke='%2394A3B8' stroke-width='2' fill='none' stroke-linecap='round' stroke-linejoin='round'/%3E%3C/svg%3E"); }
     .header-month-select:hover { border-color: var(--primary); }
-    
+
     .main { padding: 18px 64px; max-width: 1440px; margin: 0 auto; display: flex; flex-direction: column; gap: 24px; }
+
     .btn-outline { background: var(--surface); border: 1px solid var(--border); color: var(--text); cursor: pointer; transition: all .2s; }
     .btn-outline:hover { border-color: var(--primary); color: var(--primary); }
+
+    .filter-row { display: flex; gap: 12px; flex-wrap: wrap; align-items: center; }
+    .filter-row select { background: var(--card); border: 1px solid var(--border); border-radius: 8px; color: var(--text); padding: 8px 32px 8px 16px; font-size: 13px; font-weight: 500; font-family: 'Inter','Noto Sans Thai',sans-serif; outline: none; cursor: pointer; transition: border-color .2s; appearance: none; background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='12' height='8'%3E%3Cpath d='M1 1l5 5 5-5' stroke='%2364748B' stroke-width='2' fill='none' stroke-linecap='round' stroke-linejoin='round'/%3E%3C/svg%3E"); background-repeat: no-repeat; background-position: right 12px center; box-shadow: var(--shadow-sm); }
+    body.dark-mode .filter-row select { background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='12' height='8'%3E%3Cpath d='M1 1l5 5 5-5' stroke='%2394A3B8' stroke-width='2' fill='none' stroke-linecap='round' stroke-linejoin='round'/%3E%3C/svg%3E"); }
+    .filter-row select:focus { border-color: var(--primary); }
+    .filter-label { font-size: 14px; font-weight: 500; color: var(--text-secondary); display: flex; align-items: center; gap: 6px; }
+    .clear-btn { background: transparent; border: 1px solid transparent; border-radius: 8px; color: var(--muted); padding: 8px 12px; font-size: 13px; font-weight: 500; cursor: pointer; transition: all .2s; }
+    .clear-btn:hover { color: var(--text); background: var(--surface); border-color: var(--border); }
+
+    .kpi-group-label { font-size: 16px; font-weight: 600; color: var(--text); margin-bottom: 16px; margin-top: 8px; }
+    .kpi-grid { display: grid; gap: 16px; margin-bottom: 8px; }
     
+    .kpi-grid.row7 { grid-template-columns: repeat(4, 1fr); }
+    .kpi-grid.row6 { grid-template-columns: repeat(3, 1fr); }
+    .kpi-grid.row3 { grid-template-columns: repeat(3, 1fr); }
+    
+    .kpi-card { background: var(--card); border: 1px solid var(--border); border-radius: 12px; padding: 20px; box-shadow: var(--shadow-sm); display: grid; grid-template-areas: "label icon" "value icon" "sub sub" "bench bench"; grid-template-columns: 1fr auto; align-items: start; transition: transform .2s, box-shadow .2s; }
+    .kpi-card:hover { transform: translateY(-2px); box-shadow: var(--shadow); }
+    .kpi-icon { grid-area: icon; width: 44px; height: 44px; border-radius: 10px; display: flex; align-items: center; justify-content: center; }
+    .kpi-icon svg { width: 22px; height: 22px; stroke: currentColor; stroke-width: 1.75; }
+    .kpi-label { grid-area: label; font-size: 13px; font-weight: 500; color: var(--text-secondary); margin-bottom: 4px; }
+    .kpi-value { grid-area: value; font-size: 24px; font-weight: 700; font-family: 'Inter',sans-serif; color: var(--text); line-height: 1.2; margin-bottom: 8px; display: flex; align-items: baseline; gap: 8px; }
+    .kpi-sub { grid-area: sub; font-size: 12px; color: var(--muted); }
+    .kpi-benchmark { grid-area: bench; font-size: 12px; color: var(--text-secondary); margin-top: 12px; padding-top: 12px; border-top: 1px solid var(--border); display: flex; align-items: center; justify-content: space-between; }
+    .kpi-benchmark .bm-val { color: var(--text); font-weight: 600; font-family: 'Inter',sans-serif; }
+    
+    .mom-badge { font-size: 12px; padding: 2px 6px; border-radius: 4px; font-weight: 600; }
+
+    .charts-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 24px; margin-top: 24px; }
+    .chart-card { background: var(--card); border: 1px solid var(--border); border-radius: 12px; padding: 24px; box-shadow: var(--shadow-sm); display: flex; flex-direction: column; }
+    .chart-card.wide { grid-column: span 2; }
+    .chart-title { font-size: 16px; font-weight: 600; color: var(--text); margin-bottom: 4px; }
+    .chart-sub { font-size: 13px; color: var(--text-secondary); margin-bottom: 24px; }
+    .chart-wrap { position: relative; height: 280px; flex-grow: 1; }
+    .chart-wrap.tall { height: 340px; }
+    
+    .chart-summary { margin-top: 16px; padding: 12px 16px; background: rgba(59,130,246,0.05); border: 1px solid rgba(59,130,246,0.1); border-radius: 8px; font-size: 13px; color: var(--text-secondary); display: flex; align-items: flex-start; gap: 10px; line-height: 1.5; }
+    body.dark-mode .chart-summary { background: rgba(59,130,246,0.1); border-color: rgba(59,130,246,0.2); color: var(--text-secondary); }
+    .chart-summary strong { color: var(--text); }
+
+    .top-ad-list { display: flex; flex-direction: column; gap: 12px; height: 100%; justify-content: flex-start; }
+    .top-ad-item { display: flex; align-items: center; background: var(--surface); border: 1px solid var(--border); border-radius: 8px; padding: 12px; gap: 16px; transition: transform 0.2s, box-shadow 0.2s; }
+    .top-ad-item:hover { transform: translateY(-2px); box-shadow: var(--shadow-sm); border-color: var(--primary); }
+    .top-ad-img { width: 50px; height: 50px; border-radius: 6px; object-fit: cover; background: var(--border); flex-shrink: 0; display: flex; align-items: center; justify-content: center; color: var(--muted); }
+    .top-ad-body { flex-grow: 1; min-width: 0; display: flex; flex-direction: column; justify-content: center; }
+    .top-ad-name { font-size: 13px; font-weight: 600; color: var(--text); white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
+    .top-ad-metrics { display: flex; gap: 16px; align-items: center; flex-shrink: 0; }
+    .top-ad-metric { display: flex; flex-direction: column; align-items: flex-end; min-width: 45px; }
+    .top-ad-metric-val { font-size: 14px; font-weight: 700; color: var(--text); font-family: 'Inter', sans-serif; }
+    .top-ad-metric-lbl { font-size: 11px; color: var(--muted); }
+    .empty-state { display: flex; align-items: center; justify-content: center; height: 100%; color: var(--muted); font-size: 13px; }
+
+    /* Tabs Style */
     .tabs-container { display: flex; gap: 4px; background: var(--surface); padding: 4px; border-radius: 8px; border: 1px solid var(--border); display: inline-flex; }
     .tab-btn { background: transparent; border: none; padding: 8px 16px; border-radius: 6px; cursor: pointer; font-size: 13px; font-weight: 600; color: var(--text-secondary); transition: all 0.2s; font-family: 'Inter', 'Noto Sans Thai', sans-serif; }
     .tab-btn.active { background: var(--card); color: var(--text); box-shadow: var(--shadow-sm); }
@@ -62,24 +125,44 @@
     th { font-size: 12px; font-weight: 600; color: var(--text-secondary); padding: 12px 24px; border-bottom: 1px solid var(--border); background: var(--surface); white-space: nowrap; }
     td { padding: 16px 24px; font-size: 13px; color: var(--text); border-bottom: 1px solid var(--border); white-space: nowrap; }
     tr:last-child td { border-bottom: none; }
-    tr:hover td { background: var(--surface); }
+    tr.hoverable:hover td { background: var(--surface); } /* Added class specifically for standard table rows */
+    .sortable { cursor: pointer; user-select: none; transition: color 0.2s; }
+    .sortable:hover { color: var(--primary); }
+    .sort-icon { display: inline-block; width: 12px; margin-left: 4px; font-size: 10px; color: var(--primary); }
+    .num { font-family: 'Inter',sans-serif; font-variant-numeric: tabular-nums; }
+    .cost-cell { font-weight: 600; font-family: 'Inter',sans-serif; color: var(--text); }
 
-    /* Comparison Control Styles */
-    .comparison-controls { display: none; padding: 20px 24px; background: var(--surface); border-bottom: 1px solid var(--border); gap: 24px; flex-wrap: wrap; }
-    .comparison-controls.show { display: flex; align-items: flex-end; }
-    .comp-box { background: var(--card); border: 1px solid var(--border); padding: 16px; border-radius: 8px; flex: 1; min-width: 280px; box-shadow: var(--shadow-sm); }
-    .comp-title { font-size: 14px; font-weight: 700; margin-bottom: 12px; color: var(--text); display: flex; align-items: center; gap: 8px; }
-    .comp-title.old { color: var(--muted); }
-    .comp-title.new { color: var(--primary); }
-    .comp-inputs { display: flex; gap: 12px; align-items: center; }
-    .comp-select { padding: 8px 12px; border-radius: 6px; border: 1px solid var(--border); background: var(--surface); color: var(--text); font-family: 'Inter', sans-serif; font-size: 13px; outline: none; }
+    /* Yearly Table specific alternating rows */
+    tr.yearly-row:nth-child(even) { background-color: var(--surface); }
+    tr.yearly-row:nth-child(odd) { background-color: var(--card); }
+    tr.yearly-row td.sticky-col { background-color: inherit; }
+
+    /* Custom Month Range Picker */
+    .date-picker-container { position: relative; display: inline-block; }
+    .month-popover { position: absolute; top: calc(100% + 8px); left: 0; background: var(--card); border: 1px solid var(--border); padding: 16px; border-radius: 12px; z-index: 200; width: 280px; box-shadow: var(--shadow); transition: all 0.2s; opacity: 0; visibility: hidden; transform: translateY(-10px); }
+    .month-popover.show { opacity: 1; visibility: visible; transform: translateY(0); }
+    .popover-header { display: flex; justify-content: space-between; align-items: center; margin-bottom: 16px; padding-bottom: 12px; border-bottom: 1px solid var(--border); }
+    .popover-year { font-size: 15px; font-weight: 600; color: var(--text); }
+    .popover-arrows button { background: transparent; border: none; font-size: 14px; cursor: pointer; color: var(--text-secondary); padding: 4px 8px; border-radius: 4px; transition: background 0.2s; }
+    .popover-arrows button:hover { background: var(--surface); color: var(--text); }
+    .popover-grid { display: grid; grid-template-columns: repeat(4, 1fr); gap: 4px 0; }
+    .month-btn { padding: 10px 4px; text-align: center; cursor: pointer; border: none; background: transparent; font-size: 12px; font-weight: 500; color: var(--text); transition: all 0.2s; font-family: 'Inter', sans-serif; text-transform: uppercase; margin: 2px 0; }
+    .month-btn:hover:not(.selected-start):not(.selected-end):not(.selected-single):not(.in-range) { background: var(--surface); border-radius: 20px; }
+    .month-btn.in-range { background: rgba(37,99,235,0.1); color: var(--primary); }
+    .month-btn.selected-start { background: var(--primary); color: white; border-radius: 20px 0 0 20px; }
+    .month-btn.selected-end { background: var(--primary); color: white; border-radius: 0 20px 20px 0; }
+    .month-btn.selected-single { background: var(--primary); color: white; border-radius: 20px; }
     
+    .diff-badge { display: inline-flex; align-items: center; justify-content: center; padding: 2px 6px; border-radius: 4px; font-size: 11px; font-weight: 600; margin-left: 8px; }
+    .diff-good { background: rgba(16,185,129,0.1); color: var(--green); }
+    .diff-bad { background: rgba(239,68,68,0.1); color: var(--red); }
+    .diff-neutral { background: var(--surface); color: var(--muted); }
+
     #statusBar { padding: 12px 16px; font-size: 14px; font-weight: 500; border-radius: 8px; margin-bottom: 16px; display: none; }
     .status-info { background: rgba(59,130,246,0.1); border: 1px solid rgba(59,130,246,0.2); color: var(--blue); }
     .status-success { background: rgba(16,185,129,0.1); border: 1px solid rgba(16,185,129,0.2); color: var(--green); }
     .status-error { background: rgba(239,68,68,0.1); border: 1px solid rgba(239,68,68,0.2); color: var(--red); }
 
-    /* Settings Drawer Styles */
     .drawer-overlay { position: fixed; top: 0; left: 0; width: 100vw; height: 100vh; background: rgba(0,0,0,0.5); z-index: 999; opacity: 0; visibility: hidden; transition: all 0.3s ease; }
     .drawer-overlay.show { opacity: 1; visibility: visible; }
     .drawer { position: fixed; top: 0; right: -400px; width: 100%; max-width: 400px; height: 100vh; background: var(--card); z-index: 1000; box-shadow: -4px 0 15px rgba(0,0,0,0.1); transition: right 0.3s ease; display: flex; flex-direction: column; border-left: 1px solid var(--border); }
@@ -95,6 +178,27 @@
     .setting-input { width: 100%; padding: 10px 12px; border-radius: 8px; border: 1px solid var(--border); background: var(--surface); color: var(--text); font-family: 'Inter','Noto Sans Thai',sans-serif; font-size: 13px; outline: none; transition: border-color 0.2s; }
     .setting-input:focus { border-color: var(--primary); }
 
+    /* Theme Switch (Slide) */
+    .theme-switch-wrapper { display: flex; align-items: center; justify-content: space-between; background: var(--surface); padding: 12px 16px; border-radius: 8px; border: 1px solid var(--border); }
+    .theme-switch-text { font-size: 13px; font-weight: 500; color: var(--text); display: flex; align-items: center; gap: 8px; }
+    .switch { position: relative; display: inline-block; width: 44px; height: 24px; flex-shrink: 0; }
+    .switch input { opacity: 0; width: 0; height: 0; }
+    .slider { position: absolute; cursor: pointer; top: 0; left: 0; right: 0; bottom: 0; background-color: #CBD5E1; transition: .3s; border-radius: 24px; }
+    .slider:before { position: absolute; content: ""; height: 18px; width: 18px; left: 3px; bottom: 3px; background-color: white; transition: .3s; border-radius: 50%; box-shadow: 0 1px 3px rgba(0,0,0,0.2); }
+    input:checked + .slider { background-color: var(--primary); }
+    input:checked + .slider:before { transform: translateX(20px); }
+    body.dark-mode .slider { background-color: #334155; }
+    body.dark-mode input:checked + .slider { background-color: var(--primary); }
+
+  @media (max-width: 1400px) { .kpi-grid.row7 { grid-template-columns: repeat(3,1fr); } }
+  @media (max-width: 1200px) { .kpi-grid.row7, .kpi-grid.row6 { grid-template-columns: repeat(2,1fr); } }
+  @media (max-width: 900px) {
+    .main { padding: 16px; gap: 16px; }
+    .charts-grid { grid-template-columns: 1fr; }
+    .chart-card.wide { grid-column: span 1; }
+    .kpi-grid.row7, .kpi-grid.row6, .kpi-grid.row3 { grid-template-columns: repeat(2,1fr); }
+  }
+  @media (max-width: 600px) { .kpi-grid.row7, .kpi-grid.row6, .kpi-grid.row3 { grid-template-columns: 1fr; } }
   </style>
 </head>
 <body>
@@ -102,17 +206,19 @@
 <div class="header">
   <div class="logo-area">
     <div class="logo-icon">
+      <!-- Logo FB -->
       <img src="https://scontent.fbkk22-6.fna.fbcdn.net/v/t39.30808-6/476613050_938503075034627_8718952996618119611_n.jpg?stp=dst-jpg_tt6&cstp=mx2048x2048&ctp=s2048x2048&_nc_cat=102&ccb=1-7&_nc_sid=a5f93a&_nc_ohc=6bD6wkBLct8Q7kNvwH6fpwm&_nc_oc=Adrjwx4KZ3UaCwaiNiYKrlLsEGK7wvbF90RzgYCP_1HH2TXOFeNNqWS8j6s3XWVe-2E&_nc_zt=23&_nc_ht=scontent.fbkk22-6.fna&_nc_gid=k2MptTp23IColaRNbxdlKw&_nc_ss=7b2a8&oh=00_Af9gqeFkqMBA28Is-U_bwAdKwSGg7ETg0sdXtqnBvi1mYg&oe=6A381F52" alt="Aurora Diamond">
     </div>
     <div class="logo-text">
       <div class="logo-title">Aurora Diamond</div>
-      <div class="logo-sub" id="logoSubtitle">Facebook Campaign Performance</div>
+      <div class="logo-sub">Facebook Campaign Performance</div>
     </div>
   </div>
   
   <div class="header-right" style="display: flex; flex-direction: column; align-items: flex-end; gap: 4px;">
+    <!-- แถวบน: Dropdown และปุ่มตั้งค่า -->
     <div style="display: flex; align-items: center; gap: 16px;">
-      <!-- Dropdown เลือกเดือน -->
+      <!-- Dropdown เลือกเดือน (English) -->
       <select id="globalMonthSelect" onchange="loadAllData()" class="header-month-select" title="Select Month">
         <option value="January">January</option>
         <option value="February">February</option>
@@ -132,13 +238,111 @@
         <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="3"/><path d="M19.4 15a1.65 1.65 0 0 0 .33 1.82l.06.06a2 2 0 0 1 0 2.83 2 2 0 0 1-2.83 0l-.06-.06a1.65 1.65 0 0 0-1.82-.33 1.65 1.65 0 0 0-1 1.51V21a2 2 0 0 1-2 2 2 2 0 0 1-2-2v-.09A1.65 1.65 0 0 0 9 19.4a1.65 1.65 0 0 0-1.82.33l-.06.06a2 2 0 0 1-2.83 0 2 2 0 0 1 0-2.83l.06-.06a1.65 1.65 0 0 0 .33-1.82 1.65 1.65 0 0 0-1.51-1H3a2 2 0 0 1-2-2 2 2 0 0 1 2-2h.09A1.65 1.65 0 0 0 4.6 9a1.65 1.65 0 0 0-.33-1.82l-.06-.06a2 2 0 0 1 0-2.83 2 2 0 0 1 2.83 0l.06.06a1.65 1.65 0 0 0 1.82.33H9a1.65 1.65 0 0 0 1-1.51V3a2 2 0 0 1 2-2 2 2 0 0 1 2 2v.09a1.65 1.65 0 0 0 1 1.51 1.65 1.65 0 0 0 1.82-.33l.06-.06a2 2 0 0 1 2.83 0 2 2 0 0 1 0 2.83l-.06.06a1.65 1.65 0 0 0-.33 1.82V9a1.65 1.65 0 0 0 1.51 1H21a2 2 0 0 1 2 2 2 2 0 0 1-2 2h-.09a1.65 1.65 0 0 0-1.51 1z"/></svg>
       </button>
     </div>
-    <div id="lastUpdatedText" style="font-size: 11px; color: var(--muted); font-weight: 500; padding-right: 4px;">กำลังโหลด...</div>
+    
+    <!-- แถวล่าง: วันที่อัปเดตข้อมูล -->
+    <div id="lastUpdatedText" style="font-size: 11px; color: var(--muted); font-weight: 500; padding-right: 4px;">
+      กำลังโหลดข้อมูลอัปเดต...
+    </div>
   </div>
 </div>
 
 <div class="main">
   <div style="padding: 0 32px; margin-top: -8px;" id="innerMain">
     <div id="statusBar"></div>
+    <div class="filter-row">
+      <span class="filter-label">
+        <svg xmlns="http://www.w3.org/2000/svg" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><line x1="21" y1="4" x2="14" y2="4"/><line x1="10" y1="4" x2="3" y2="4"/><line x1="21" y1="12" x2="12" y2="12"/><line x1="8" y1="12" x2="3" y2="12"/><line x1="21" y1="20" x2="16" y2="20"/><line x1="12" y1="20" x2="3" y2="20"/><line x1="14" y1="2" x2="14" y2="6"/><line x1="8" y1="10" x2="8" y2="14"/><line x1="16" y1="18" x2="16" y2="22"/></svg>
+        Filter:
+      </span>
+      <select id="filterCampaign" onchange="applyFilters()">
+        <option value="">ทุก Campaign</option>
+      </select>
+      <select id="filterObjective" onchange="applyFilters()">
+        <!-- จะถูก populate ด้วย JS -->
+        <option value="">ทุก Objective</option>
+      </select>
+      <button class="clear-btn" onclick="clearFilters()">✕ ล้างตัวกรอง</button>
+    </div>
+
+    <div id="kpiSection"></div>
+
+    <div class="charts-grid" style="margin-top: 16px;">
+      
+      <!-- กล่อง Top Ad 1 -->
+      <div class="chart-card">
+        <div style="display: flex; justify-content: space-between; align-items: flex-start; margin-bottom: 4px; gap: 8px;">
+          <div class="chart-title">Top Ad Performance</div>
+          <select id="topAdFilter1" onchange="renderTopAdsUI()" style="padding: 4px 8px; border-radius: 6px; border: 1px solid var(--border); background: var(--surface); color: var(--text); font-size: 12px; outline: none; cursor: pointer; min-width: 100px;">
+            <option value="eng" selected>Engagement</option>
+            <option value="msg">Message</option>
+            <option value="reach">Reach</option>
+          </select>
+        </div>
+        <div class="chart-sub" id="topAdSub1">3 อันดับโฆษณาที่มีส่วนร่วม (Engagement) สูงสุด</div>
+        <div class="chart-wrap" id="topAdContainer1" style="overflow-y: auto; padding-right: 4px;"></div>
+      </div>
+      
+      <!-- กล่อง Top Ad 2 -->
+      <div class="chart-card">
+        <div style="display: flex; justify-content: space-between; align-items: flex-start; margin-bottom: 4px; gap: 8px;">
+          <div class="chart-title">Top Ad Performance</div>
+          <select id="topAdFilter2" onchange="renderTopAdsUI()" style="padding: 4px 8px; border-radius: 6px; border: 1px solid var(--border); background: var(--surface); color: var(--text); font-size: 12px; outline: none; cursor: pointer; min-width: 100px;">
+            <option value="eng">Engagement</option>
+            <option value="msg" selected>Message</option>
+            <option value="reach">Reach</option>
+          </select>
+        </div>
+        <div class="chart-sub" id="topAdSub2">3 อันดับโฆษณาที่มีการทักข้อความ (Message) สูงสุด</div>
+        <div class="chart-wrap" id="topAdContainer2" style="overflow-y: auto; padding-right: 4px;"></div>
+      </div>
+
+      <div class="chart-card wide">
+        <div class="chart-title">Demographics - Age & Gender</div>
+        <div class="chart-sub">การเข้าถึง (Reach) สะสมแยกตามกลุ่มอายุและเพศ</div>
+        <div class="chart-wrap"><canvas id="demoChart"></canvas></div>
+        <div id="demoSummary" class="chart-summary" style="display:none;"></div>
+      </div>
+      
+      <!-- กล่อง Region (ภูมิภาค) -->
+      <div class="chart-card wide" style="position: relative;">
+        <div class="chart-title">Region (ภูมิภาค)</div>
+        <div class="chart-sub">สัดส่วนการเข้าถึง (Reach) ตามภูมิภาค (ดึงข้อมูลอัตโนมัติจาก data/region/)</div>
+        <div class="chart-wrap"><canvas id="regionChart"></canvas></div>
+        <div id="regionSummary" style="display:none; margin-top:16px; padding:12px 16px; background:var(--surface); border-radius:10px; border:1px solid var(--border); font-size:13px; color:var(--text-secondary); line-height:1.7; gap:8px; align-items:flex-start;"></div>
+      </div>
+    </div>
+
+    <!-- Monthly Performance (Auto updated from cached months) -->
+    <div class="chart-card wide" style="margin-top: 24px;">
+      <div class="chart-title" style="font-size: 18px; margin-bottom: 8px;">Monthly Performance</div>
+      <div class="chart-sub" style="margin-bottom: 16px;">เปรียบเทียบแนวโน้มประสิทธิภาพแคมเปญในแต่ละเดือนที่มีข้อมูลอยู่ในระบบ (ดึงข้อมูลให้อัตโนมัติ)</div>
+      <div class="charts-grid" style="margin-top: 0; gap: 16px;">
+        <div class="chart-card" style="padding: 16px; box-shadow: none; border-color: var(--border);">
+           <div class="chart-title" style="font-size: 14px; margin-bottom: 16px;">1. Spending vs Engagement</div>
+           <div class="chart-wrap" style="height: 240px;"><canvas id="chartMonth1"></canvas></div>
+        </div>
+        <div class="chart-card" style="padding: 16px; box-shadow: none; border-color: var(--border);">
+           <div class="chart-title" style="font-size: 14px; margin-bottom: 16px;">2. Spending vs Message</div>
+           <div class="chart-wrap" style="height: 240px;"><canvas id="chartMonth2"></canvas></div>
+        </div>
+        <div class="chart-card" style="padding: 16px; box-shadow: none; border-color: var(--border);">
+           <div class="chart-title" style="font-size: 14px; margin-bottom: 16px;">3. Engagement vs CPE</div>
+           <div class="chart-wrap" style="height: 240px;"><canvas id="chartMonth3"></canvas></div>
+        </div>
+        <div class="chart-card" style="padding: 16px; box-shadow: none; border-color: var(--border);">
+           <div class="chart-title" style="font-size: 14px; margin-bottom: 16px;">4. Message vs Cost Per Message</div>
+           <div class="chart-wrap" style="height: 240px;"><canvas id="chartMonth4"></canvas></div>
+        </div>
+        <div class="chart-card" style="padding: 16px; box-shadow: none; border-color: var(--border);">
+           <div class="chart-title" style="font-size: 14px; margin-bottom: 16px;">5. Spending vs Impression</div>
+           <div class="chart-wrap" style="height: 240px;"><canvas id="chartMonth5"></canvas></div>
+        </div>
+        <div class="chart-card" style="padding: 16px; box-shadow: none; border-color: var(--border);">
+           <div class="chart-title" style="font-size: 14px; margin-bottom: 16px;">6. Impression vs Frequency</div>
+           <div class="chart-wrap" style="height: 240px;"><canvas id="chartMonth6"></canvas></div>
+        </div>
+      </div>
+    </div>
 
     <!-- Data Table (Tabs) -->
     <div class="table-card">
@@ -147,58 +351,53 @@
           <div class="tabs-container">
             <button class="tab-btn active" id="tab-campaign" onclick="switchTableTab('campaign')">Campaign Performance</button>
             <button class="tab-btn" id="tab-ad" onclick="switchTableTab('ad')">Ad Performance</button>
-            <button class="tab-btn" id="tab-yearly" onclick="switchTableTab('yearly')">OLD vs NEW</button>
+            <button class="tab-btn" id="tab-yearly" onclick="switchTableTab('yearly')">Yearly performance</button>
           </div>
           <div class="chart-sub" id="tableCount" style="margin-bottom:0;"></div>
         </div>
-      </div>
-      
-      <!-- OLD vs NEW Controls -->
-      <div id="comparisonControls" class="comparison-controls">
-        <div class="comp-box">
-          <div class="comp-title old">📅 OLD (ช่วงเวลาเดิม)</div>
-          <div class="comp-inputs">
-            <select id="oldYear" class="comp-select">
-              <option value="2024">2024</option>
-              <option value="2025">2025</option>
-              <option value="2026">2026</option>
-            </select>
-            <select id="oldMonthStart" class="comp-select">
-              <option value="January">Jan</option><option value="February">Feb</option><option value="March">Mar</option><option value="April">Apr</option><option value="May">May</option><option value="June">Jun</option><option value="July">Jul</option><option value="August">Aug</option><option value="September">Sep</option><option value="October">Oct</option><option value="November">Nov</option><option value="December">Dec</option>
-            </select>
-            <span>-</span>
-            <select id="oldMonthEnd" class="comp-select">
-              <option value="January">Jan</option><option value="February">Feb</option><option value="March">Mar</option><option value="April">Apr</option><option value="May">May</option><option value="June">Jun</option><option value="July">Jul</option><option value="August">Aug</option><option value="September">Sep</option><option value="October">Oct</option><option value="November">Nov</option><option value="December">Dec</option>
-            </select>
-          </div>
-        </div>
         
-        <div class="comp-box">
-          <div class="comp-title new">⭐ NEW (ช่วงเวลาใหม่)</div>
-          <div class="comp-inputs">
-            <select id="newYear" class="comp-select">
-              <option value="2024">2024</option>
-              <option value="2025">2025</option>
-              <option value="2026" selected>2026</option>
-            </select>
-            <select id="newMonthStart" class="comp-select">
-              <option value="January">Jan</option><option value="February">Feb</option><option value="March">Mar</option><option value="April">Apr</option><option value="May">May</option><option value="June">Jun</option><option value="July">Jul</option><option value="August">Aug</option><option value="September">Sep</option><option value="October">Oct</option><option value="November">Nov</option><option value="December">Dec</option>
-            </select>
-            <span>-</span>
-            <select id="newMonthEnd" class="comp-select">
-              <option value="January">Jan</option><option value="February">Feb</option><option value="March">Mar</option><option value="April">Apr</option><option value="May">May</option><option value="June">Jun</option><option value="July">Jul</option><option value="August">Aug</option><option value="September">Sep</option><option value="October">Oct</option><option value="November">Nov</option><option value="December">Dec</option>
-            </select>
-          </div>
-        </div>
-        
-        <button onclick="renderComparisonTable()" style="background: var(--primary); color: white; border: none; padding: 12px 24px; border-radius: 8px; font-weight: 600; cursor: pointer; height: 42px;">
-          ดูผลเปรียบเทียบ
-        </button>
-      </div>
+        <!-- Yearly Compare Controls -->
+        <div id="yearlyCompareControls" style="display: none; align-items: center; flex-wrap: wrap; gap: 16px; margin-top: 12px; padding-top: 12px; border-top: 1px dashed var(--border);">
+           <label style="display:flex; align-items:center; gap:6px; font-size: 13px; font-weight: 600; cursor:pointer; color: var(--text);">
+               <input type="checkbox" id="enableCompareCb" onchange="toggleCompareMode()" style="width: 16px; height: 16px; accent-color: var(--primary);"> 
+               เปรียบเทียบข้อมูล (Comparison Mode)
+           </label>
+           
+           <div id="compareSelectors" style="display:none; align-items:center; gap: 12px; flex-wrap: wrap;">
+               <div class="date-picker-container" id="datePickerContainerBase">
+                  <button id="monthRangeBtnBase" class="header-month-select" style="min-width: 170px; text-align: left;" onclick="toggleMonthPicker('base')">Jan - Aug 2026</button>
+               </div>
+               
+               <span style="font-size: 13px; color: var(--text-secondary); font-weight: 500;">เทียบกับ</span>
+               
+               <div class="date-picker-container" id="datePickerContainerComp">
+                  <button id="monthRangeBtnComp" class="header-month-select" style="min-width: 170px; text-align: left;" onclick="toggleMonthPicker('comp')">Jan - Aug 2025</button>
+               </div>
 
+               <button class="btn-outline" style="padding: 6px 16px; border-radius: 20px; font-size: 13px; font-weight: 600; background: var(--primary); color: white; border: none; cursor: pointer; box-shadow: var(--shadow-sm);" onclick="applyComparison()">Apply Compare</button>
+
+               <!-- Shared Popover for Pickers -->
+               <div id="monthPickerPopover" class="month-popover">
+                  <div class="popover-header">
+                     <span id="popoverYearStr" class="popover-year">2026</span>
+                     <div class="popover-arrows">
+                         <button onclick="changePickerYear(-1)">❮</button>
+                         <button onclick="changePickerYear(1)">❯</button>
+                     </div>
+                  </div>
+                  <div class="popover-grid" id="popoverGrid"></div>
+                  <div style="font-size: 11px; color: var(--muted); text-align: center; margin-top: 12px; font-weight: 500; line-height: 1.5;">
+                     👆 คลิก 1 ครั้งเพื่อเลือกเดือนเดียว<br>คลิกอีกครั้งเพื่อเลือกเป็นช่วง (Range)
+                  </div>
+               </div>
+           </div>
+        </div>
+      </div>
       <div class="table-responsive">
         <table>
-          <thead id="tableHead"></thead>
+          <thead id="tableHead">
+            <!-- Rendered by JS -->
+          </thead>
           <tbody id="tableBody"></tbody>
         </table>
       </div>
@@ -218,46 +417,120 @@
       <svg xmlns="http://www.w3.org/2000/svg" width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><line x1="18" y1="6" x2="6" y2="18"/><line x1="6" y1="6" x2="18" y2="18"/></svg>
     </button>
   </div>
-  
   <div class="drawer-content">
     
-    <!-- 🟢 เพิ่มการตั้งค่าปีที่นี่ -->
+    <!-- New Setting: Data Year Selection -->
     <div class="setting-group">
-      <div class="setting-label">ปีที่ต้องการแสดงผล (Data Year)</div>
-      <div class="setting-desc">เลือกปีของข้อมูลหลักที่ต้องการใช้ (ระบบจะดึงไฟล์ตามปีที่เลือกนี้อัตโนมัติ)</div>
-      <select id="settingDataYear" class="setting-input" onchange="handleYearChange()">
+      <div class="setting-label">ปีของข้อมูล (Data Year)</div>
+      <div class="setting-desc">เลือกปีที่ต้องการโหลดและแสดงผลเป็นหลัก</div>
+      <select id="dataYearSelect" class="setting-input" onchange="changeDataYear()">
+        <option value="2023">2023</option>
         <option value="2024">2024</option>
         <option value="2025">2025</option>
-        <option value="2026" selected>2026</option>
+        <option value="2026">2026</option>
         <option value="2027">2027</option>
       </select>
     </div>
 
     <div style="border-top: 1px solid var(--border); margin: 24px 0;"></div>
-    
+
     <div class="setting-group">
       <div class="setting-label">โหมดการแสดงผล (Theme)</div>
-      <select id="themeToggleCheckbox" class="setting-input" onchange="toggleTheme(this.value)">
-        <option value="light">โหมดสว่าง (Light Mode)</option>
-        <option value="dark">โหมดมืด (Dark Mode)</option>
-      </select>
+      <div class="setting-desc">สลับโหมดสีของหน้าจอระหว่างโหมดสว่างและโหมดมืด</div>
+      <div class="theme-switch-wrapper">
+        <div class="theme-switch-text" id="themeSwitchText">
+        </div>
+        <label class="switch">
+          <input type="checkbox" id="themeToggleCheckbox">
+          <span class="slider"></span>
+        </label>
+      </div>
     </div>
-    
+
+    <div style="border-top: 1px solid var(--border); margin: 24px 0;"></div>
+
+    <div class="setting-group">
+      <div class="setting-label">สถานะการโหลดข้อมูลอัตโนมัติ</div>
+      <div class="setting-desc">ระบบจะทำการโหลดข้อมูลจากโฟลเดอร์ <code>./data/</code> และ <code>./data/region/</code> ให้โดยอัตโนมัติตามรูปแบบ YYYY-Month-DIA (เช่น 2024-January-DIA.csv)</div>
+      
+      <div id="mainDataStatus" style="font-size: 12px; color: var(--text-secondary); background: var(--surface); padding: 8px; border-radius: 8px; border: 1px solid var(--border); margin-bottom: 8px;">
+        เดือนที่มีข้อมูล: กำลังโหลด...
+      </div>
+      
+      <button onclick="clearAllDataCache()" class="clear-btn" style="width: 100%; border: 1px solid var(--border); margin-top: 8px;">
+        🗑️ ล้างแคชข้อมูลทั้งหมด
+      </button>
+    </div>
+
+    <div style="border-top: 1px solid var(--border); margin: 24px 0;"></div>
+
+    <div class="setting-group">
+      <div class="setting-label">ตั้งค่าลิ้งก์และรูปภาพโฆษณา (Ad Settings)</div>
+      <div class="setting-desc">ใส่ลิ้งก์ปลายทางและ URL รูปภาพให้กับ Ad Name ด้านล่าง เพื่อให้แสดงผลได้อย่างสมบูรณ์</div>
+      <div id="adLinkInputsContainer" style="display:flex; flex-direction:column; gap:16px; max-height: 400px; overflow-y: auto; padding-right: 8px; margin-bottom: 16px;">
+        <div style="color: var(--muted); font-size: 13px;">(กรุณาเลือกเดือนที่มีข้อมูลก่อน เพื่อดึงรายชื่อ Ad)</div>
+      </div>
+      <button onclick="saveAllAdLinks()" style="width: 100%; background: var(--primary); color: #FFF; border: none; border-radius: 8px; padding: 10px; cursor: pointer; font-weight: 500; font-family: 'Inter','Noto Sans Thai',sans-serif; font-size: 13px; transition: opacity 0.2s;">
+        💾 บันทึกการตั้งค่า
+      </button>
+    </div>
   </div>
 </div>
 
 <script>
+// ─── DATA MANAGEMENT & FETCHING ──────────────────────────────
 const monthNames = ['January', 'February', 'March', 'April', 'May', 'June', 'July', 'August', 'September', 'October', 'November', 'December'];
 
-// 🟢 ตัวแปรปีหลัก (ดึงจากตั้งค่า)
-let activeDataYear = '2026';
+// ตัวแปรสำหรับกำหนดปี YYYY (แก้ไขให้เป็น let เพื่อให้เปลี่ยนค่าผ่าน Settings ได้)
+let DATA_YEAR = '2024'; 
 
 let mainDataByMonth = {};
+let regionDataByMonth = {};
 let allData = [];
-let filteredData = [];
+let regionData = [];
+let adLinks = {};
+let adImages = {};
 let currentGlobalMonth = 'January';
-let currentTableTab = 'campaign'; 
+let filteredData = [];
+let charts = {};
 
+let currentTableTab = 'campaign'; // 'campaign', 'ad', or 'yearly'
+let currentSortCol = 'spend';
+let currentSortAsc = false;
+
+// ─── COMPARISON STATE ────────────────────────────────────
+let allYearsData = {}; 
+let compareState = {
+    active: false,
+    base: { year: parseInt(DATA_YEAR) || new Date().getFullYear(), startMonth: 0, endMonth: 7 },
+    comp: { year: (parseInt(DATA_YEAR) || new Date().getFullYear()) - 1, startMonth: 0, endMonth: 7 },
+    
+    // UI Picker State
+    activePicker: null, // 'base' or 'comp'
+    pickerYear: parseInt(DATA_YEAR) || new Date().getFullYear(),
+    pickerStep: 0, // 0 = select start, 1 = select end
+    tempStart: 0,
+    tempEnd: 0
+};
+const shortMonthNames = ['JAN','FEB','MAR','APR','MAY','JUN','JUL','AUG','SEP','OCT','NOV','DEC'];
+
+// โหลด Settings จาก localStorage
+try {
+  const savedLinks = localStorage.getItem('hiaLhomAdLinks');
+  if (savedLinks) adLinks = JSON.parse(savedLinks);
+  const savedImages = localStorage.getItem('hiaLhomAdImages');
+  if (savedImages) adImages = JSON.parse(savedImages);
+} catch(e) { console.warn('Could not read settings from localStorage', e); }
+
+function parseObjective(campaign) {
+  const c = campaign.toLowerCase();
+  if (c.includes('awareness')) return 'Awareness';
+  if (c.includes('engage') || c.includes('follower')) return 'Engage';
+  if (c.includes('message') || c.includes('msg') || c.includes('inbox')) return 'Message';
+  return 'Other';
+}
+
+function destroyCharts() { Object.values(charts).forEach(c => { if(c) c.destroy(); }); charts = {}; }
 function showStatus(msg, type='info') {
   const bar = document.getElementById('statusBar');
   bar.textContent = msg; 
@@ -266,11 +539,12 @@ function showStatus(msg, type='info') {
   setTimeout(()=>{ bar.style.display='none'; }, 4000);
 }
 
-// 🟢 อัปเดต Path ให้ใช้ตัวแปรปี
+// ─── AUTO FETCH LOGIC ──────────────────────────────
 async function fetchFile(path) {
     try {
         const response = await fetch(path, { cache: "no-store" });
-        if (!response.ok) return null;
+        if (!response.ok) return null; // File not found
+        
         if (path.endsWith('.csv')) {
             const text = await response.text();
             return new Promise(resolve => Papa.parse(text, {header:true, skipEmptyLines:true, complete: r => resolve(r.data)}));
@@ -279,196 +553,1198 @@ async function fetchFile(path) {
             const wb = XLSX.read(arrayBuffer, {type:'array'});
             return XLSX.utils.sheet_to_json(wb.Sheets[wb.SheetNames[0]], {defval:0});
         }
-    } catch (e) { return null; }
+    } catch (e) {
+        return null;
+    }
 }
 
 function cleanMainData(rows) {
     return rows.map(r => {
+      const campaign = r['Campaign name']||r['campaign']||'';
       return {
-        campaign: r['Campaign name']||r['campaign']||'',
+        campaign,
         ad: r['Ad name']||r['ad']||'',
-        spend: parseFloat(r['Amount spent (THB)']||r['spend']||0)||0,
+        adset: r['Ad set name'] || r['Ad Set Name'] || r['ad set name'] || r['adset'] || '',
+        age: r['Age']||r['age']||'',
+        gender: r['Gender']||r['gender']||'',
+        spend: parseFloat(r['Amount spent (THB)']||r['spend']||r['Spend']||0)||0,
         reach: parseInt(r['Reach']||r['reach']||0)||0,
-        impressions: parseInt(r['Impressions']||0)||0,
-        engagements: parseInt(r['Post engagements']||0)||0,
-        messages: parseInt(r['Messaging conversations started'] || r['Messages'] || 0) || 0,
+        impressions: parseInt(r['Impressions']||r['impressions']||0)||0,
+        views: parseInt(r['Video plays'] || r['Views'] || r['views'] || 0) || 0,
+        engagements: parseInt(r['Post engagements']||r['engagements']||0)||0,
+        fbLikes: parseInt(r['Facebook likes']||0)||0,
+        reactions: parseInt(r['Post reactions']||0)||0,
+        comments: parseInt(r['Post comments']||0)||0,
+        shares: parseInt(r['Post shares']||0)||0,
+        saves: parseInt(r['Post saves']||0)||0,
+        clicks: parseInt(r['Link clicks'] || r['Clicks (all)'] || r['Clicks'] || r['clicks'] || 0) || 0,
+        messages: parseInt(r['Messaging conversations started'] || r['New messaging connections'] || r['Messages'] || r['messages'] || 0) || 0,
+        
+        // E-commerce/Website metrics added for the Yearly Tab (parsing if available)
+        landingPageViews: parseInt(r['Landing page views'] || r['landing_page_views'] || 0) || 0,
+        addsToCart: parseInt(r['Adds to cart'] || r['adds_to_cart'] || 0) || 0,
+        purchases: parseInt(r['Purchases'] || r['purchases'] || r['Website purchases'] || 0) || 0,
+        revenue: parseFloat(r['Purchase conversion value'] || r['Website purchases conversion value'] || r['revenue'] || 0) || 0,
+        
+        objective: parseObjective(campaign)
       };
-    }).filter(r => r.campaign || r.ad);
+    }).filter(r => (r.ad && r.ad !== '-') || (r.campaign && r.campaign !== '-'));
 }
 
-// 🟢 เมื่อเปลี่ยนปีในหน้าตั้งค่า
-window.handleYearChange = function() {
-    activeDataYear = document.getElementById('settingDataYear').value;
-    document.getElementById('logoSubtitle').textContent = `Facebook Campaign Performance (${activeDataYear})`;
-    mainDataByMonth = {}; // Clear cache
-    loadAllData();
-};
+function cleanRegionData(rows) {
+    return rows.map(r => ({
+      region: r['Region'] || r['ภูมิภาค'] || r['region'] || 'Unknown',
+      reach: parseInt(r['Reach'] || r['reach'] || 0) || 0
+    })).filter(r => r.reach > 0);
+}
+
+let isFetchingAllMonths = false;
+async function fetchAllAvailableMonths() {
+    if (isFetchingAllMonths) return;
+    isFetchingAllMonths = true;
+    
+    if (!allYearsData[DATA_YEAR]) allYearsData[DATA_YEAR] = {};
+    
+    // Sequential load to not overload network
+    for (const m of monthNames) {
+        if (!mainDataByMonth[m]) {
+            let raw = await fetchFile(`data/${DATA_YEAR}-${m}-DIA.csv`) || await fetchFile(`data/${DATA_YEAR}-${m}-DIA.xlsx`);
+            if (raw) {
+                let cleaned = cleanMainData(raw);
+                mainDataByMonth[m] = cleaned;
+                allYearsData[DATA_YEAR][m] = cleaned;
+            } else {
+                mainDataByMonth[m] = []; 
+                allYearsData[DATA_YEAR][m] = [];
+            }
+        } else {
+            allYearsData[DATA_YEAR][m] = mainDataByMonth[m];
+        }
+    }
+    
+    updateDataStatusUI();
+    renderCharts(); 
+    if (currentTableTab === 'yearly') renderTable(); 
+    isFetchingAllMonths = false;
+}
+
+// โหลดข้อมูลสำหรับปีและช่วงเดือนที่ระบุ (ใช้สำหรับ Comparison)
+async function ensureDataForYearRange(year, startMonthIdx, endMonthIdx) {
+    if (!allYearsData[year]) allYearsData[year] = {};
+    let promises = [];
+    
+    for (let i = startMonthIdx; i <= endMonthIdx; i++) {
+        let m = monthNames[i];
+        if (!allYearsData[year][m]) {
+            promises.push(
+                (async () => {
+                    let raw = await fetchFile(`data/${year}-${m}-DIA.csv`) || await fetchFile(`data/${year}-${m}-DIA.xlsx`);
+                    allYearsData[year][m] = raw ? cleanMainData(raw) : [];
+                })()
+            );
+        }
+    }
+    
+    if (promises.length > 0) {
+        showStatus(`กำลังดึงข้อมูลปี ${year}...`, 'info');
+        await Promise.all(promises);
+    }
+}
 
 async function loadAllData() {
-    const month = document.getElementById('globalMonthSelect').value;
+    const select = document.getElementById('globalMonthSelect');
+    const month = select.value;
     currentGlobalMonth = month;
-    showStatus(`กำลังค้นหาข้อมูล ${month} ${activeDataYear}...`, 'info');
+    
+    showStatus(`กำลังค้นหาข้อมูลเดือน ${month} ปี ${DATA_YEAR}...`, 'info');
 
-    // โหลดไฟล์รูปแบบ: YYYY-Month-DIA.csv
-    const mainPathCSV = `data/${activeDataYear}-${month}-DIA.csv`;
-    const mainPathXLSX = `data/${activeDataYear}-${month}-DIA.xlsx`;
-
-    let mainRaw = await fetchFile(mainPathCSV) || await fetchFile(mainPathXLSX);
-    if (mainRaw) {
-        mainDataByMonth[month] = cleanMainData(mainRaw);
-        allData = mainDataByMonth[month];
-        filteredData = [...allData];
-        showStatus(`✅ โหลดข้อมูล ${month} ${activeDataYear} สำเร็จ`, 'success');
-    } else {
-        allData = [];
-        filteredData = [];
-        showStatus(`⚠️ ไม่พบไฟล์ ${mainPathCSV}`, 'error');
+    if (!mainDataByMonth[month] || mainDataByMonth[month].length === 0) {
+        let mainRaw = await fetchFile(`data/${DATA_YEAR}-${month}-DIA.csv`) || await fetchFile(`data/${DATA_YEAR}-${month}-DIA.xlsx`);
+        if (mainRaw) mainDataByMonth[month] = cleanMainData(mainRaw);
+    }
+    
+    if (!regionDataByMonth[month] || regionDataByMonth[month].length === 0) {
+        let regRaw = await fetchFile(`data/region/${DATA_YEAR}-${month}-DIA.csv`) || await fetchFile(`data/region/${DATA_YEAR}-${month}-DIA.xlsx`);
+        if (regRaw) regionDataByMonth[month] = cleanRegionData(regRaw);
     }
 
+    if (!allYearsData[DATA_YEAR]) allYearsData[DATA_YEAR] = {};
+    allYearsData[DATA_YEAR][month] = mainDataByMonth[month];
+
+    // รองรับการดึงข้อมูลเดือนก่อนหน้าในกรณีข้ามปี (ถ้าเลือก ม.ค. ให้ไปดึง ธ.ค. ของปีก่อน)
+    const currentMonthIdx = monthNames.indexOf(month);
+    let prevMonth, prevYear;
+    
+    if (currentMonthIdx > 0) {
+        prevMonth = monthNames[currentMonthIdx - 1];
+        prevYear = DATA_YEAR;
+    } else {
+        prevMonth = 'December';
+        prevYear = (parseInt(DATA_YEAR) - 1).toString();
+    }
+
+    if (!mainDataByMonth[prevMonth] || mainDataByMonth[prevMonth].length === 0) {
+         let prevMain = await fetchFile(`data/${prevYear}-${prevMonth}-DIA.csv`) || await fetchFile(`data/${prevYear}-${prevMonth}-DIA.xlsx`);
+         if (prevMain) mainDataByMonth[prevMonth] = cleanMainData(prevMain);
+    }
+
+    allData = mainDataByMonth[month] || [];
+    regionData = regionDataByMonth[month] || [];
+    filteredData = [...allData];
+
+    document.getElementById('filterCampaign').value = '';
+    document.getElementById('filterObjective').value = '';
+
+    if (allData.length > 0) {
+        showStatus(`✅ ดึงข้อมูลเดือน ${month} ${DATA_YEAR} สำเร็จ (${allData.length} รายการ)`, 'success');
+    } else {
+        showStatus(`⚠️ ไม่พบไฟล์ข้อมูลสำหรับเดือน ${month} ${DATA_YEAR} กรุณาตรวจสอบโฟลเดอร์ ./data/`, 'error');
+    }
+
+    updateDataStatusUI();
+    populateFilters();
+    renderAdLinkInputs();
+    renderAll();
+    
+    fetchAllAvailableMonths();
+}
+
+function updateDataStatusUI() {
+  const mainContainer = document.getElementById('mainDataStatus');
+  if (mainContainer) {
+    const mainMonths = Object.keys(mainDataByMonth).filter(m => mainDataByMonth[m] && mainDataByMonth[m].length > 0);
+    mainContainer.innerHTML = mainMonths.length > 0 
+      ? '<strong>มีข้อมูลในระบบ:</strong> ' + mainMonths.join(', ')
+      : 'ยังไม่มีข้อมูลในระบบ (กรุณานำไฟล์ไปวางในโฟลเดอร์)';
+  }
+}
+
+// -- เพิ่มฟังก์ชันเปลี่ยนปี (Data Year) --
+window.changeDataYear = function() {
+    DATA_YEAR = document.getElementById('dataYearSelect').value;
+    
+    // อัปเดตข้อมูล State ของการเปรียบเทียบ
+    compareState.base.year = parseInt(DATA_YEAR);
+    compareState.comp.year = parseInt(DATA_YEAR) - 1;
+    compareState.pickerYear = parseInt(DATA_YEAR);
+
+    if (compareState.active) {
+        updateMonthRangeBtnText();
+    }
+
+    // ล้างแคชที่แสดงผลอยู่ปัจจุบัน (เว้นแต่จะเคยโหลดมาแล้ว)
+    if (allYearsData[DATA_YEAR]) {
+        mainDataByMonth = Object.assign({}, allYearsData[DATA_YEAR]);
+    } else {
+        mainDataByMonth = {};
+    }
+    
+    regionDataByMonth = {}; 
+    allData = [];
+    filteredData = [];
+    regionData = [];
+
+    loadAllData();
+    showStatus('✅ เปลี่ยนปีข้อมูลเป็น ' + DATA_YEAR, 'success');
+};
+
+window.clearAllDataCache = function() {
+  mainDataByMonth = {};
+  regionDataByMonth = {};
+  allData = [];
+  filteredData = [];
+  regionData = [];
+  updateDataStatusUI();
+  renderAll();
+  showStatus('ล้างแคชเรียบร้อยแล้ว (ระบบจะโหลดไฟล์ใหม่ทั้งหมดเมื่อเลือกเดือน)', 'success');
+};
+
+// ─── AGGREGATION & MOM LOGIC ──────────────────────────────
+function getAggregatedMetrics(dataArray) {
+  return {
+      spend: dataArray.reduce((s,r)=>s+r.spend,0),
+      impr: dataArray.reduce((s,r)=>s+r.impressions,0),
+      reach: dataArray.reduce((s,r)=>s+r.reach,0),
+      eng: dataArray.reduce((s,r)=>s+r.engagements,0),
+      likes: dataArray.reduce((s,r)=>s+r.fbLikes,0),
+      clicks: dataArray.reduce((s,r)=>s+(r.clicks||0),0),
+      msg: dataArray.reduce((s,r)=>s+(r.messages||0),0),
+  };
+}
+
+function getDerivedMetrics(agg) {
+  return {
+      cpm: agg.impr > 0 ? agg.spend/agg.impr*1000 : 0,
+      cpe: agg.eng > 0 ? agg.spend/agg.eng : 0,
+      freq: agg.reach > 0 ? agg.impr/agg.reach : 0,
+      engRate: agg.impr > 0 ? agg.eng/agg.impr*100 : 0,
+      cpr: agg.reach > 0 ? (agg.spend/agg.reach)*1000 : 0,
+      cpmsg: agg.msg > 0 ? agg.spend/agg.msg : 0,
+      ctr: agg.impr > 0 ? (agg.clicks/agg.impr)*100 : 0,
+  };
+}
+
+// --- DATE PICKER LOGIC ---
+function toggleMonthPicker(type) {
+    const popover = document.getElementById('monthPickerPopover');
+    const container = document.getElementById('datePickerContainer' + (type === 'base' ? 'Base' : 'Comp'));
+    
+    // If clicking the same active button, just toggle visibility
+    if (compareState.activePicker === type && popover.classList.contains('show')) {
+        popover.classList.remove('show');
+        compareState.pickerStep = 0; // Cancel any in-progress selection
+        return;
+    }
+
+    // Setup for the new picker context
+    compareState.activePicker = type;
+    compareState.pickerYear = compareState[type].year;
+    compareState.pickerStep = 0;
+    
+    // Move popover dynamically to the correct container
+    container.appendChild(popover);
+    
+    renderMonthPickerGrid();
+    popover.classList.add('show');
+}
+
+function changePickerYear(delta) {
+    compareState.pickerYear += delta;
+    renderMonthPickerGrid();
+}
+
+function selectPickerMonth(idx) {
+    const type = compareState.activePicker;
+    if (!type) return;
+
+    if (compareState.pickerStep === 0) {
+        // Click 1: Select single month and start range mode
+        compareState.tempStart = idx;
+        compareState.tempEnd = idx; // Initialize temp end for hover effect
+        compareState.pickerStep = 1;
+        
+        // Immediately apply this as a 1-month selection
+        compareState[type].startMonth = idx;
+        compareState[type].endMonth = idx;
+        compareState[type].year = compareState.pickerYear;
+        updateMonthRangeBtnText();
+        
+        renderMonthPickerGrid();
+    } else {
+        // Click 2: Confirm the range
+        const s = Math.min(compareState.tempStart, idx);
+        const e = Math.max(compareState.tempStart, idx);
+        
+        compareState[type].startMonth = s;
+        compareState[type].endMonth = e;
+        compareState[type].year = compareState.pickerYear;
+        compareState.pickerStep = 0;
+        
+        updateMonthRangeBtnText();
+        document.getElementById('monthPickerPopover').classList.remove('show');
+    }
+}
+
+window.hoverPickerMonth = function(idx) {
+    if (compareState.pickerStep === 1 && compareState.tempEnd !== idx) {
+        compareState.tempEnd = idx;
+        renderMonthPickerGrid();
+    }
+};
+
+function renderMonthPickerGrid() {
+    document.getElementById('popoverYearStr').textContent = compareState.pickerYear;
+    
+    const grid = document.getElementById('popoverGrid');
+    const type = compareState.activePicker;
+    if (!type) return;
+    
+    // สร้างปุ่มเฉพาะครั้งแรกที่ยังไม่มี
+    if (grid.children.length === 0) {
+        let html = '';
+        for (let i = 0; i < 12; i++) {
+            html += `<button class="month-btn" onclick="selectPickerMonth(${i})" onmouseover="hoverPickerMonth(${i})">${shortMonthNames[i]}</button>`;
+        }
+        grid.innerHTML = html;
+    }
+    
+    const stateObj = compareState[type];
+    const buttons = grid.querySelectorAll('.month-btn');
+    
+    // อัปเดตเฉพาะ Class เพื่อป้องกันบั๊กคลิกไม่ติดตอนลากเมาส์
+    buttons.forEach((btn, i) => {
+        btn.className = 'month-btn'; // รีเซ็ต class
+        
+        if (compareState.pickerStep === 0) {
+            // Completed selection view
+            if (compareState.pickerYear === stateObj.year) {
+                if (i === stateObj.startMonth && i === stateObj.endMonth) btn.classList.add('selected-single');
+                else if (i === stateObj.startMonth) btn.classList.add('selected-start');
+                else if (i === stateObj.endMonth) btn.classList.add('selected-end');
+                else if (i > stateObj.startMonth && i < stateObj.endMonth) btn.classList.add('in-range');
+            }
+        } else {
+            // In-progress selection view (Hover active)
+            const s = Math.min(compareState.tempStart, compareState.tempEnd);
+            const e = Math.max(compareState.tempStart, compareState.tempEnd);
+            
+            if (i === s && i === e) btn.classList.add('selected-single');
+            else if (i === s) btn.classList.add('selected-start');
+            else if (i === e) btn.classList.add('selected-end');
+            else if (i > s && i < e) btn.classList.add('in-range');
+        }
+    });
+}
+
+function updateMonthRangeBtnText() {
+    // Base Btn Update
+    let sName = shortMonthNames[compareState.base.startMonth];
+    let eName = shortMonthNames[compareState.base.endMonth];
+    let text = sName === eName 
+        ? `${sName} ${compareState.base.year}` 
+        : `${sName} - ${eName} ${compareState.base.year}`;
+    const baseBtn = document.getElementById('monthRangeBtnBase');
+    if (baseBtn) baseBtn.textContent = text;
+
+    // Comp Btn Update
+    sName = shortMonthNames[compareState.comp.startMonth];
+    eName = shortMonthNames[compareState.comp.endMonth];
+    text = sName === eName 
+        ? `${sName} ${compareState.comp.year}` 
+        : `${sName} - ${eName} ${compareState.comp.year}`;
+    const compBtn = document.getElementById('monthRangeBtnComp');
+    if (compBtn) compBtn.textContent = text;
+}
+
+// Close popover when clicking outside
+document.addEventListener('click', (e) => {
+    const popover = document.getElementById('monthPickerPopover');
+    if (!popover || !popover.classList.contains('show')) return;
+    
+    const containerBase = document.getElementById('datePickerContainerBase');
+    const containerComp = document.getElementById('datePickerContainerComp');
+    
+    if ((containerBase && containerBase.contains(e.target)) || 
+        (containerComp && containerComp.contains(e.target))) {
+        return; // Ignored if clicked inside one of the date pickers
+    }
+    
+    popover.classList.remove('show');
+    compareState.pickerStep = 0; // reset step if aborted
+});
+
+function toggleCompareMode() {
+    compareState.active = document.getElementById('enableCompareCb').checked;
+    document.getElementById('compareSelectors').style.display = compareState.active ? 'flex' : 'none';
+    
+    if (compareState.active) {
+        updateMonthRangeBtnText();
+    }
+    
     renderTable();
+}
+
+window.applyComparison = async function() {
+    // 1. Fetch missing data for Base Year Range
+    await ensureDataForYearRange(compareState.base.year, compareState.base.startMonth, compareState.base.endMonth);
+    // 2. Fetch missing data for Compare Year Range
+    await ensureDataForYearRange(compareState.comp.year, compareState.comp.startMonth, compareState.comp.endMonth);
+    
+    showStatus('✅ โหลดข้อมูลเปรียบเทียบสำเร็จ', 'success');
+    renderTable(); // Re-render table in compare mode
+};
+
+function generateDiffHTML(baseVal, compVal, isCost, isFloat) {
+    if (compVal === 0 && baseVal === 0) return `<td class="num" style="text-align: right; color: var(--muted);">-</td>`;
+    
+    const diff = baseVal - compVal;
+    const pct = compVal > 0 ? (diff / compVal) * 100 : (baseVal > 0 ? 100 : 0);
+    
+    let isGood = isCost ? (diff < 0) : (diff > 0);
+    let badgeClass = 'diff-neutral';
+    let arrow = '';
+    
+    if (diff !== 0) {
+        badgeClass = isGood ? 'diff-good' : 'diff-bad';
+        arrow = diff > 0 ? '▲' : '▼';
+    }
+    
+    const format = (v) => isFloat ? v.toLocaleString(undefined, {minimumFractionDigits: 2, maximumFractionDigits: 2}) : Math.round(v).toLocaleString();
+    const sign = diff > 0 ? '+' : '';
+    
+    return `<td class="num" style="text-align: right;">
+        <div style="display:flex; justify-content:flex-end; align-items:center;">
+            <span>${sign}${format(diff)}</span>
+            <span class="diff-badge ${badgeClass}" style="width: 65px;">${arrow} ${Math.abs(pct).toFixed(1)}%</span>
+        </div>
+    </td>`;
+}
+
+// ─── END COMPARISON STATE ────────────────────────────────
+
+function generateMoMBadge(currentVal, prevVal, isCostMetric = false) {
+    if (!prevVal || prevVal === 0) return '';
+    const diff = currentVal - prevVal;
+    if (diff === 0) return `<span class="mom-badge" style="color:var(--muted); background:var(--surface);">0.0% MoM</span>`;
+
+    const pct = (diff / prevVal) * 100;
+    const absPct = Math.abs(pct).toFixed(1);
+    
+    let isGood = isCostMetric ? (diff < 0) : (diff > 0);
+    let arrow = diff > 0 ? '▲' : '▼';
+    
+    let colorClass = isGood ? 'color: var(--green); background: rgba(16,185,129,0.1);' : 'color: var(--red); background: rgba(239,68,68,0.1);';
+    
+    return `<span class="mom-badge" style="${colorClass}">${arrow} ${absPct}% MoM</span>`;
+}
+
+function renderAll() { renderKPIs(); renderCharts(); renderTable(); }
+
+function renderKPIs() {
+  const currentMonthIdx = monthNames.indexOf(currentGlobalMonth);
+  // อัปเดตการดึงข้อมูลเทียบเดือนก่อนหน้า ให้รองรับการข้ามปีไปดึงเดือนธันวาคม
+  const prevMonth = currentMonthIdx > 0 ? monthNames[currentMonthIdx - 1] : 'December';
+  const prevData = prevMonth ? (mainDataByMonth[prevMonth] || []) : [];
+
+  const activeCampaign = document.getElementById('filterCampaign').value;
+  const activeObjective = document.getElementById('filterObjective').value;
+  const filteredPrevData = prevData.filter(r => {
+    if (activeCampaign && r.campaign !== activeCampaign) return false;
+    if (activeObjective && r.objective !== activeObjective) return false;
+    return true;
+  });
+
+  const currAgg = getAggregatedMetrics(filteredData);
+  const currDer = getDerivedMetrics(currAgg);
+  
+  const prevAgg = getAggregatedMetrics(filteredPrevData);
+  const prevDer = getDerivedMetrics(prevAgg);
+
+  function card(icon, label, valueStr, rawValue, prevRawValue, isCost, sub, color, benchmark='') {
+    const badge = generateMoMBadge(rawValue, prevRawValue, isCost);
+    const bmHtml = benchmark ? `<div class="kpi-benchmark"><span class="bm-label">Benchmark</span><span class="bm-val">${benchmark}</span></div>` : '';
+    return `<div class="kpi-card">
+      <div class="kpi-label">${label}</div>
+      <div class="kpi-icon" style="color:${color};background:color-mix(in srgb,${color} 12%,transparent);">${icon}</div>
+      <div class="kpi-value">${valueStr} ${badge}</div>
+      <div class="kpi-sub">${sub}</div>${bmHtml}</div>`;
+  }
+
+  const iconSpend = '<svg xmlns="http://www.w3.org/2000/svg" width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75"><path d="M20 12V8H6a2 2 0 0 1-2-2c0-1.1.9-2 2-2h12v4"/><path d="M4 6v12c0 1.1.9 2 2 2h14v-4"/><path d="M18 12a2 2 0 0 0-2 2c0 1.1.9 2 2 2h4v-4h-4z"/></svg>';
+  const iconImpr = '<svg xmlns="http://www.w3.org/2000/svg" width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75"><path d="M1 12s4-8 11-8 11 8 11 8-4 8-11 8-11-8-11-8z"/><circle cx="12" cy="12" r="3"/></svg>';
+  const iconReach = '<svg xmlns="http://www.w3.org/2000/svg" width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75"><path d="M17 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2"/><circle cx="9" cy="7" r="4"/><path d="M23 21v-2a4 4 0 0 0-3-3.87"/><path d="M16 3.13a4 4 0 0 1 0 7.75"/></svg>';
+  const iconEng = '<svg xmlns="http://www.w3.org/2000/svg" width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75"><polyline points="22 12 18 12 15 21 9 3 6 12 2 12"/></svg>';
+  const iconCPM = '<svg xmlns="http://www.w3.org/2000/svg" width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75"><circle cx="8" cy="8" r="6"/><path d="M18.09 10.37A6 6 0 1 1 10.34 18"/><path d="M7 6h1v4"/><line x1="16.71" y1="13.88" x2="17.71" y2="13.88"/></svg>';
+  const iconFreq = '<svg xmlns="http://www.w3.org/2000/svg" width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75"><line x1="3" y1="3" x2="3" y2="21"/><line x1="3" y1="21" x2="21" y2="21"/><polyline points="7 16 11 12 15 14 20 9"/></svg>';
+  const iconCPE = '<svg xmlns="http://www.w3.org/2000/svg" width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75"><path d="M3.85 8.62a4 4 0 0 1 4.78-4.77 4 4 0 0 1 6.74 0 4 4 0 0 1 4.78 4.78 4 4 0 0 1 0 6.74 4 4 0 0 1-4.77 4.78 4 4 0 0 1-6.75 0 4 4 0 0 1-4.78-4.77 4 4 0 0 1 0-6.76Z"/><path d="M14.5 9a2 2 0 0 0-2-1h-1a2 2 0 0 0 0 4h1a2 2 0 0 1 0 4h-1a2 2 0 0 1-2-1"/><line x1="12" y1="7" x2="12" y2="9"/><line x1="12" y1="15" x2="12" y2="17"/></svg>';
+  const iconClick = '<svg xmlns="http://www.w3.org/2000/svg" width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75"><path d="m3 3 7.07 16.97 2.51-7.39 7.39-2.51L3 3z"/><path d="m13 13 6 6"/></svg>';
+  const iconMessage = '<svg xmlns="http://www.w3.org/2000/svg" width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75"><path d="M21 11.5a8.38 8.38 0 0 1-.9 3.8 8.5 8.5 0 0 1-7.6 4.7 8.38 8.38 0 0 1-3.8-.9L3 21l1.9-5.7a8.38 8.38 0 0 1-.9-3.8 8.5 8.5 0 0 1 4.7-7.6 8.38 8.38 0 0 1 3.8-.9h.5a8.48 8.48 0 0 1 8 8v.5z"/></svg>';
+
+  const subtitleSpend = `THB (${currentGlobalMonth})`;
+
+  const g1 = [
+    card(iconSpend, 'Total Spend', '฿'+currAgg.spend.toLocaleString(undefined, {minimumFractionDigits: 2, maximumFractionDigits: 2}), currAgg.spend, prevAgg.spend, true, subtitleSpend, 'var(--primary)'),
+    card(iconReach, 'Reach', currAgg.reach.toLocaleString(), currAgg.reach, prevAgg.reach, false, 'Unique people reached', 'var(--green)'),
+    card(iconImpr, 'Impressions', currAgg.impr.toLocaleString(), currAgg.impr, prevAgg.impr, false, 'Total ad impressions', 'var(--blue)'),
+    card(iconClick, 'Clicks', currAgg.clicks.toLocaleString(), currAgg.clicks, prevAgg.clicks, false, 'Link Clicks', '#8B5CF6'),
+    card(iconEng, 'Post Engagements', currAgg.eng.toLocaleString(), currAgg.eng, prevAgg.eng, false, 'Total interactions', 'var(--accent)'),
+    card(iconMessage, 'Messages', currAgg.msg.toLocaleString(), currAgg.msg, prevAgg.msg, false, 'Messaging connections', '#06B6D4')
+  ];
+  
+  const g3 = [
+    card(iconReach, 'Cost per 1,000 Reach (CPR)', '฿'+currDer.cpr.toFixed(2), currDer.cpr, prevDer.cpr, true, 'Cost per 1,000 reach', 'var(--green)', '฿30–฿100'),
+    card(iconCPM, 'CPM', '฿'+currDer.cpm.toFixed(2), currDer.cpm, prevDer.cpm, true, 'Cost per 1,000 impressions', 'var(--primary)', '฿25–฿80'),
+    card(iconCPE, 'CPE', '฿'+currDer.cpe.toFixed(2), currDer.cpe, prevDer.cpe, true, 'Cost per engagement', '#8B5CF6', '฿2–฿10'),
+    card(iconMessage, 'Cost per Message', '฿'+currDer.cpmsg.toFixed(2), currDer.cpmsg, prevDer.cpmsg, true, 'Cost per messaging connection', '#06B6D4', '฿30–฿150'),
+    card(iconClick, 'CTR', currDer.ctr.toFixed(2)+'%', currDer.ctr, prevDer.ctr, false, 'Click-through rate', '#F59E0B', '1.00%–3.00%'),
+    card(iconEng, 'Engagement Rate', currDer.engRate.toFixed(2)+'%', currDer.engRate, prevDer.engRate, false, 'Engagements / Impressions', 'var(--accent)', '0.50%–1.50%'),
+    card(iconFreq, 'Frequency', currDer.freq.toFixed(2), currDer.freq, prevDer.freq, true, 'Impressions / Reach', '#EAB308', '1.0–3.0')
+  ];
+
+  document.getElementById('kpiSection').innerHTML = `
+    <div class="kpi-group-label">Overview</div>
+    <div class="kpi-grid row6">${g1.join('')}</div>
+    <div class="kpi-group-label">Cost Efficiency</div>
+    <div class="kpi-grid row7" style="margin-bottom:8px;">${g3.join('')}</div>
+    <div style="text-align:right;font-size:11px;color:var(--muted);margin-bottom:8px;">
+      Benchmark ref: Meta Business Suite / Wordstream Facebook Ads 2025 (Thailand)
+    </div>`;
+}
+
+window.renderTopAdsUI = function() {
+  const adStats = {};
+  filteredData.forEach(r => {
+    if (r.ad) {
+      if (!adStats[r.ad]) adStats[r.ad] = { spend: 0, impr: 0, clicks: 0, eng: 0, msg: 0, reach: 0 };
+      adStats[r.ad].spend += r.spend;
+      adStats[r.ad].impr += r.impressions;
+      adStats[r.ad].clicks += (r.clicks || 0);
+      adStats[r.ad].eng += (r.engagements || 0);
+      adStats[r.ad].msg += (r.messages || 0);
+      adStats[r.ad].reach += (r.reach || 0);
+    }
+  });
+
+  const imgPlaceholder = `<svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="3" width="18" height="18" rx="2" ry="2"/><circle cx="8.5" cy="8.5" r="1.5"/><polyline points="21 15 16 10 5 21"/></svg>`;
+
+  const buildTopAdHtml = (containerId, subId, metricKey) => {
+    let label, iconColor, subText;
+    if (metricKey === 'eng') { 
+      label = 'Eng'; iconColor = '#8B5CF6'; subText = '3 อันดับโฆษณาที่มีส่วนร่วม (Engagement) สูงสุด'; 
+    } else if (metricKey === 'msg') { 
+      label = 'Msg'; iconColor = '#06B6D4'; subText = '3 อันดับโฆษณาที่มีการทักข้อความ (Message) สูงสุด'; 
+    } else if (metricKey === 'reach') { 
+      label = 'Reach'; iconColor = '#10B981'; subText = '3 อันดับโฆษณาที่มีการเข้าถึง (Reach) สูงสุด'; 
+    }
+
+    const subEl = document.getElementById(subId);
+    if (subEl) subEl.textContent = subText;
+
+    const sorted = Object.entries(adStats).sort((a,b)=>b[1][metricKey] - a[1][metricKey]).slice(0, 3);
+    const container = document.getElementById(containerId);
+    if (!container) return;
+
+    if (sorted.length > 0 && sorted[0][1][metricKey] > 0) {
+      let html = '<div class="top-ad-list">';
+      sorted.forEach(([ad, stats]) => {
+        let costPer = '0.00';
+        let cpLabel = '';
+
+        if (metricKey === 'eng') {
+          cpLabel = 'CPE';
+        } else if (metricKey === 'msg') {
+          cpLabel = 'CPMsg';
+        } else if (metricKey === 'reach') {
+          cpLabel = 'CPR';
+        }
+
+        if (stats[metricKey]) {
+          if (metricKey === 'reach') {
+            costPer = ((stats.spend / stats[metricKey]) * 1000).toFixed(2);
+          } else {
+            costPer = (stats.spend / stats[metricKey]).toFixed(2);
+          }
+        }
+
+        const imgUrl = adImages[ad] || '';
+        const imgEl = imgUrl ? `<img src="${imgUrl}" class="top-ad-img" alt="Ad">` : `<div class="top-ad-img">${imgPlaceholder}</div>`;
+        
+        html += `
+          <div class="top-ad-item">
+            ${imgEl}
+            <div class="top-ad-body">
+              <div class="top-ad-name" title="${ad}">${ad}</div>
+            </div>
+            <div class="top-ad-metrics">
+              <div class="top-ad-metric"><span class="top-ad-metric-val" style="color: ${iconColor}">${stats[metricKey].toLocaleString()}</span><span class="top-ad-metric-lbl">${label}</span></div>
+              <div class="top-ad-metric"><span class="top-ad-metric-val">฿${costPer}</span><span class="top-ad-metric-lbl">${cpLabel}</span></div>
+            </div>
+          </div>`;
+      });
+      container.innerHTML = html + '</div>';
+    } else {
+      container.innerHTML = `<div class="empty-state">ไม่มีข้อมูล ${label}</div>`;
+    }
+  };
+
+  const filter1 = document.getElementById('topAdFilter1');
+  const filter2 = document.getElementById('topAdFilter2');
+  
+  if (filter1) buildTopAdHtml('topAdContainer1', 'topAdSub1', filter1.value);
+  if (filter2) buildTopAdHtml('topAdContainer2', 'topAdSub2', filter2.value);
+};
+
+const COLORS = ['#2563EB','#10B981','#F59E0B','#8B5CF6','#F43F5E','#06B6D4','#64748B','#334155'];
+
+function renderCharts() {
+  destroyCharts();
+  const isDark = document.body.classList.contains('dark-mode');
+  const textColor = isDark ? '#F8FAFC' : '#111827';
+  const d = filteredData;
+
+  function axisStyle() {
+    return { grid:{color:isDark?'rgba(255,255,255,0.05)':'rgba(0,0,0,0.04)'}, ticks:{color:isDark?'#94A3B8':'#6B7280',font:{family:'Inter,Noto Sans Thai',size:11}}, border:{color:'transparent'} };
+  }
+  function chartOpts(yLabel, stacked) {
+    return { responsive:true, maintainAspectRatio:false, plugins:{legend:{labels:{color:textColor,font:{family:'Inter,Noto Sans Thai',size:12}}}}, scales:{x:{...axisStyle(),stacked}, y:{...axisStyle(),stacked,title:{display:true,text:yLabel,color:isDark?'#94A3B8':'#6B7280',font:{size:11}}}} };
+  }
+
+  const isPageFollowerOnly = d.length > 0 && d.every(r => r.campaign.toLowerCase().includes('follower'));
+  const metricKey = isPageFollowerOnly ? 'fbLikes' : 'reach';
+  const metricLabel = isPageFollowerOnly ? 'Follower' : 'Reach';
+  
+  const demoChartSub = document.getElementById('demoChart').closest('.chart-card').querySelector('.chart-sub');
+  if (demoChartSub) {
+    demoChartSub.textContent = isPageFollowerOnly ? 'Follower สะสมแยกตามกลุ่มอายุและเพศ' : 'การเข้าถึง (Reach) สะสมแยกตามกลุ่มอายุและเพศ';
+  }
+
+  const agesDemo = ['18-24','25-34','35-44','45-54','55-64','65+'];
+  const gendersDemo = ['male', 'female', 'unknown'];
+  const genderColorsDemo = ['#3B82F6', '#F43F5E', '#94A3B8'];
+  
+  // Render Top Ads (New Dynamic Function)
+  renderTopAdsUI();
+
+  charts.demo = new Chart(document.getElementById('demoChart'), {
+    type:'bar',
+    data:{
+      labels: agesDemo,
+      datasets: gendersDemo.map((g, i) => ({
+        label: g.charAt(0).toUpperCase() + g.slice(1),
+        data: agesDemo.map(a => d.filter(r=>r.age===a && r.gender===g).reduce((s,r)=>s+r[metricKey], 0)),
+        backgroundColor: genderColorsDemo[i],
+        borderRadius: 4, borderSkipped: false
+      }))
+    },
+    options: chartOpts(metricLabel, false)
+  });
+
+  // Demo Summary
+  let totalDemo = 0;
+  const valByAge = {};
+  d.forEach(r => { totalDemo += r[metricKey]; });
+
+  if (totalDemo > 0) {
+    const sortedPairs = [];
+    agesDemo.forEach(age => {
+      gendersDemo.forEach(gen => {
+        const val = d.filter(r => r.age === age && r.gender === gen).reduce((s, r) => s + r[metricKey], 0);
+        if (val > 0) sortedPairs.push({ age, gender: gen, val });
+      });
+    });
+    
+    sortedPairs.sort((a, b) => b.val - a.val);
+    const top3 = sortedPairs.slice(0, 3);
+    
+    let summaryHtml = `<svg style="flex-shrink:0;margin-top:2px;" xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="var(--primary)" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"/><path d="M12 16v-4"/><path d="M12 8h.01"/></svg> <div style="display:flex; flex-direction:column; gap:4px;">`;
+    summaryHtml += `<span>วิเคราะห์อันดับกลุ่มเป้าหมายเชิงลึก (${metricLabel}) <strong>3 อันดับสูงสุด:</strong></span>`;
+    
+    top3.forEach((item, idx) => {
+      const gTh = item.gender === 'male' ? 'ชาย' : item.gender === 'female' ? 'หญิง' : 'ไม่ระบุ';
+      summaryHtml += `<span><strong>อันดับที่ ${idx + 1}:</strong> เพศ${gTh} ช่วงอายุ ${item.age} ปี (สัดส่วน ${((item.val / totalDemo) * 100).toFixed(1)}% ของยอดรวม)</span>`;
+    });
+    document.getElementById('demoSummary').innerHTML = summaryHtml + '</div>';
+    document.getElementById('demoSummary').style.display = 'flex';
+  } else {
+    document.getElementById('demoSummary').style.display = 'none';
+  }
+
+  // Region Chart
+  if (regionData && regionData.length > 0) {
+    const regionGroups = {};
+    regionData.forEach(r => {
+      const reg = r.region || 'Unknown';
+      regionGroups[reg] = (regionGroups[reg] || 0) + (r.reach || 0);
+    });
+    
+    const sortedRegions = Object.entries(regionGroups).sort((a,b)=>b[1]-a[1]);
+    charts.region = new Chart(document.getElementById('regionChart'), {
+      type:'doughnut',
+      data:{
+        labels: sortedRegions.map(item => item[0]),
+        datasets:[{data:sortedRegions.map(item => item[1]),backgroundColor:COLORS,borderWidth:2,borderColor:isDark?'#1E293B':'#FFF',hoverOffset:8}]
+      },
+      options:{
+        responsive:true, maintainAspectRatio:false,
+        plugins:{ legend:{ position: 'right', labels:{ color:textColor, font:{family:'Inter',size:11}, boxWidth: 12, useBorderRadius: true, borderRadius: 2 } } },
+        cutout:'65%'
+      }
+    });
+  } else {
+    charts.region = new Chart(document.getElementById('regionChart'), {
+      type:'doughnut',
+      data:{ labels: ['รอข้อมูลภูมิภาค (Auto fetch)'], datasets:[{data:[1],backgroundColor:isDark?['#334155']:['#E5E7EB'],borderWidth:0}] },
+      options:{ responsive:true, maintainAspectRatio:false, plugins:{legend:{position: 'right'}}, cutout:'65%', events:[] }
+    });
+  }
+
+  // Monthly Performance Charts
+  const activeMonthLabels = monthNames.filter(m => mainDataByMonth[m] && mainDataByMonth[m].length > 0);
+  const displayLabels = activeMonthLabels.length > 0 ? activeMonthLabels : ['ไม่มีข้อมูล'];
+
+  const getMonthlySum = (m, key) => (m === 'ไม่มีข้อมูล' || !mainDataByMonth[m]) ? 0 : mainDataByMonth[m].reduce((sum, r) => sum + (r[key] || 0), 0);
+
+  const mSpend = displayLabels.map(m => getMonthlySum(m, 'spend'));
+  const mEng = displayLabels.map(m => getMonthlySum(m, 'engagements'));
+  const mMsg = displayLabels.map(m => getMonthlySum(m, 'messages'));
+  const mImpr = displayLabels.map(m => getMonthlySum(m, 'impressions'));
+  const mReach = displayLabels.map(m => getMonthlySum(m, 'reach'));
+
+  const mCpe = displayLabels.map((m, i) => mEng[i] > 0 ? mSpend[i] / mEng[i] : 0);
+  const mCpmsg = displayLabels.map((m, i) => mMsg[i] > 0 ? mSpend[i] / mMsg[i] : 0);
+  const mFreq = displayLabels.map((m, i) => mReach[i] > 0 ? mImpr[i] / mReach[i] : 0);
+
+  const sharedOptions = (yL, y1L) => ({
+    responsive: true, maintainAspectRatio: false, interaction: { mode: 'index', intersect: false },
+    plugins: { legend: { labels: { color: textColor, font: { family: 'Inter', size: 11 } } } },
+    scales: {
+      x: axisStyle(),
+      y: { ...axisStyle(), position: 'left', title: { display: true, text: yL, color: isDark?'#94A3B8':'#6B7280', font: {size: 11} } },
+      y1: { ...axisStyle(), position: 'right', title: { display: true, text: y1L, color: isDark?'#94A3B8':'#6B7280', font: {size: 11} }, grid: { drawOnChartArea: false } }
+    }
+  });
+
+  charts.m1 = new Chart(document.getElementById('chartMonth1'), {
+    type: 'line', data: { labels: displayLabels, datasets: [
+        { type: 'bar', label: 'Spending (฿)', data: mSpend, backgroundColor: '#2563EB', yAxisID: 'y', borderRadius: 4, order: 2 },
+        { type: 'line', label: 'Engagement', data: mEng, borderColor: '#F59E0B', backgroundColor: '#F59E0B', yAxisID: 'y1', tension: 0.3, borderWidth: 2, order: 1 }
+      ]}, options: sharedOptions('Spending (฿)', 'Engagement')
+  });
+
+  charts.m2 = new Chart(document.getElementById('chartMonth2'), {
+    type: 'line', data: { labels: displayLabels, datasets: [
+        { type: 'bar', label: 'Spending (฿)', data: mSpend, backgroundColor: '#2563EB', yAxisID: 'y', borderRadius: 4, order: 2 },
+        { type: 'line', label: 'Message', data: mMsg, borderColor: '#06B6D4', backgroundColor: '#06B6D4', yAxisID: 'y1', tension: 0.3, borderWidth: 2, order: 1 }
+      ]}, options: sharedOptions('Spending (฿)', 'Message')
+  });
+
+  charts.m3 = new Chart(document.getElementById('chartMonth3'), {
+    type: 'line', data: { labels: displayLabels, datasets: [
+        { type: 'bar', label: 'Engagement', data: mEng, backgroundColor: '#F59E0B', yAxisID: 'y', borderRadius: 4, order: 2 },
+        { type: 'line', label: 'CPE (฿)', data: mCpe, borderColor: '#8B5CF6', backgroundColor: '#8B5CF6', yAxisID: 'y1', tension: 0.3, borderWidth: 2, order: 1 }
+      ]}, options: sharedOptions('Engagement', 'CPE (฿)')
+  });
+
+  charts.m4 = new Chart(document.getElementById('chartMonth4'), {
+    type: 'line', data: { labels: displayLabels, datasets: [
+        { type: 'bar', label: 'Message', data: mMsg, backgroundColor: '#06B6D4', yAxisID: 'y', borderRadius: 4, order: 2 },
+        { type: 'line', label: 'Cost Per Message (฿)', data: mCpmsg, borderColor: '#F43F5E', backgroundColor: '#F43F5E', yAxisID: 'y1', tension: 0.3, borderWidth: 2, order: 1 }
+      ]}, options: sharedOptions('Message', 'Cost Per Message (฿)')
+  });
+
+  charts.m5 = new Chart(document.getElementById('chartMonth5'), {
+    type: 'line', data: { labels: displayLabels, datasets: [
+        { type: 'bar', label: 'Spending (฿)', data: mSpend, backgroundColor: '#2563EB', yAxisID: 'y', borderRadius: 4, order: 2 },
+        { type: 'line', label: 'Impression', data: mImpr, borderColor: '#10B981', backgroundColor: '#10B981', yAxisID: 'y1', tension: 0.3, borderWidth: 2, order: 1 }
+      ]}, options: sharedOptions('Spending (฿)', 'Impression')
+  });
+
+  charts.m6 = new Chart(document.getElementById('chartMonth6'), {
+    type: 'line', data: { labels: displayLabels, datasets: [
+        { type: 'bar', label: 'Impression', data: mImpr, backgroundColor: '#10B981', yAxisID: 'y', borderRadius: 4, order: 2 },
+        { type: 'line', label: 'Frequency', data: mFreq, borderColor: '#F59E0B', backgroundColor: '#F59E0B', yAxisID: 'y1', tension: 0.3, borderWidth: 2, order: 1 }
+      ]}, options: sharedOptions('Impression', 'Frequency')
+  });
 }
 
 window.switchTableTab = function(tab) {
   currentTableTab = tab;
+  currentSortCol = 'spend';
+  currentSortAsc = false;
+  
   document.querySelectorAll('.tabs-container .tab-btn').forEach(btn => btn.classList.remove('active'));
   document.getElementById(`tab-${tab}`).classList.add('active');
   
-  if (tab === 'yearly') {
-      document.getElementById('comparisonControls').classList.add('show');
-      renderComparisonTable();
-  } else {
-      document.getElementById('comparisonControls').classList.remove('show');
-      renderTable();
+  const yearlyControls = document.getElementById('yearlyCompareControls');
+  if (yearlyControls) {
+      yearlyControls.style.display = (tab === 'yearly') ? 'flex' : 'none';
   }
+  
+  renderTable();
 };
 
-// 🟢 ดึงข้อมูลช่วงเดือนสำหรับการเปรียบเทียบ
-async function fetchRangeData(year, startMonthIdx, endMonthIdx) {
-    let aggData = { spend:0, reach:0, impressions:0, engagements:0, messages:0 };
-    for (let i = startMonthIdx; i <= endMonthIdx; i++) {
-        let m = monthNames[i];
-        let pathCSV = `data/${year}-${m}-DIA.csv`;
-        let pathXLSX = `data/${year}-${m}-DIA.xlsx`;
-        let raw = await fetchFile(pathCSV) || await fetchFile(pathXLSX);
-        if (raw) {
-            let cleaned = cleanMainData(raw);
-            cleaned.forEach(r => {
-                aggData.spend += r.spend;
-                aggData.reach += r.reach;
-                aggData.impressions += r.impressions;
-                aggData.engagements += r.engagements;
-                aggData.messages += r.messages;
-            });
-        }
-    }
-    return aggData;
-}
-
-function calculateDerived(agg) {
-    return {
-        freq: agg.reach > 0 ? agg.impressions / agg.reach : 0,
-        cpr: agg.reach > 0 ? (agg.spend / agg.reach) * 1000 : 0,
-        cpm: agg.impressions > 0 ? (agg.spend / agg.impressions) * 1000 : 0,
-        cpe: agg.engagements > 0 ? agg.spend / agg.engagements : 0,
-        cpmsg: agg.messages > 0 ? agg.spend / agg.messages : 0,
-    };
-}
-
-function getDiffHTML(oldVal, newVal, isCost) {
-    if (!oldVal || oldVal === 0) return '-';
-    const diff = newVal - oldVal;
-    const pct = (diff / oldVal) * 100;
-    const absPct = Math.abs(pct).toFixed(1) + '%';
-    let isGood = isCost ? (diff < 0) : (diff > 0);
-    let color = isGood ? 'var(--green)' : 'var(--red)';
-    let arrow = diff > 0 ? '▲' : '▼';
-    if (diff === 0) return `<span style="color:var(--muted)">0.0%</span>`;
-    return `<span style="color:${color}; font-weight:600;">${arrow} ${absPct}</span>`;
-}
-
-// 🟢 Render ตารางเปรียบเทียบ OLD vs NEW
-window.renderComparisonTable = async function() {
-    if (currentTableTab !== 'yearly') return;
-    
-    showStatus('กำลังประมวลผลข้อมูลเปรียบเทียบ...', 'info');
-
-    const oY = document.getElementById('oldYear').value;
-    const oM1 = monthNames.indexOf(document.getElementById('oldMonthStart').value);
-    const oM2 = monthNames.indexOf(document.getElementById('oldMonthEnd').value);
-    
-    const nY = document.getElementById('newYear').value;
-    const nM1 = monthNames.indexOf(document.getElementById('newMonthStart').value);
-    const nM2 = monthNames.indexOf(document.getElementById('newMonthEnd').value);
-
-    // Fetch and aggregate
-    const oldAgg = await fetchRangeData(oY, Math.min(oM1, oM2), Math.max(oM1, oM2));
-    const newAgg = await fetchRangeData(nY, Math.min(nM1, nM2), Math.max(nM1, nM2));
-    
-    const oldDer = calculateDerived(oldAgg);
-    const newDer = calculateDerived(newAgg);
-
-    const rows = [
-        { label: 'Reach', o: oldAgg.reach, n: newAgg.reach, fmt: v=>v.toLocaleString(), cost: false },
-        { label: 'Impressions', o: oldAgg.impressions, n: newAgg.impressions, fmt: v=>v.toLocaleString(), cost: false },
-        { label: 'Post Engagement', o: oldAgg.engagements, n: newAgg.engagements, fmt: v=>v.toLocaleString(), cost: false },
-        { label: 'Message', o: oldAgg.messages, n: newAgg.messages, fmt: v=>v.toLocaleString(), cost: false },
-        { label: 'Frequency', o: oldDer.freq, n: newDer.freq, fmt: v=>v.toFixed(2), cost: true },
-        { label: 'Cost per 1,000 Reach (CPR)', o: oldDer.cpr, n: newDer.cpr, fmt: v=>'฿'+v.toFixed(2), cost: true },
-        { label: 'Cost per 1,000 impressions (CPM)', o: oldDer.cpm, n: newDer.cpm, fmt: v=>'฿'+v.toFixed(2), cost: true },
-        { label: 'Cost per engagement (CPE)', o: oldDer.cpe, n: newDer.cpe, fmt: v=>'฿'+v.toFixed(2), cost: true },
-        { label: 'Cost per Message (CPMsg)', o: oldDer.cpmsg, n: newDer.cpmsg, fmt: v=>'฿'+v.toFixed(2), cost: true },
-    ];
-
-    document.getElementById('tableCount').textContent = `Comparison Mode`;
-    document.getElementById('tableHead').innerHTML = `
-      <tr>
-        <th style="width: 30%;">Metric</th>
-        <th>OLD<br><span style="font-size:11px; font-weight:normal; color:var(--muted)">${oY} (${monthNames[Math.min(oM1, oM2)]} - ${monthNames[Math.max(oM1, oM2)]})</span></th>
-        <th>NEW<br><span style="font-size:11px; font-weight:normal; color:var(--primary)">${nY} (${monthNames[Math.min(nM1, nM2)]} - ${monthNames[Math.max(nM1, nM2)]})</span></th>
-        <th>% Change</th>
-      </tr>
-    `;
-
-    document.getElementById('tableBody').innerHTML = rows.map(r => `
-      <tr>
-        <td style="font-weight: 600; color: var(--text);">${r.label}</td>
-        <td style="font-family: 'Inter';">${r.o > 0 ? r.fmt(r.o) : '-'}</td>
-        <td style="font-family: 'Inter'; font-weight: 500;">${r.n > 0 ? r.fmt(r.n) : '-'}</td>
-        <td style="font-family: 'Inter';">${getDiffHTML(r.o, r.n, r.cost)}</td>
-      </tr>
-    `).join('');
-    
-    showStatus('ประมวลผลสำเร็จ', 'success');
+window.handleSort = function(col) {
+  if (currentTableTab === 'yearly') return; // Disable sort on yearly tab
+  
+  if (currentSortCol === col) {
+    currentSortAsc = !currentSortAsc;
+  } else {
+    currentSortCol = col;
+    currentSortAsc = (col === 'ad' || col === 'campaign') ? true : false;
+  }
+  renderTable();
 };
 
 function renderTable() {
-    if (currentTableTab === 'yearly') return; // ให้ renderComparisonTable จัดการ
+  
+  // -- YEARLY TAB LOGIC --
+  if (currentTableTab === 'yearly') {
+    document.getElementById('tableCount').style.display = 'none';
+
+    const formatInt = (v) => v > 0 ? v.toLocaleString(undefined, {minimumFractionDigits: 0, maximumFractionDigits: 0}) : '-';
+    const formatFloat = (v) => v > 0 ? v.toLocaleString(undefined, {minimumFractionDigits: 2, maximumFractionDigits: 2}) : '-';
+
+    // Rows mapped directly to user requested metrics
+    const yearlyRows = [
+        { key: 'reach', label: 'Reach', type: 'int', isCost: false },
+        { key: 'impressions', label: 'Impression', type: 'int', isCost: false },
+        { key: 'engagements', label: 'Post Engagement', type: 'int', isCost: false },
+        { key: 'messages', label: 'Message', type: 'int', isCost: false },
+        { key: 'frequency', label: 'Frequency', type: 'float', isCost: false }, // Frequency neutral
+        { key: 'cpr', label: 'Cost per 1,000 Reach (CPR)', type: 'float', isCost: true },
+        { key: 'cpm', label: 'Cost per 1,000 impressions (CPM)', type: 'float', isCost: true },
+        { key: 'cpe', label: 'Cost per engagement (CPE)', type: 'float', isCost: true },
+        { key: 'cpmsg', label: 'Cost per Message(CPMsg)', type: 'float', isCost: true }
+    ];
+
+    if (compareState.active) {
+        // --- RENDER COMPARISON VIEW ---
+        
+        let bYear = compareState.base.year;
+        let cYear = compareState.comp.year;
+        let baseAgg = { spend: 0, reach: 0, impressions: 0, engagements: 0, messages: 0 };
+        let compAgg = { spend: 0, reach: 0, impressions: 0, engagements: 0, messages: 0 };
+
+        // Aggregate Base Range
+        for (let i = compareState.base.startMonth; i <= compareState.base.endMonth; i++) {
+            let dArray = (allYearsData[bYear] && allYearsData[bYear][monthNames[i]]) ? allYearsData[bYear][monthNames[i]] : [];
+            baseAgg.spend += dArray.reduce((s,r)=>s+(r.spend||0), 0);
+            baseAgg.reach += dArray.reduce((s,r)=>s+(r.reach||0), 0);
+            baseAgg.impressions += dArray.reduce((s,r)=>s+(r.impressions||0), 0);
+            baseAgg.engagements += dArray.reduce((s,r)=>s+(r.engagements||0), 0);
+            baseAgg.messages += dArray.reduce((s,r)=>s+(r.messages||0), 0);
+        }
+        
+        // Aggregate Compare Range
+        for (let i = compareState.comp.startMonth; i <= compareState.comp.endMonth; i++) {
+            let dArray = (allYearsData[cYear] && allYearsData[cYear][monthNames[i]]) ? allYearsData[cYear][monthNames[i]] : [];
+            compAgg.spend += dArray.reduce((s,r)=>s+(r.spend||0), 0);
+            compAgg.reach += dArray.reduce((s,r)=>s+(r.reach||0), 0);
+            compAgg.impressions += dArray.reduce((s,r)=>s+(r.impressions||0), 0);
+            compAgg.engagements += dArray.reduce((s,r)=>s+(r.engagements||0), 0);
+            compAgg.messages += dArray.reduce((s,r)=>s+(r.messages||0), 0);
+        }
+
+        let bDer = {
+            reach: baseAgg.reach, impressions: baseAgg.impressions, engagements: baseAgg.engagements, messages: baseAgg.messages,
+            frequency: baseAgg.reach > 0 ? (baseAgg.impressions / baseAgg.reach) : 0,
+            cpr: baseAgg.reach > 0 ? (baseAgg.spend / baseAgg.reach) * 1000 : 0,
+            cpm: baseAgg.impressions > 0 ? (baseAgg.spend / baseAgg.impressions) * 1000 : 0,
+            cpe: baseAgg.engagements > 0 ? (baseAgg.spend / baseAgg.engagements) : 0,
+            cpmsg: baseAgg.messages > 0 ? (baseAgg.spend / baseAgg.messages) : 0
+        };
+        
+        let cDer = {
+            reach: compAgg.reach, impressions: compAgg.impressions, engagements: compAgg.engagements, messages: compAgg.messages,
+            frequency: compAgg.reach > 0 ? (compAgg.impressions / compAgg.reach) : 0,
+            cpr: compAgg.reach > 0 ? (compAgg.spend / compAgg.reach) * 1000 : 0,
+            cpm: compAgg.impressions > 0 ? (compAgg.spend / compAgg.impressions) * 1000 : 0,
+            cpe: compAgg.engagements > 0 ? (compAgg.spend / compAgg.engagements) : 0,
+            cpmsg: compAgg.messages > 0 ? (compAgg.spend / compAgg.messages) : 0
+        };
+
+        const bRangeStr = shortMonthNames[compareState.base.startMonth] + (compareState.base.startMonth !== compareState.base.endMonth ? ' - ' + shortMonthNames[compareState.base.endMonth] : '');
+        const cRangeStr = shortMonthNames[compareState.comp.startMonth] + (compareState.comp.startMonth !== compareState.comp.endMonth ? ' - ' + shortMonthNames[compareState.comp.endMonth] : '');
+        
+        // 🌟 ปรับให้ Compare (ปีก่อนหน้า) ขึ้นก่อน Base (ปีปัจจุบัน) 🌟
+        let headHtml = `<tr>
+            <th style="background: var(--surface); position: sticky; left: 0; z-index: 2; padding-left: 24px;">Metric</th>
+            <th style="text-align: right; min-width: 140px; color: var(--text-secondary);">${cYear} <br><span style="font-size:11px; font-weight:500;">(${cRangeStr})</span></th>
+            <th style="text-align: right; min-width: 140px; color: var(--primary);">${bYear} <br><span style="font-size:11px; font-weight:500;">(${bRangeStr})</span></th>
+            <th style="text-align: right; min-width: 180px;">Variance (Base vs Compare)</th>
+        </tr>`;
+        document.getElementById('tableHead').innerHTML = headHtml;
+
+        let bodyHtml = yearlyRows.map(row => {
+            let bVal = bDer[row.key];
+            let cVal = cDer[row.key];
+            let formatter = row.type === 'float' ? formatFloat : formatInt;
+            
+            return `<tr class="yearly-row">
+                <td class="sticky-col" style="font-weight: 600; font-family: 'Inter', sans-serif; position: sticky; left: 0; z-index: 1; border-right: 1px solid var(--border); padding-left: 24px; min-width: 220px;">
+                    ${row.label}
+                </td>
+                <td class="num" style="text-align: right; color: var(--text-secondary);">${formatter(cVal)}</td>
+                <td class="num" style="text-align: right; font-weight: 600;">${formatter(bVal)}</td>
+                ${generateDiffHTML(bVal, cVal, row.isCost, row.type === 'float')}
+            </tr>`;
+        }).join('');
+        document.getElementById('tableBody').innerHTML = bodyHtml;
+        
+    } else {
+        // --- RENDER STANDARD 12-MONTH VIEW ---
+        let monthlyTotals = {};
+        let yearlyTotals = { spend: 0, reach: 0, impressions: 0, engagements: 0, messages: 0 };
+        
+        monthNames.forEach(m => {
+            let data = mainDataByMonth[m] || [];
+            let tSpend = data.reduce((s,r)=>s+(r.spend||0), 0);
+            let tReach = data.reduce((s,r)=>s+(r.reach||0), 0);
+            let tImpr = data.reduce((s,r)=>s+(r.impressions||0), 0);
+            let tEng = data.reduce((s,r)=>s+(r.engagements||0), 0);
+            let tMsg = data.reduce((s,r)=>s+(r.messages||0), 0);
+
+            yearlyTotals.spend += tSpend;
+            yearlyTotals.reach += tReach;
+            yearlyTotals.impressions += tImpr;
+            yearlyTotals.engagements += tEng;
+            yearlyTotals.messages += tMsg;
+
+            monthlyTotals[m] = {
+                reach: tReach,
+                impressions: tImpr,
+                engagements: tEng,
+                messages: tMsg,
+                frequency: tReach > 0 ? (tImpr / tReach) : 0,
+                cpr: tReach > 0 ? (tSpend / tReach) * 1000 : 0,
+                cpm: tImpr > 0 ? (tSpend / tImpr) * 1000 : 0,
+                cpe: tEng > 0 ? (tSpend / tEng) : 0,
+                cpmsg: tMsg > 0 ? (tSpend / tMsg) : 0
+            };
+        });
+
+        let totalMetrics = {
+            reach: yearlyTotals.reach,
+            impressions: yearlyTotals.impressions,
+            engagements: yearlyTotals.engagements,
+            messages: yearlyTotals.messages,
+            frequency: yearlyTotals.reach > 0 ? (yearlyTotals.impressions / yearlyTotals.reach) : 0,
+            cpr: yearlyTotals.reach > 0 ? (yearlyTotals.spend / yearlyTotals.reach) * 1000 : 0,
+            cpm: yearlyTotals.impressions > 0 ? (yearlyTotals.spend / yearlyTotals.impressions) * 1000 : 0,
+            cpe: yearlyTotals.engagements > 0 ? (yearlyTotals.spend / yearlyTotals.engagements) : 0,
+            cpmsg: yearlyTotals.messages > 0 ? (yearlyTotals.spend / yearlyTotals.messages) : 0
+        };
+
+        let headHtml = `<tr>
+            <th style="background: var(--surface); position: sticky; left: 0; z-index: 2; padding-left: 24px;">Metric</th>
+            ${monthNames.map(m => `<th style="text-align: right; min-width: 120px;">${m}</th>`).join('')}
+            <th style="text-align: right; min-width: 120px; font-weight: 700; color: var(--text); background: rgba(59,130,246,0.05); border-left: 1px solid var(--border);">Total</th>
+        </tr>`;
+        document.getElementById('tableHead').innerHTML = headHtml;
+
+        let bodyHtml = yearlyRows.map((row) => {
+            let formatter = row.type === 'float' ? formatFloat : formatInt;
+            return `<tr class="yearly-row">
+                <td class="sticky-col" style="font-weight: 600; font-family: 'Inter', sans-serif; position: sticky; left: 0; z-index: 1; border-right: 1px solid var(--border); padding-left: 24px; min-width: 220px;">
+                    ${row.label}
+                </td>
+                ${monthNames.map(m => {
+                    let val = monthlyTotals[m][row.key];
+                    let monthHasData = (mainDataByMonth[m] && mainDataByMonth[m].length > 0);
+                    if (!monthHasData) return `<td class="num" style="text-align: right; color: var(--muted);">-</td>`;
+                    return `<td class="num" style="text-align: right;">${formatter(val)}</td>`;
+                }).join('')}
+                <td class="num" style="text-align: right; font-weight: 700; color: var(--primary-dark); background-color: rgba(59,130,246,0.02); border-left: 1px solid var(--border);">
+                    ${formatter(totalMetrics[row.key])}
+                </td>
+            </tr>`;
+        }).join('');
+
+        document.getElementById('tableBody').innerHTML = bodyHtml;
+    }
+    return; 
+  }
+
+  // -- STANDARD TABS (Campaign / Ad) LOGIC --
+  document.getElementById('tableCount').style.display = 'block';
+  const isAd = currentTableTab === 'ad';
+  const groupKey = isAd ? 'ad' : 'campaign';
+
+  const groupedObj = {};
+  filteredData.forEach(r => {
+    const keyVal = r[groupKey];
+    if (!keyVal) return;
     
-    document.getElementById('tableHead').innerHTML = `<tr><th>Ad / Campaign</th><th>Spend</th><th>Reach</th></tr>`;
-    document.getElementById('tableBody').innerHTML = filteredData.map(r => `
-      <tr>
-        <td>${currentTableTab === 'ad' ? r.ad : r.campaign}</td>
-        <td>฿${r.spend.toFixed(2)}</td>
-        <td>${r.reach.toLocaleString()}</td>
-      </tr>
-    `).join('');
+    if (!groupedObj[keyVal]) {
+      groupedObj[keyVal] = {
+        [groupKey]: keyVal,
+        spend: 0, reach: 0, impressions: 0, views: 0, engagements: 0, 
+        fbLikes: 0, reactions: 0, comments: 0, shares: 0, saves: 0 
+      };
+    }
+    groupedObj[keyVal].spend += r.spend;
+    groupedObj[keyVal].reach += r.reach;
+    groupedObj[keyVal].impressions += r.impressions;
+    groupedObj[keyVal].views += (r.views || 0);
+    groupedObj[keyVal].engagements += r.engagements;
+    groupedObj[keyVal].fbLikes += r.fbLikes;
+    groupedObj[keyVal].reactions += r.reactions;
+    groupedObj[keyVal].comments += r.comments;
+    groupedObj[keyVal].shares += r.shares;
+    groupedObj[keyVal].saves += r.saves;
+  });
+
+  const groupedData = Object.values(groupedObj).sort((a, b) => {
+    let valA = a[currentSortCol], valB = b[currentSortCol];
+    if (typeof valA === 'string') return currentSortAsc ? valA.localeCompare(valB) : valB.localeCompare(valA);
+    return currentSortAsc ? valA - valB : valB - valA;
+  });
+
+  const metrics = [
+      {id: groupKey, label: isAd ? 'Ad Name' : 'Campaign Name'},
+      {id: 'spend', label: 'Spend (฿)'},
+      {id: 'reach', label: 'Reach'},
+      {id: 'impressions', label: 'Impressions'},
+      {id: 'views', label: 'Views'},
+      {id: 'engagements', label: 'Engagements'},
+      {id: 'fbLikes', label: 'FB Likes'},
+      {id: 'reactions', label: 'Reactions'},
+      {id: 'comments', label: 'Comments'},
+      {id: 'shares', label: 'Shares'},
+      {id: 'saves', label: 'Saves'}
+  ];
+
+  document.getElementById('tableHead').innerHTML = `<tr>${metrics.map(m => `
+      <th class="sortable" onclick="handleSort('${m.id}')" style="text-align: left;">
+          ${m.label} <span class="sort-icon" id="sortIcon-${m.id}">${currentSortCol === m.id ? (currentSortAsc ? '▲' : '▼') : ''}</span>
+      </th>
+  `).join('')}</tr>`;
+
+  document.getElementById('tableCount').textContent = `แสดง ${groupedData.length} รายการ`;
+  
+  document.getElementById('tableBody').innerHTML = groupedData.map(r=>{
+    let primaryCell = '';
+    if (isAd) {
+      const link = adLinks[r.ad];
+      primaryCell = link 
+        ? `<div style="display: flex; align-items: center; gap: 8px;">
+             <a href="${link}" target="_blank" style="color: var(--primary); flex-shrink: 0; display: flex; align-items: center; justify-content: center; padding: 4px; border-radius: 6px; margin-left: -4px; transition: background 0.2s;" onmouseover="this.style.backgroundColor='rgba(37,99,235,0.1)'" onmouseout="this.style.backgroundColor='transparent'" title="เปิดดูชิ้นงานโฆษณา">
+               <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="3" width="18" height="18" rx="2" ry="2"/><circle cx="8.5" cy="8.5" r="1.5"/><polyline points="21 15 16 10 5 21"/></svg>
+             </a>
+             <span style="overflow: hidden; text-overflow: ellipsis; white-space: nowrap;">${r.ad}</span>
+           </div>` 
+        : `<div style="overflow: hidden; text-overflow: ellipsis; white-space: nowrap;">${r.ad}</div>`;
+    } else {
+        primaryCell = `<div style="overflow: hidden; text-overflow: ellipsis; white-space: nowrap; font-weight: 500;">${r.campaign}</div>`;
+    }
+      
+    return `<tr class="hoverable">
+      <td title="${r[groupKey]}" style="max-width:240px; padding-right:12px;">${primaryCell}</td>
+      <td class="cost-cell" style="text-align: left;">฿${r.spend.toFixed(2)}</td>
+      <td class="num" style="text-align: left;">${r.reach.toLocaleString()}</td>
+      <td class="num" style="text-align: left;">${r.impressions.toLocaleString()}</td>
+      <td class="num" style="text-align: left;">${r.views.toLocaleString()}</td>
+      <td class="num" style="text-align: left;">${r.engagements.toLocaleString()}</td>
+      <td class="num" style="text-align: left;">${r.fbLikes.toLocaleString()}</td>
+      <td class="num" style="text-align: left;">${r.reactions.toLocaleString()}</td>
+      <td class="num" style="text-align: left;">${r.comments.toLocaleString()}</td>
+      <td class="num" style="text-align: left;">${r.shares.toLocaleString()}</td>
+      <td class="num" style="text-align: left;">${r.saves.toLocaleString()}</td>
+    </tr>`;
+  }).join('');
 }
 
-// Drawer Controls
+function populateFilters() {
+  const campaigns = [...new Set(allData.map(r=>r.campaign))].sort();
+  document.getElementById('filterCampaign').innerHTML = '<option value="">ทุก Campaign</option>'+campaigns.map(c=>`<option value="${c}">${c}</option>`).join('');
+
+  document.getElementById('filterObjective').innerHTML = `
+    <option value="">ทุก Objective</option>
+    <option value="Awareness">Awareness</option>
+    <option value="Engage">Engage</option>
+    <option value="Message">Message</option>
+  `;
+}
+
+function applyFilters() {
+  const campaign = document.getElementById('filterCampaign').value;
+  const objective = document.getElementById('filterObjective').value;
+  filteredData = allData.filter(r=>{
+    if (campaign && r.campaign !== campaign) return false;
+    if (objective && r.objective !== objective) return false;
+    return true;
+  });
+  renderAll();
+}
+
+function clearFilters() {
+  document.getElementById('filterCampaign').value = '';
+  document.getElementById('filterObjective').value = '';
+  filteredData = [...allData];
+  renderAll();
+}
+
+if (localStorage.getItem('theme')==='dark') document.body.classList.add('dark-mode');
+const themeCheckbox = document.getElementById('themeToggleCheckbox');
+
+function updateThemeIcon() {
+  const isDark = document.body.classList.contains('dark-mode');
+  const label = document.getElementById('themeSwitchText');
+  if (label) {
+    label.innerHTML = isDark
+      ? '<svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M21 12.79A9 9 0 1 1 11.21 3 7 7 0 0 0 21 12.79z"/></svg> โหมดมืด (Dark Mode)'
+      : '<svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="5"/><line x1="12" y1="1" x2="12" y2="3"/><line x1="12" y1="21" x2="12" y2="23"/><line x1="4.22" y1="4.22" x2="5.64" y2="5.64"/><line x1="18.36" y1="18.36" x2="19.78" y2="19.78"/><line x1="1" y1="12" x2="3" y2="12"/><line x1="21" y1="12" x2="23" y2="12"/><line x1="4.22" y1="19.78" x2="5.64" y2="18.36"/><line x1="18.36" y1="5.64" x2="19.78" y2="4.22"/></svg> โหมดสว่าง (Light Mode)';
+  }
+  if (themeCheckbox) themeCheckbox.checked = isDark;
+}
+updateThemeIcon();
+
+if (themeCheckbox) {
+  themeCheckbox.addEventListener('change', (e) => {
+    if (e.target.checked) document.body.classList.add('dark-mode');
+    else document.body.classList.remove('dark-mode');
+    localStorage.setItem('theme', document.body.classList.contains('dark-mode') ? 'dark' : 'light');
+    updateThemeIcon();
+    renderCharts();
+  });
+}
+
 document.getElementById('settingsBtn')?.addEventListener('click', () => {
   document.getElementById('settingsOverlay').classList.add('show');
   document.getElementById('settingsDrawer').classList.add('open');
 });
 document.getElementById('closeDrawerBtn')?.addEventListener('click', closeDrawer);
 document.getElementById('settingsOverlay')?.addEventListener('click', closeDrawer);
+
 function closeDrawer() {
   document.getElementById('settingsOverlay').classList.remove('show');
   document.getElementById('settingsDrawer').classList.remove('open');
 }
 
-// Initial Load
+function renderAdLinkInputs() {
+  const container = document.getElementById('adLinkInputsContainer');
+  if (!container) return;
+  const uniqueAds = [...new Set(allData.map(r => r.ad).filter(ad => ad))].sort();
+  if (uniqueAds.length === 0) {
+    container.innerHTML = '<div style="color: var(--muted); font-size: 13px;">(ยังไม่มีข้อมูล Ad Name)</div>';
+    return;
+  }
+  let html = '';
+  uniqueAds.forEach(ad => {
+    const currentLink = adLinks[ad] || '';
+    const currentImg = adImages[ad] || '';
+    const safeAd = ad.replace(/"/g, '&quot;'); 
+    html += `
+      <div style="display:flex; flex-direction:column; gap:8px; padding-bottom: 12px; border-bottom: 1px solid var(--border);">
+        <label style="font-size: 13px; font-weight: 600; color: var(--text); word-break: break-all;">${ad}</label>
+        <input type="url" class="setting-input ad-link-input" data-adname="${safeAd}" placeholder="URL ลิ้งก์ปลายทางโฆษณา" value="${currentLink}">
+        <input type="url" class="setting-input ad-img-input" data-adname="${safeAd}" placeholder="URL รูปภาพ (วางลิ้งก์รูปภาพ)" value="${currentImg}">
+      </div>`;
+  });
+  container.innerHTML = html;
+}
+
+function saveAllAdLinks() {
+  const linkInputs = document.querySelectorAll('.ad-link-input');
+  const imgInputs = document.querySelectorAll('.ad-img-input');
+  
+  linkInputs.forEach(input => {
+    const name = input.getAttribute('data-adname').replace(/&quot;/g, '"');
+    if (input.value.trim()) adLinks[name] = input.value.trim(); else delete adLinks[name];
+  });
+
+  imgInputs.forEach(input => {
+    const name = input.getAttribute('data-adname').replace(/&quot;/g, '"');
+    if (input.value.trim()) adImages[name] = input.value.trim(); else delete adImages[name];
+  });
+
+  try {
+    localStorage.setItem('hiaLhomAdLinks', JSON.stringify(adLinks));
+    localStorage.setItem('hiaLhomAdImages', JSON.stringify(adImages));
+  } catch(e) {}
+  showStatus(`✅ บันทึกการตั้งค่าเรียบร้อยแล้ว`, 'success');
+  renderAll();
+}
+
 window.onload = () => {
-    document.getElementById('logoSubtitle').textContent = `Facebook Campaign Performance (${activeDataYear})`;
+    const select = document.getElementById('globalMonthSelect');
+    if (select) {
+        const currentMonthIdx = new Date().getMonth();
+        select.value = monthNames[currentMonthIdx]; // Default to current month
+    }
+    
+    const yearSelect = document.getElementById('dataYearSelect');
+    if (yearSelect) {
+        yearSelect.value = DATA_YEAR;
+    }
+    
+    const updatedEl = document.getElementById('lastUpdatedText');
+    if (updatedEl) {
+        const now = new Date();
+        const options = { day: 'numeric', month: 'short', year: 'numeric', hour: '2-digit', minute: '2-digit' };
+        updatedEl.textContent = 'อัปเดตข้อมูลล่าสุด: ' + now.toLocaleDateString('th-TH', options) + ' น.';
+    }
+
     loadAllData();
 };
 </script>
