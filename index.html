@@ -386,6 +386,9 @@
                      </div>
                   </div>
                   <div class="popover-grid" id="popoverGrid"></div>
+                  <div style="font-size: 11px; color: var(--muted); text-align: center; margin-top: 12px; font-weight: 500; line-height: 1.5;">
+                     👆 คลิก 1 ครั้งเพื่อเลือกเดือนเดียว<br>คลิกอีกครั้งเพื่อเลือกเป็นช่วง (Range)
+                  </div>
                </div>
            </div>
         </div>
@@ -737,6 +740,7 @@ function toggleMonthPicker(type) {
     // If clicking the same active button, just toggle visibility
     if (compareState.activePicker === type && popover.classList.contains('show')) {
         popover.classList.remove('show');
+        compareState.pickerStep = 0; // Cancel any in-progress selection
         return;
     }
 
@@ -758,13 +762,24 @@ function changePickerYear(delta) {
 }
 
 function selectPickerMonth(idx) {
+    const type = compareState.activePicker;
+    if (!type) return;
+
     if (compareState.pickerStep === 0) {
+        // Click 1: Select single month and start range mode
         compareState.tempStart = idx;
         compareState.tempEnd = idx; // Initialize temp end for hover effect
         compareState.pickerStep = 1;
+        
+        // Immediately apply this as a 1-month selection
+        compareState[type].startMonth = idx;
+        compareState[type].endMonth = idx;
+        compareState[type].year = compareState.pickerYear;
+        updateMonthRangeBtnText();
+        
         renderMonthPickerGrid();
     } else {
-        const type = compareState.activePicker;
+        // Click 2: Confirm the range
         const s = Math.min(compareState.tempStart, idx);
         const e = Math.max(compareState.tempStart, idx);
         
@@ -789,36 +804,44 @@ function renderMonthPickerGrid() {
     document.getElementById('popoverYearStr').textContent = compareState.pickerYear;
     
     const grid = document.getElementById('popoverGrid');
-    let html = '';
     const type = compareState.activePicker;
     if (!type) return;
-    const stateObj = compareState[type];
     
-    for (let i = 0; i < 12; i++) {
-        let classes = ['month-btn'];
+    // สร้างปุ่มเฉพาะครั้งแรกที่ยังไม่มี
+    if (grid.children.length === 0) {
+        let html = '';
+        for (let i = 0; i < 12; i++) {
+            html += `<button class="month-btn" onclick="selectPickerMonth(${i})" onmouseover="hoverPickerMonth(${i})">${shortMonthNames[i]}</button>`;
+        }
+        grid.innerHTML = html;
+    }
+    
+    const stateObj = compareState[type];
+    const buttons = grid.querySelectorAll('.month-btn');
+    
+    // อัปเดตเฉพาะ Class เพื่อป้องกันบั๊กคลิกไม่ติดตอนลากเมาส์
+    buttons.forEach((btn, i) => {
+        btn.className = 'month-btn'; // รีเซ็ต class
         
         if (compareState.pickerStep === 0) {
             // Completed selection view
             if (compareState.pickerYear === stateObj.year) {
-                if (i === stateObj.startMonth && i === stateObj.endMonth) classes.push('selected-single');
-                else if (i === stateObj.startMonth) classes.push('selected-start');
-                else if (i === stateObj.endMonth) classes.push('selected-end');
-                else if (i > stateObj.startMonth && i < stateObj.endMonth) classes.push('in-range');
+                if (i === stateObj.startMonth && i === stateObj.endMonth) btn.classList.add('selected-single');
+                else if (i === stateObj.startMonth) btn.classList.add('selected-start');
+                else if (i === stateObj.endMonth) btn.classList.add('selected-end');
+                else if (i > stateObj.startMonth && i < stateObj.endMonth) btn.classList.add('in-range');
             }
         } else {
             // In-progress selection view (Hover active)
             const s = Math.min(compareState.tempStart, compareState.tempEnd);
             const e = Math.max(compareState.tempStart, compareState.tempEnd);
             
-            if (i === s && i === e) classes.push('selected-single');
-            else if (i === s) classes.push('selected-start');
-            else if (i === e) classes.push('selected-end');
-            else if (i > s && i < e) classes.push('in-range');
+            if (i === s && i === e) btn.classList.add('selected-single');
+            else if (i === s) btn.classList.add('selected-start');
+            else if (i === e) btn.classList.add('selected-end');
+            else if (i > s && i < e) btn.classList.add('in-range');
         }
-        
-        html += `<button class="${classes.join(' ')}" onclick="selectPickerMonth(${i})" onmouseover="hoverPickerMonth(${i})">${shortMonthNames[i]}</button>`;
-    }
-    grid.innerHTML = html;
+    });
 }
 
 function updateMonthRangeBtnText() {
