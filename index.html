@@ -648,20 +648,29 @@ async function loadAllData() {
     }
     
     if (!regionDataByMonth[month] || regionDataByMonth[month].length === 0) {
-        let regRaw = await fetchFile(`data/region/Region-${DATA_YEAR}-${month}-DIA.csv`) || await fetchFile(`data/region/Region-${DATA_YEAR}-${month}-DIA.xlsx`);
+        // อัปเดตให้ชื่อไฟล์ของภูมิภาคใช้รูปแบบเดียวกันเป๊ะๆ ไม่มีคำว่า Region- นำหน้าแล้ว
+        let regRaw = await fetchFile(`data/region/${DATA_YEAR}-${month}-DIA.csv`) || await fetchFile(`data/region/${DATA_YEAR}-${month}-DIA.xlsx`);
         if (regRaw) regionDataByMonth[month] = cleanRegionData(regRaw);
     }
 
     if (!allYearsData[DATA_YEAR]) allYearsData[DATA_YEAR] = {};
     allYearsData[DATA_YEAR][month] = mainDataByMonth[month];
 
-    const prevMonthIndex = monthNames.indexOf(month) - 1;
-    if (prevMonthIndex >= 0) {
-        const prevMonth = monthNames[prevMonthIndex];
-        if (!mainDataByMonth[prevMonth] || mainDataByMonth[prevMonth].length === 0) {
-             let prevMain = await fetchFile(`data/${DATA_YEAR}-${prevMonth}-DIA.csv`) || await fetchFile(`data/${DATA_YEAR}-${prevMonth}-DIA.xlsx`);
-             if (prevMain) mainDataByMonth[prevMonth] = cleanMainData(prevMain);
-        }
+    // รองรับการดึงข้อมูลเดือนก่อนหน้าในกรณีข้ามปี (ถ้าเลือก ม.ค. ให้ไปดึง ธ.ค. ของปีก่อน)
+    const currentMonthIdx = monthNames.indexOf(month);
+    let prevMonth, prevYear;
+    
+    if (currentMonthIdx > 0) {
+        prevMonth = monthNames[currentMonthIdx - 1];
+        prevYear = DATA_YEAR;
+    } else {
+        prevMonth = 'December';
+        prevYear = (parseInt(DATA_YEAR) - 1).toString();
+    }
+
+    if (!mainDataByMonth[prevMonth] || mainDataByMonth[prevMonth].length === 0) {
+         let prevMain = await fetchFile(`data/${prevYear}-${prevMonth}-DIA.csv`) || await fetchFile(`data/${prevYear}-${prevMonth}-DIA.xlsx`);
+         if (prevMain) mainDataByMonth[prevMonth] = cleanMainData(prevMain);
     }
 
     allData = mainDataByMonth[month] || [];
@@ -950,7 +959,8 @@ function renderAll() { renderKPIs(); renderCharts(); renderTable(); }
 
 function renderKPIs() {
   const currentMonthIdx = monthNames.indexOf(currentGlobalMonth);
-  const prevMonth = currentMonthIdx > 0 ? monthNames[currentMonthIdx - 1] : null;
+  // อัปเดตการดึงข้อมูลเทียบเดือนก่อนหน้า ให้รองรับการข้ามปีไปดึงเดือนธันวาคม
+  const prevMonth = currentMonthIdx > 0 ? monthNames[currentMonthIdx - 1] : 'December';
   const prevData = prevMonth ? (mainDataByMonth[prevMonth] || []) : [];
 
   const activeCampaign = document.getElementById('filterCampaign').value;
