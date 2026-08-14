@@ -52,7 +52,6 @@
     .logo-title { font-size: 20px; font-weight: 700; color: var(--text); letter-spacing: -0.5px; }
     .logo-sub { font-size: 13px; color: var(--muted); font-weight: 500; }
     
-    /* Header Month Select */
     .header-month-select { appearance: none; background-color: var(--surface); border: 1px solid var(--border); border-radius: 20px; color: var(--text); padding: 8px 32px 8px 16px; font-size: 13px; font-weight: 600; font-family: 'Inter', 'Noto Sans Thai', sans-serif; cursor: pointer; outline: none; transition: all 0.2s; background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='12' height='8'%3E%3Cpath d='M1 1l5 5 5-5' stroke='%2364748B' stroke-width='2' fill='none' stroke-linecap='round' stroke-linejoin='round'/%3E%3C/svg%3E"); background-repeat: no-repeat; background-position: right 12px center; box-shadow: var(--shadow-sm); }
     body.dark-mode .header-month-select { background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='12' height='8'%3E%3Cpath d='M1 1l5 5 5-5' stroke='%2394A3B8' stroke-width='2' fill='none' stroke-linecap='round' stroke-linejoin='round'/%3E%3C/svg%3E"); }
     .header-month-select:hover { border-color: var(--primary); }
@@ -101,7 +100,6 @@
     body.dark-mode .chart-summary { background: rgba(59,130,246,0.1); border-color: rgba(59,130,246,0.2); color: var(--text-secondary); }
     .chart-summary strong { color: var(--text); }
 
-    /* Top Ads List Styles */
     .top-ad-list { display: flex; flex-direction: column; gap: 12px; height: 100%; justify-content: flex-start; }
     .top-ad-item { display: flex; align-items: center; background: var(--surface); border: 1px solid var(--border); border-radius: 8px; padding: 12px; gap: 16px; transition: transform 0.2s, box-shadow 0.2s; }
     .top-ad-item:hover { transform: translateY(-2px); box-shadow: var(--shadow-sm); border-color: var(--primary); }
@@ -127,19 +125,44 @@
     th { font-size: 12px; font-weight: 600; color: var(--text-secondary); padding: 12px 24px; border-bottom: 1px solid var(--border); background: var(--surface); white-space: nowrap; }
     td { padding: 16px 24px; font-size: 13px; color: var(--text); border-bottom: 1px solid var(--border); white-space: nowrap; }
     tr:last-child td { border-bottom: none; }
-    tr:hover td { background: var(--surface); }
+    tr.hoverable:hover td { background: var(--surface); } /* Added class specifically for standard table rows */
     .sortable { cursor: pointer; user-select: none; transition: color 0.2s; }
     .sortable:hover { color: var(--primary); }
     .sort-icon { display: inline-block; width: 12px; margin-left: 4px; font-size: 10px; color: var(--primary); }
     .num { font-family: 'Inter',sans-serif; font-variant-numeric: tabular-nums; }
     .cost-cell { font-weight: 600; font-family: 'Inter',sans-serif; color: var(--text); }
 
+    /* Yearly Table specific alternating rows */
+    tr.yearly-row:nth-child(even) { background-color: var(--surface); }
+    tr.yearly-row:nth-child(odd) { background-color: var(--card); }
+    tr.yearly-row td.sticky-col { background-color: inherit; }
+
+    /* Custom Month Range Picker */
+    .date-picker-container { position: relative; display: inline-block; }
+    .month-popover { position: absolute; top: calc(100% + 8px); left: 0; background: var(--card); border: 1px solid var(--border); padding: 16px; border-radius: 12px; z-index: 200; width: 280px; box-shadow: var(--shadow); transition: all 0.2s; opacity: 0; visibility: hidden; transform: translateY(-10px); }
+    .month-popover.show { opacity: 1; visibility: visible; transform: translateY(0); }
+    .popover-header { display: flex; justify-content: space-between; align-items: center; margin-bottom: 16px; padding-bottom: 12px; border-bottom: 1px solid var(--border); }
+    .popover-year { font-size: 15px; font-weight: 600; color: var(--text); }
+    .popover-arrows button { background: transparent; border: none; font-size: 14px; cursor: pointer; color: var(--text-secondary); padding: 4px 8px; border-radius: 4px; transition: background 0.2s; }
+    .popover-arrows button:hover { background: var(--surface); color: var(--text); }
+    .popover-grid { display: grid; grid-template-columns: repeat(4, 1fr); gap: 4px 0; }
+    .month-btn { padding: 10px 4px; text-align: center; cursor: pointer; border: none; background: transparent; font-size: 12px; font-weight: 500; color: var(--text); transition: all 0.2s; font-family: 'Inter', sans-serif; text-transform: uppercase; margin: 2px 0; }
+    .month-btn:hover:not(.selected-start):not(.selected-end):not(.selected-single) { background: var(--surface); border-radius: 20px; }
+    .month-btn.in-range { background: rgba(37,99,235,0.1); color: var(--primary); }
+    .month-btn.selected-start { background: var(--primary); color: white; border-radius: 20px 0 0 20px; }
+    .month-btn.selected-end { background: var(--primary); color: white; border-radius: 0 20px 20px 0; }
+    .month-btn.selected-single { background: var(--primary); color: white; border-radius: 20px; }
+    
+    .diff-badge { display: inline-flex; align-items: center; justify-content: center; padding: 2px 6px; border-radius: 4px; font-size: 11px; font-weight: 600; margin-left: 8px; }
+    .diff-good { background: rgba(16,185,129,0.1); color: var(--green); }
+    .diff-bad { background: rgba(239,68,68,0.1); color: var(--red); }
+    .diff-neutral { background: var(--surface); color: var(--muted); }
+
     #statusBar { padding: 12px 16px; font-size: 14px; font-weight: 500; border-radius: 8px; margin-bottom: 16px; display: none; }
     .status-info { background: rgba(59,130,246,0.1); border: 1px solid rgba(59,130,246,0.2); color: var(--blue); }
     .status-success { background: rgba(16,185,129,0.1); border: 1px solid rgba(16,185,129,0.2); color: var(--green); }
     .status-error { background: rgba(239,68,68,0.1); border: 1px solid rgba(239,68,68,0.2); color: var(--red); }
 
-    /* Settings Drawer Styles */
     .drawer-overlay { position: fixed; top: 0; left: 0; width: 100vw; height: 100vh; background: rgba(0,0,0,0.5); z-index: 999; opacity: 0; visibility: hidden; transition: all 0.3s ease; }
     .drawer-overlay.show { opacity: 1; visibility: visible; }
     .drawer { position: fixed; top: 0; right: -400px; width: 100%; max-width: 400px; height: 100vh; background: var(--card); z-index: 1000; box-shadow: -4px 0 15px rgba(0,0,0,0.1); transition: right 0.3s ease; display: flex; flex-direction: column; border-left: 1px solid var(--border); }
@@ -328,8 +351,43 @@
           <div class="tabs-container">
             <button class="tab-btn active" id="tab-campaign" onclick="switchTableTab('campaign')">Campaign Performance</button>
             <button class="tab-btn" id="tab-ad" onclick="switchTableTab('ad')">Ad Performance</button>
+            <button class="tab-btn" id="tab-yearly" onclick="switchTableTab('yearly')">Yearly performance</button>
           </div>
           <div class="chart-sub" id="tableCount" style="margin-bottom:0;"></div>
+        </div>
+        
+        <!-- Yearly Compare Controls -->
+        <div id="yearlyCompareControls" style="display: none; align-items: center; flex-wrap: wrap; gap: 16px; margin-top: 12px; padding-top: 12px; border-top: 1px dashed var(--border);">
+           <label style="display:flex; align-items:center; gap:6px; font-size: 13px; font-weight: 600; cursor:pointer; color: var(--text);">
+               <input type="checkbox" id="enableCompareCb" onchange="toggleCompareMode()" style="width: 16px; height: 16px; accent-color: var(--primary);"> 
+               เปรียบเทียบข้อมูล (Comparison Mode)
+           </label>
+           
+           <div id="compareSelectors" style="display:none; align-items:center; gap: 12px; flex-wrap: wrap;">
+               <div class="date-picker-container" id="datePickerContainerBase">
+                  <button id="monthRangeBtnBase" class="header-month-select" style="min-width: 170px; text-align: left;" onclick="toggleMonthPicker('base')">Jan - Aug 2026</button>
+               </div>
+               
+               <span style="font-size: 13px; color: var(--text-secondary); font-weight: 500;">เทียบกับ</span>
+               
+               <div class="date-picker-container" id="datePickerContainerComp">
+                  <button id="monthRangeBtnComp" class="header-month-select" style="min-width: 170px; text-align: left;" onclick="toggleMonthPicker('comp')">Jan - Aug 2025</button>
+               </div>
+
+               <button class="btn-outline" style="padding: 6px 16px; border-radius: 20px; font-size: 13px; font-weight: 600; background: var(--primary); color: white; border: none; cursor: pointer; box-shadow: var(--shadow-sm);" onclick="applyComparison()">Apply Compare</button>
+
+               <!-- Shared Popover for Pickers -->
+               <div id="monthPickerPopover" class="month-popover">
+                  <div class="popover-header">
+                     <span id="popoverYearStr" class="popover-year">2026</span>
+                     <div class="popover-arrows">
+                         <button onclick="changePickerYear(-1)">❮</button>
+                         <button onclick="changePickerYear(1)">❯</button>
+                     </div>
+                  </div>
+                  <div class="popover-grid" id="popoverGrid"></div>
+               </div>
+           </div>
         </div>
       </div>
       <div class="table-responsive">
@@ -374,7 +432,7 @@
 
     <div class="setting-group">
       <div class="setting-label">สถานะการโหลดข้อมูลอัตโนมัติ</div>
-      <div class="setting-desc">ระบบจะทำการโหลดข้อมูลจากโฟลเดอร์ <code>./data/</code> และ <code>./data/region/</code> ให้โดยอัตโนมัติตามชื่อเดือน</div>
+      <div class="setting-desc">ระบบจะทำการโหลดข้อมูลจากโฟลเดอร์ <code>./data/</code> และ <code>./data/region/</code> ให้โดยอัตโนมัติตามรูปแบบ YYYY-Month-DIA (เช่น 2024-January-DIA.csv)</div>
       
       <div id="mainDataStatus" style="font-size: 12px; color: var(--text-secondary); background: var(--surface); padding: 8px; border-radius: 8px; border: 1px solid var(--border); margin-bottom: 8px;">
         เดือนที่มีข้อมูล: กำลังโหลด...
@@ -404,6 +462,9 @@
 // ─── DATA MANAGEMENT & FETCHING ──────────────────────────────
 const monthNames = ['January', 'February', 'March', 'April', 'May', 'June', 'July', 'August', 'September', 'October', 'November', 'December'];
 
+// ตัวแปรสำหรับกำหนดปี YYYY (สามารถเปลี่ยนปีที่นี่ได้เมื่อขึ้นปีใหม่)
+const DATA_YEAR = '2024'; 
+
 let mainDataByMonth = {};
 let regionDataByMonth = {};
 let allData = [];
@@ -414,9 +475,24 @@ let currentGlobalMonth = 'January';
 let filteredData = [];
 let charts = {};
 
-let currentTableTab = 'campaign'; // 'campaign' or 'ad'
+let currentTableTab = 'campaign'; // 'campaign', 'ad', or 'yearly'
 let currentSortCol = 'spend';
 let currentSortAsc = false;
+
+// ─── COMPARISON STATE ────────────────────────────────────
+let allYearsData = {}; 
+let compareState = {
+    active: false,
+    base: { year: parseInt(DATA_YEAR) || new Date().getFullYear(), startMonth: 0, endMonth: 7 },
+    comp: { year: (parseInt(DATA_YEAR) || new Date().getFullYear()) - 1, startMonth: 0, endMonth: 7 },
+    
+    // UI Picker State
+    activePicker: null, // 'base' or 'comp'
+    pickerYear: parseInt(DATA_YEAR) || new Date().getFullYear(),
+    pickerStep: 0, // 0 = select start, 1 = select end
+    tempStart: 0
+};
+const shortMonthNames = ['JAN','FEB','MAR','APR','MAY','JUN','JUL','AUG','SEP','OCT','NOV','DEC'];
 
 // โหลด Settings จาก localStorage
 try {
@@ -483,6 +559,13 @@ function cleanMainData(rows) {
         saves: parseInt(r['Post saves']||0)||0,
         clicks: parseInt(r['Link clicks'] || r['Clicks (all)'] || r['Clicks'] || r['clicks'] || 0) || 0,
         messages: parseInt(r['Messaging conversations started'] || r['New messaging connections'] || r['Messages'] || r['messages'] || 0) || 0,
+        
+        // E-commerce/Website metrics added for the Yearly Tab (parsing if available)
+        landingPageViews: parseInt(r['Landing page views'] || r['landing_page_views'] || 0) || 0,
+        addsToCart: parseInt(r['Adds to cart'] || r['adds_to_cart'] || 0) || 0,
+        purchases: parseInt(r['Purchases'] || r['purchases'] || r['Website purchases'] || 0) || 0,
+        revenue: parseFloat(r['Purchase conversion value'] || r['Website purchases conversion value'] || r['revenue'] || 0) || 0,
+        
         objective: parseObjective(campaign)
       };
     }).filter(r => (r.ad && r.ad !== '-') || (r.campaign && r.campaign !== '-'));
@@ -500,21 +583,52 @@ async function fetchAllAvailableMonths() {
     if (isFetchingAllMonths) return;
     isFetchingAllMonths = true;
     
+    if (!allYearsData[DATA_YEAR]) allYearsData[DATA_YEAR] = {};
+    
     // Sequential load to not overload network
     for (const m of monthNames) {
         if (!mainDataByMonth[m]) {
-            let raw = await fetchFile(`data/${m}.csv`) || await fetchFile(`data/${m}.xlsx`);
+            let raw = await fetchFile(`data/${DATA_YEAR}-${m}-DIA.csv`) || await fetchFile(`data/${DATA_YEAR}-${m}-DIA.xlsx`);
             if (raw) {
-                mainDataByMonth[m] = cleanMainData(raw);
+                let cleaned = cleanMainData(raw);
+                mainDataByMonth[m] = cleaned;
+                allYearsData[DATA_YEAR][m] = cleaned;
             } else {
-                mainDataByMonth[m] = []; // Mark as fetched but missing
+                mainDataByMonth[m] = []; 
+                allYearsData[DATA_YEAR][m] = [];
             }
+        } else {
+            allYearsData[DATA_YEAR][m] = mainDataByMonth[m];
         }
     }
     
     updateDataStatusUI();
-    renderCharts(); // Re-render to update monthly trend charts
+    renderCharts(); 
+    if (currentTableTab === 'yearly') renderTable(); 
     isFetchingAllMonths = false;
+}
+
+// โหลดข้อมูลสำหรับปีและช่วงเดือนที่ระบุ (ใช้สำหรับ Comparison)
+async function ensureDataForYearRange(year, startMonthIdx, endMonthIdx) {
+    if (!allYearsData[year]) allYearsData[year] = {};
+    let promises = [];
+    
+    for (let i = startMonthIdx; i <= endMonthIdx; i++) {
+        let m = monthNames[i];
+        if (!allYearsData[year][m]) {
+            promises.push(
+                (async () => {
+                    let raw = await fetchFile(`data/${year}-${m}-DIA.csv`) || await fetchFile(`data/${year}-${m}-DIA.xlsx`);
+                    allYearsData[year][m] = raw ? cleanMainData(raw) : [];
+                })()
+            );
+        }
+    }
+    
+    if (promises.length > 0) {
+        showStatus(`กำลังดึงข้อมูลปี ${year}...`, 'info');
+        await Promise.all(promises);
+    }
 }
 
 async function loadAllData() {
@@ -525,20 +639,23 @@ async function loadAllData() {
     showStatus(`กำลังค้นหาข้อมูลเดือน ${month}...`, 'info');
 
     if (!mainDataByMonth[month] || mainDataByMonth[month].length === 0) {
-        let mainRaw = await fetchFile(`data/${month}.csv`) || await fetchFile(`data/${month}.xlsx`);
+        let mainRaw = await fetchFile(`data/${DATA_YEAR}-${month}-DIA.csv`) || await fetchFile(`data/${DATA_YEAR}-${month}-DIA.xlsx`);
         if (mainRaw) mainDataByMonth[month] = cleanMainData(mainRaw);
     }
     
     if (!regionDataByMonth[month] || regionDataByMonth[month].length === 0) {
-        let regRaw = await fetchFile(`data/region/Region${month}.csv`) || await fetchFile(`data/region/Region${month}.xlsx`);
+        let regRaw = await fetchFile(`data/region/Region-${DATA_YEAR}-${month}-DIA.csv`) || await fetchFile(`data/region/Region-${DATA_YEAR}-${month}-DIA.xlsx`);
         if (regRaw) regionDataByMonth[month] = cleanRegionData(regRaw);
     }
+
+    if (!allYearsData[DATA_YEAR]) allYearsData[DATA_YEAR] = {};
+    allYearsData[DATA_YEAR][month] = mainDataByMonth[month];
 
     const prevMonthIndex = monthNames.indexOf(month) - 1;
     if (prevMonthIndex >= 0) {
         const prevMonth = monthNames[prevMonthIndex];
         if (!mainDataByMonth[prevMonth] || mainDataByMonth[prevMonth].length === 0) {
-             let prevMain = await fetchFile(`data/${prevMonth}.csv`) || await fetchFile(`data/${prevMonth}.xlsx`);
+             let prevMain = await fetchFile(`data/${DATA_YEAR}-${prevMonth}-DIA.csv`) || await fetchFile(`data/${DATA_YEAR}-${prevMonth}-DIA.xlsx`);
              if (prevMain) mainDataByMonth[prevMonth] = cleanMainData(prevMain);
         }
     }
@@ -610,6 +727,173 @@ function getDerivedMetrics(agg) {
       ctr: agg.impr > 0 ? (agg.clicks/agg.impr)*100 : 0,
   };
 }
+
+// --- DATE PICKER LOGIC ---
+function toggleMonthPicker(type) {
+    const popover = document.getElementById('monthPickerPopover');
+    const container = document.getElementById('datePickerContainer' + (type === 'base' ? 'Base' : 'Comp'));
+    
+    // If clicking the same active button, just toggle visibility
+    if (compareState.activePicker === type && popover.classList.contains('show')) {
+        popover.classList.remove('show');
+        return;
+    }
+
+    // Setup for the new picker context
+    compareState.activePicker = type;
+    compareState.pickerYear = compareState[type].year;
+    compareState.pickerStep = 0;
+    
+    // Move popover dynamically to the correct container
+    container.appendChild(popover);
+    
+    renderMonthPickerGrid();
+    popover.classList.add('show');
+}
+
+function changePickerYear(delta) {
+    compareState.pickerYear += delta;
+    renderMonthPickerGrid();
+}
+
+function selectPickerMonth(idx) {
+    if (compareState.pickerStep === 0) {
+        compareState.tempStart = idx;
+        compareState.pickerStep = 1;
+    } else {
+        const type = compareState.activePicker;
+        if (idx >= compareState.tempStart) {
+            compareState[type].startMonth = compareState.tempStart;
+            compareState[type].endMonth = idx;
+        } else {
+            compareState[type].startMonth = idx;
+            compareState[type].endMonth = compareState.tempStart;
+        }
+        compareState[type].year = compareState.pickerYear;
+        compareState.pickerStep = 0;
+        
+        updateMonthRangeBtnText();
+        document.getElementById('monthPickerPopover').classList.remove('show');
+    }
+    renderMonthPickerGrid();
+}
+
+function renderMonthPickerGrid() {
+    document.getElementById('popoverYearStr').textContent = compareState.pickerYear;
+    
+    const grid = document.getElementById('popoverGrid');
+    let html = '';
+    const type = compareState.activePicker;
+    if (!type) return;
+    const stateObj = compareState[type];
+    
+    for (let i = 0; i < 12; i++) {
+        let classes = ['month-btn'];
+        
+        // Render states based on current selection
+        if (compareState.pickerYear === stateObj.year) {
+            if (compareState.pickerStep === 0) {
+                // Completed selection view
+                if (i === stateObj.startMonth && i === stateObj.endMonth) classes.push('selected-single');
+                else if (i === stateObj.startMonth) classes.push('selected-start');
+                else if (i === stateObj.endMonth) classes.push('selected-end');
+                else if (i > stateObj.startMonth && i < stateObj.endMonth) classes.push('in-range');
+            } else {
+                // In-progress selection view
+                if (i === compareState.tempStart) classes.push('selected-single');
+            }
+        }
+        
+        html += `<button class="${classes.join(' ')}" onclick="selectPickerMonth(${i})">${shortMonthNames[i]}</button>`;
+    }
+    grid.innerHTML = html;
+}
+
+function updateMonthRangeBtnText() {
+    // Base Btn Update
+    let sName = shortMonthNames[compareState.base.startMonth];
+    let eName = shortMonthNames[compareState.base.endMonth];
+    let text = sName === eName 
+        ? `${sName} ${compareState.base.year}` 
+        : `${sName} - ${eName} ${compareState.base.year}`;
+    const baseBtn = document.getElementById('monthRangeBtnBase');
+    if (baseBtn) baseBtn.textContent = text;
+
+    // Comp Btn Update
+    sName = shortMonthNames[compareState.comp.startMonth];
+    eName = shortMonthNames[compareState.comp.endMonth];
+    text = sName === eName 
+        ? `${sName} ${compareState.comp.year}` 
+        : `${sName} - ${eName} ${compareState.comp.year}`;
+    const compBtn = document.getElementById('monthRangeBtnComp');
+    if (compBtn) compBtn.textContent = text;
+}
+
+// Close popover when clicking outside
+document.addEventListener('click', (e) => {
+    const popover = document.getElementById('monthPickerPopover');
+    if (!popover || !popover.classList.contains('show')) return;
+    
+    const containerBase = document.getElementById('datePickerContainerBase');
+    const containerComp = document.getElementById('datePickerContainerComp');
+    
+    if ((containerBase && containerBase.contains(e.target)) || 
+        (containerComp && containerComp.contains(e.target))) {
+        return; // Ignored if clicked inside one of the date pickers
+    }
+    
+    popover.classList.remove('show');
+    compareState.pickerStep = 0; // reset step if aborted
+});
+
+function toggleCompareMode() {
+    compareState.active = document.getElementById('enableCompareCb').checked;
+    document.getElementById('compareSelectors').style.display = compareState.active ? 'flex' : 'none';
+    
+    if (compareState.active) {
+        updateMonthRangeBtnText();
+    }
+    
+    renderTable();
+}
+
+window.applyComparison = async function() {
+    // 1. Fetch missing data for Base Year Range
+    await ensureDataForYearRange(compareState.base.year, compareState.base.startMonth, compareState.base.endMonth);
+    // 2. Fetch missing data for Compare Year Range
+    await ensureDataForYearRange(compareState.comp.year, compareState.comp.startMonth, compareState.comp.endMonth);
+    
+    showStatus('✅ โหลดข้อมูลเปรียบเทียบสำเร็จ', 'success');
+    renderTable(); // Re-render table in compare mode
+};
+
+function generateDiffHTML(baseVal, compVal, isCost, isFloat) {
+    if (compVal === 0 && baseVal === 0) return `<td class="num" style="text-align: right; color: var(--muted);">-</td>`;
+    
+    const diff = baseVal - compVal;
+    const pct = compVal > 0 ? (diff / compVal) * 100 : (baseVal > 0 ? 100 : 0);
+    
+    let isGood = isCost ? (diff < 0) : (diff > 0);
+    let badgeClass = 'diff-neutral';
+    let arrow = '';
+    
+    if (diff !== 0) {
+        badgeClass = isGood ? 'diff-good' : 'diff-bad';
+        arrow = diff > 0 ? '▲' : '▼';
+    }
+    
+    const format = (v) => isFloat ? v.toLocaleString(undefined, {minimumFractionDigits: 2, maximumFractionDigits: 2}) : Math.round(v).toLocaleString();
+    const sign = diff > 0 ? '+' : '';
+    
+    return `<td class="num" style="text-align: right;">
+        <div style="display:flex; justify-content:flex-end; align-items:center;">
+            <span>${sign}${format(diff)}</span>
+            <span class="diff-badge ${badgeClass}" style="width: 65px;">${arrow} ${Math.abs(pct).toFixed(1)}%</span>
+        </div>
+    </td>`;
+}
+
+// ─── END COMPARISON STATE ────────────────────────────────
 
 function generateMoMBadge(currentVal, prevVal, isCostMetric = false) {
     if (!prevVal || prevVal === 0) return '';
@@ -963,10 +1247,17 @@ window.switchTableTab = function(tab) {
   document.querySelectorAll('.tabs-container .tab-btn').forEach(btn => btn.classList.remove('active'));
   document.getElementById(`tab-${tab}`).classList.add('active');
   
+  const yearlyControls = document.getElementById('yearlyCompareControls');
+  if (yearlyControls) {
+      yearlyControls.style.display = (tab === 'yearly') ? 'flex' : 'none';
+  }
+  
   renderTable();
 };
 
 window.handleSort = function(col) {
+  if (currentTableTab === 'yearly') return; // Disable sort on yearly tab
+  
   if (currentSortCol === col) {
     currentSortAsc = !currentSortAsc;
   } else {
@@ -977,6 +1268,176 @@ window.handleSort = function(col) {
 };
 
 function renderTable() {
+  
+  // -- YEARLY TAB LOGIC --
+  if (currentTableTab === 'yearly') {
+    document.getElementById('tableCount').style.display = 'none';
+
+    const formatInt = (v) => v > 0 ? v.toLocaleString(undefined, {minimumFractionDigits: 0, maximumFractionDigits: 0}) : '-';
+    const formatFloat = (v) => v > 0 ? v.toLocaleString(undefined, {minimumFractionDigits: 2, maximumFractionDigits: 2}) : '-';
+
+    // Rows mapped directly to user requested metrics
+    const yearlyRows = [
+        { key: 'reach', label: 'Reach', type: 'int', isCost: false },
+        { key: 'impressions', label: 'Impression', type: 'int', isCost: false },
+        { key: 'engagements', label: 'Post Engagement', type: 'int', isCost: false },
+        { key: 'messages', label: 'Message', type: 'int', isCost: false },
+        { key: 'frequency', label: 'Frequency', type: 'float', isCost: false }, // Frequency neutral
+        { key: 'cpr', label: 'Cost per 1,000 Reach (CPR)', type: 'float', isCost: true },
+        { key: 'cpm', label: 'Cost per 1,000 impressions (CPM)', type: 'float', isCost: true },
+        { key: 'cpe', label: 'Cost per engagement (CPE)', type: 'float', isCost: true },
+        { key: 'cpmsg', label: 'Cost per Message(CPMsg)', type: 'float', isCost: true }
+    ];
+
+    if (compareState.active) {
+        // --- RENDER COMPARISON VIEW ---
+        
+        let bYear = compareState.base.year;
+        let cYear = compareState.comp.year;
+        let baseAgg = { spend: 0, reach: 0, impressions: 0, engagements: 0, messages: 0 };
+        let compAgg = { spend: 0, reach: 0, impressions: 0, engagements: 0, messages: 0 };
+
+        // Aggregate Base Range
+        for (let i = compareState.base.startMonth; i <= compareState.base.endMonth; i++) {
+            let dArray = (allYearsData[bYear] && allYearsData[bYear][monthNames[i]]) ? allYearsData[bYear][monthNames[i]] : [];
+            baseAgg.spend += dArray.reduce((s,r)=>s+(r.spend||0), 0);
+            baseAgg.reach += dArray.reduce((s,r)=>s+(r.reach||0), 0);
+            baseAgg.impressions += dArray.reduce((s,r)=>s+(r.impressions||0), 0);
+            baseAgg.engagements += dArray.reduce((s,r)=>s+(r.engagements||0), 0);
+            baseAgg.messages += dArray.reduce((s,r)=>s+(r.messages||0), 0);
+        }
+        
+        // Aggregate Compare Range
+        for (let i = compareState.comp.startMonth; i <= compareState.comp.endMonth; i++) {
+            let dArray = (allYearsData[cYear] && allYearsData[cYear][monthNames[i]]) ? allYearsData[cYear][monthNames[i]] : [];
+            compAgg.spend += dArray.reduce((s,r)=>s+(r.spend||0), 0);
+            compAgg.reach += dArray.reduce((s,r)=>s+(r.reach||0), 0);
+            compAgg.impressions += dArray.reduce((s,r)=>s+(r.impressions||0), 0);
+            compAgg.engagements += dArray.reduce((s,r)=>s+(r.engagements||0), 0);
+            compAgg.messages += dArray.reduce((s,r)=>s+(r.messages||0), 0);
+        }
+
+        let bDer = {
+            reach: baseAgg.reach, impressions: baseAgg.impressions, engagements: baseAgg.engagements, messages: baseAgg.messages,
+            frequency: baseAgg.reach > 0 ? (baseAgg.impressions / baseAgg.reach) : 0,
+            cpr: baseAgg.reach > 0 ? (baseAgg.spend / baseAgg.reach) * 1000 : 0,
+            cpm: baseAgg.impressions > 0 ? (baseAgg.spend / baseAgg.impressions) * 1000 : 0,
+            cpe: baseAgg.engagements > 0 ? (baseAgg.spend / baseAgg.engagements) : 0,
+            cpmsg: baseAgg.messages > 0 ? (baseAgg.spend / baseAgg.messages) : 0
+        };
+        
+        let cDer = {
+            reach: compAgg.reach, impressions: compAgg.impressions, engagements: compAgg.engagements, messages: compAgg.messages,
+            frequency: compAgg.reach > 0 ? (compAgg.impressions / compAgg.reach) : 0,
+            cpr: compAgg.reach > 0 ? (compAgg.spend / compAgg.reach) * 1000 : 0,
+            cpm: compAgg.impressions > 0 ? (compAgg.spend / compAgg.impressions) * 1000 : 0,
+            cpe: compAgg.engagements > 0 ? (compAgg.spend / compAgg.engagements) : 0,
+            cpmsg: compAgg.messages > 0 ? (compAgg.spend / compAgg.messages) : 0
+        };
+
+        const bRangeStr = shortMonthNames[compareState.base.startMonth] + (compareState.base.startMonth !== compareState.base.endMonth ? ' - ' + shortMonthNames[compareState.base.endMonth] : '');
+        const cRangeStr = shortMonthNames[compareState.comp.startMonth] + (compareState.comp.startMonth !== compareState.comp.endMonth ? ' - ' + shortMonthNames[compareState.comp.endMonth] : '');
+        
+        let headHtml = `<tr>
+            <th style="background: var(--surface); position: sticky; left: 0; z-index: 2; padding-left: 24px;">Metric</th>
+            <th style="text-align: right; min-width: 140px; color: var(--primary);">${bYear} <br><span style="font-size:11px; font-weight:500;">(${bRangeStr})</span></th>
+            <th style="text-align: right; min-width: 140px;">${cYear} <br><span style="font-size:11px; font-weight:500;">(${cRangeStr})</span></th>
+            <th style="text-align: right; min-width: 180px;">Variance (Base vs Compare)</th>
+        </tr>`;
+        document.getElementById('tableHead').innerHTML = headHtml;
+
+        let bodyHtml = yearlyRows.map(row => {
+            let bVal = bDer[row.key];
+            let cVal = cDer[row.key];
+            let formatter = row.type === 'float' ? formatFloat : formatInt;
+            
+            return `<tr class="yearly-row">
+                <td class="sticky-col" style="font-weight: 600; font-family: 'Inter', sans-serif; position: sticky; left: 0; z-index: 1; border-right: 1px solid var(--border); padding-left: 24px; min-width: 220px;">
+                    ${row.label}
+                </td>
+                <td class="num" style="text-align: right; font-weight: 600;">${formatter(bVal)}</td>
+                <td class="num" style="text-align: right; color: var(--text-secondary);">${formatter(cVal)}</td>
+                ${generateDiffHTML(bVal, cVal, row.isCost, row.type === 'float')}
+            </tr>`;
+        }).join('');
+        document.getElementById('tableBody').innerHTML = bodyHtml;
+        
+    } else {
+        // --- RENDER STANDARD 12-MONTH VIEW ---
+        let monthlyTotals = {};
+        let yearlyTotals = { spend: 0, reach: 0, impressions: 0, engagements: 0, messages: 0 };
+        
+        monthNames.forEach(m => {
+            let data = mainDataByMonth[m] || [];
+            let tSpend = data.reduce((s,r)=>s+(r.spend||0), 0);
+            let tReach = data.reduce((s,r)=>s+(r.reach||0), 0);
+            let tImpr = data.reduce((s,r)=>s+(r.impressions||0), 0);
+            let tEng = data.reduce((s,r)=>s+(r.engagements||0), 0);
+            let tMsg = data.reduce((s,r)=>s+(r.messages||0), 0);
+
+            yearlyTotals.spend += tSpend;
+            yearlyTotals.reach += tReach;
+            yearlyTotals.impressions += tImpr;
+            yearlyTotals.engagements += tEng;
+            yearlyTotals.messages += tMsg;
+
+            monthlyTotals[m] = {
+                reach: tReach,
+                impressions: tImpr,
+                engagements: tEng,
+                messages: tMsg,
+                frequency: tReach > 0 ? (tImpr / tReach) : 0,
+                cpr: tReach > 0 ? (tSpend / tReach) * 1000 : 0,
+                cpm: tImpr > 0 ? (tSpend / tImpr) * 1000 : 0,
+                cpe: tEng > 0 ? (tSpend / tEng) : 0,
+                cpmsg: tMsg > 0 ? (tSpend / tMsg) : 0
+            };
+        });
+
+        let totalMetrics = {
+            reach: yearlyTotals.reach,
+            impressions: yearlyTotals.impressions,
+            engagements: yearlyTotals.engagements,
+            messages: yearlyTotals.messages,
+            frequency: yearlyTotals.reach > 0 ? (yearlyTotals.impressions / yearlyTotals.reach) : 0,
+            cpr: yearlyTotals.reach > 0 ? (yearlyTotals.spend / yearlyTotals.reach) * 1000 : 0,
+            cpm: yearlyTotals.impressions > 0 ? (yearlyTotals.spend / yearlyTotals.impressions) * 1000 : 0,
+            cpe: yearlyTotals.engagements > 0 ? (yearlyTotals.spend / yearlyTotals.engagements) : 0,
+            cpmsg: yearlyTotals.messages > 0 ? (yearlyTotals.spend / yearlyTotals.messages) : 0
+        };
+
+        let headHtml = `<tr>
+            <th style="background: var(--surface); position: sticky; left: 0; z-index: 2; padding-left: 24px;">Metric</th>
+            ${monthNames.map(m => `<th style="text-align: right; min-width: 120px;">${m}</th>`).join('')}
+            <th style="text-align: right; min-width: 120px; font-weight: 700; color: var(--text); background: rgba(59,130,246,0.05); border-left: 1px solid var(--border);">Total</th>
+        </tr>`;
+        document.getElementById('tableHead').innerHTML = headHtml;
+
+        let bodyHtml = yearlyRows.map((row) => {
+            let formatter = row.type === 'float' ? formatFloat : formatInt;
+            return `<tr class="yearly-row">
+                <td class="sticky-col" style="font-weight: 600; font-family: 'Inter', sans-serif; position: sticky; left: 0; z-index: 1; border-right: 1px solid var(--border); padding-left: 24px; min-width: 220px;">
+                    ${row.label}
+                </td>
+                ${monthNames.map(m => {
+                    let val = monthlyTotals[m][row.key];
+                    let monthHasData = (mainDataByMonth[m] && mainDataByMonth[m].length > 0);
+                    if (!monthHasData) return `<td class="num" style="text-align: right; color: var(--muted);">-</td>`;
+                    return `<td class="num" style="text-align: right;">${formatter(val)}</td>`;
+                }).join('')}
+                <td class="num" style="text-align: right; font-weight: 700; color: var(--primary-dark); background-color: rgba(59,130,246,0.02); border-left: 1px solid var(--border);">
+                    ${formatter(totalMetrics[row.key])}
+                </td>
+            </tr>`;
+        }).join('');
+
+        document.getElementById('tableBody').innerHTML = bodyHtml;
+    }
+    return; 
+  }
+
+  // -- STANDARD TABS (Campaign / Ad) LOGIC --
+  document.getElementById('tableCount').style.display = 'block';
   const isAd = currentTableTab === 'ad';
   const groupKey = isAd ? 'ad' : 'campaign';
 
@@ -1025,7 +1486,7 @@ function renderTable() {
   ];
 
   document.getElementById('tableHead').innerHTML = `<tr>${metrics.map(m => `
-      <th class="sortable" onclick="handleSort('${m.id}')">
+      <th class="sortable" onclick="handleSort('${m.id}')" style="text-align: left;">
           ${m.label} <span class="sort-icon" id="sortIcon-${m.id}">${currentSortCol === m.id ? (currentSortAsc ? '▲' : '▼') : ''}</span>
       </th>
   `).join('')}</tr>`;
@@ -1048,18 +1509,18 @@ function renderTable() {
         primaryCell = `<div style="overflow: hidden; text-overflow: ellipsis; white-space: nowrap; font-weight: 500;">${r.campaign}</div>`;
     }
       
-    return `<tr>
+    return `<tr class="hoverable">
       <td title="${r[groupKey]}" style="max-width:240px; padding-right:12px;">${primaryCell}</td>
-      <td class="cost-cell">฿${r.spend.toFixed(2)}</td>
-      <td class="num">${r.reach.toLocaleString()}</td>
-      <td class="num">${r.impressions.toLocaleString()}</td>
-      <td class="num">${r.views.toLocaleString()}</td>
-      <td class="num">${r.engagements.toLocaleString()}</td>
-      <td class="num">${r.fbLikes.toLocaleString()}</td>
-      <td class="num">${r.reactions.toLocaleString()}</td>
-      <td class="num">${r.comments.toLocaleString()}</td>
-      <td class="num">${r.shares.toLocaleString()}</td>
-      <td class="num">${r.saves.toLocaleString()}</td>
+      <td class="cost-cell" style="text-align: left;">฿${r.spend.toFixed(2)}</td>
+      <td class="num" style="text-align: left;">${r.reach.toLocaleString()}</td>
+      <td class="num" style="text-align: left;">${r.impressions.toLocaleString()}</td>
+      <td class="num" style="text-align: left;">${r.views.toLocaleString()}</td>
+      <td class="num" style="text-align: left;">${r.engagements.toLocaleString()}</td>
+      <td class="num" style="text-align: left;">${r.fbLikes.toLocaleString()}</td>
+      <td class="num" style="text-align: left;">${r.reactions.toLocaleString()}</td>
+      <td class="num" style="text-align: left;">${r.comments.toLocaleString()}</td>
+      <td class="num" style="text-align: left;">${r.shares.toLocaleString()}</td>
+      <td class="num" style="text-align: left;">${r.saves.toLocaleString()}</td>
     </tr>`;
   }).join('');
 }
