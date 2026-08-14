@@ -364,14 +364,16 @@
            </label>
            
            <div id="compareSelectors" style="display:none; align-items:center; gap: 12px; flex-wrap: wrap;">
-               <div class="date-picker-container" id="datePickerContainerBase">
-                  <button id="monthRangeBtnBase" class="header-month-select" style="min-width: 170px; text-align: left;" onclick="toggleMonthPicker('base')">Jan - Aug 2026</button>
+               <!-- ปีก่อนหน้า (Compare) ขึ้นก่อน -->
+               <div class="date-picker-container" id="datePickerContainerComp">
+                  <button id="monthRangeBtnComp" class="header-month-select" style="min-width: 170px; text-align: left;" onclick="toggleMonthPicker('comp')">Jan - Aug 2025</button>
                </div>
                
                <span style="font-size: 13px; color: var(--text-secondary); font-weight: 500;">เทียบกับ</span>
                
-               <div class="date-picker-container" id="datePickerContainerComp">
-                  <button id="monthRangeBtnComp" class="header-month-select" style="min-width: 170px; text-align: left;" onclick="toggleMonthPicker('comp')">Jan - Aug 2025</button>
+               <!-- ปีปัจจุบัน (Base) ตามมา -->
+               <div class="date-picker-container" id="datePickerContainerBase">
+                  <button id="monthRangeBtnBase" class="header-month-select" style="min-width: 170px; text-align: left;" onclick="toggleMonthPicker('base')">Jan - Aug 2026</button>
                </div>
 
                <button class="btn-outline" style="padding: 6px 16px; border-radius: 20px; font-size: 13px; font-weight: 600; background: var(--primary); color: white; border: none; cursor: pointer; box-shadow: var(--shadow-sm);" onclick="applyComparison()">Apply Compare</button>
@@ -671,21 +673,22 @@ async function loadAllData() {
     if (!allYearsData[DATA_YEAR]) allYearsData[DATA_YEAR] = {};
     allYearsData[DATA_YEAR][month] = mainDataByMonth[month];
 
-    // รองรับการดึงข้อมูลเดือนก่อนหน้าในกรณีข้ามปี (ถ้าเลือก ม.ค. ให้ไปดึง ธ.ค. ของปีก่อน)
+    // รองรับการดึงข้อมูลเดือนก่อนหน้าในกรณีข้ามปี (ถ้าเลือก ม.ค. ให้ไปดึง ธ.ค. ของปีก่อน) เพื่อให้เห็นข้อมูลข้ามปีเฉพาะในส่วนของ KPI MoM
     const currentMonthIdx = monthNames.indexOf(month);
-    let prevMonth, prevYear;
+    let prevMonth, prevYearStr;
     
     if (currentMonthIdx > 0) {
         prevMonth = monthNames[currentMonthIdx - 1];
-        prevYear = DATA_YEAR;
+        prevYearStr = DATA_YEAR;
     } else {
         prevMonth = 'December';
-        prevYear = (parseInt(DATA_YEAR) - 1).toString();
+        prevYearStr = (parseInt(DATA_YEAR) - 1).toString();
     }
 
-    if (!mainDataByMonth[prevMonth] || mainDataByMonth[prevMonth].length === 0) {
-         let prevMain = await fetchFile(`data/${prevYear}-${prevMonth}-DIA.csv`) || await fetchFile(`data/${prevYear}-${prevMonth}-DIA.xlsx`);
-         if (prevMain) mainDataByMonth[prevMonth] = cleanMainData(prevMain);
+    if (!allYearsData[prevYearStr]) allYearsData[prevYearStr] = {};
+    if (!allYearsData[prevYearStr][prevMonth] || allYearsData[prevYearStr][prevMonth].length === 0) {
+         let prevMain = await fetchFile(`data/${prevYearStr}-${prevMonth}-DIA.csv`) || await fetchFile(`data/${prevYearStr}-${prevMonth}-DIA.xlsx`);
+         if (prevMain) allYearsData[prevYearStr][prevMonth] = cleanMainData(prevMain);
     }
 
     allData = mainDataByMonth[month] || [];
@@ -712,10 +715,11 @@ async function loadAllData() {
 function updateDataStatusUI() {
   const mainContainer = document.getElementById('mainDataStatus');
   if (mainContainer) {
-    const mainMonths = Object.keys(mainDataByMonth).filter(m => mainDataByMonth[m] && mainDataByMonth[m].length > 0);
+    const currentYearData = allYearsData[DATA_YEAR] || {};
+    const mainMonths = Object.keys(currentYearData).filter(m => currentYearData[m] && currentYearData[m].length > 0);
     mainContainer.innerHTML = mainMonths.length > 0 
-      ? '<strong>มีข้อมูลในระบบ:</strong> ' + mainMonths.join(', ')
-      : 'ยังไม่มีข้อมูลในระบบ (กรุณานำไฟล์ไปวางในโฟลเดอร์)';
+      ? '<strong>มีข้อมูลในระบบปี ' + DATA_YEAR + ':</strong> ' + mainMonths.join(', ')
+      : 'ยังไม่มีข้อมูลในระบบปี ' + DATA_YEAR + ' (กรุณานำไฟล์ไปวางในโฟลเดอร์)';
   }
 }
 
@@ -754,6 +758,7 @@ window.clearAllDataCache = function() {
   allData = [];
   filteredData = [];
   regionData = [];
+  allYearsData = {};
   updateDataStatusUI();
   renderAll();
   showStatus('ล้างแคชเรียบร้อยแล้ว (ระบบจะโหลดไฟล์ใหม่ทั้งหมดเมื่อเลือกเดือน)', 'success');
@@ -1002,9 +1007,16 @@ function renderAll() { renderKPIs(); renderCharts(); renderTable(); }
 
 function renderKPIs() {
   const currentMonthIdx = monthNames.indexOf(currentGlobalMonth);
-  // อัปเดตการดึงข้อมูลเทียบเดือนก่อนหน้า ให้รองรับการข้ามปีไปดึงเดือนธันวาคม
-  const prevMonth = currentMonthIdx > 0 ? monthNames[currentMonthIdx - 1] : 'December';
-  const prevData = prevMonth ? (mainDataByMonth[prevMonth] || []) : [];
+  // อัปเดตการดึงข้อมูลเทียบเดือนก่อนหน้า ให้รองรับการข้ามปีไปดึงเดือนธันวาคม (ใช้สำหรับ KPI เท่านั้น)
+  let prevMonth, prevYearStr;
+  if (currentMonthIdx > 0) {
+      prevMonth = monthNames[currentMonthIdx - 1];
+      prevYearStr = DATA_YEAR;
+  } else {
+      prevMonth = 'December';
+      prevYearStr = (parseInt(DATA_YEAR) - 1).toString();
+  }
+  const prevData = (allYearsData[prevYearStr] && allYearsData[prevYearStr][prevMonth]) ? allYearsData[prevYearStr][prevMonth] : [];
 
   const activeCampaign = document.getElementById('filterCampaign').value;
   const activeObjective = document.getElementById('filterObjective').value;
@@ -1258,11 +1270,12 @@ function renderCharts() {
     });
   }
 
-  // Monthly Performance Charts
-  const activeMonthLabels = monthNames.filter(m => mainDataByMonth[m] && mainDataByMonth[m].length > 0);
+  // Monthly Performance Charts (ดึงเฉพาะข้อมูลปีที่เลือก DATA_YEAR เท่านั้น)
+  const currentYearData = allYearsData[DATA_YEAR] || {};
+  const activeMonthLabels = monthNames.filter(m => currentYearData[m] && currentYearData[m].length > 0);
   const displayLabels = activeMonthLabels.length > 0 ? activeMonthLabels : ['ไม่มีข้อมูล'];
 
-  const getMonthlySum = (m, key) => (m === 'ไม่มีข้อมูล' || !mainDataByMonth[m]) ? 0 : mainDataByMonth[m].reduce((sum, r) => sum + (r[key] || 0), 0);
+  const getMonthlySum = (m, key) => (m === 'ไม่มีข้อมูล' || !currentYearData[m]) ? 0 : currentYearData[m].reduce((sum, r) => sum + (r[key] || 0), 0);
 
   const mSpend = displayLabels.map(m => getMonthlySum(m, 'spend'));
   const mEng = displayLabels.map(m => getMonthlySum(m, 'engagements'));
@@ -1364,8 +1377,9 @@ function renderTable() {
     const formatInt = (v) => v > 0 ? v.toLocaleString(undefined, {minimumFractionDigits: 0, maximumFractionDigits: 0}) : '-';
     const formatFloat = (v) => v > 0 ? v.toLocaleString(undefined, {minimumFractionDigits: 2, maximumFractionDigits: 2}) : '-';
 
-    // Rows mapped directly to user requested metrics
+    // Rows mapped directly to user requested metrics (Added Spending)
     const yearlyRows = [
+        { key: 'spend', label: 'Spending (฿)', type: 'float', isCost: true },
         { key: 'reach', label: 'Reach', type: 'int', isCost: false },
         { key: 'impressions', label: 'Impression', type: 'int', isCost: false },
         { key: 'engagements', label: 'Post Engagement', type: 'int', isCost: false },
@@ -1406,7 +1420,7 @@ function renderTable() {
         }
 
         let bDer = {
-            reach: baseAgg.reach, impressions: baseAgg.impressions, engagements: baseAgg.engagements, messages: baseAgg.messages,
+            spend: baseAgg.spend, reach: baseAgg.reach, impressions: baseAgg.impressions, engagements: baseAgg.engagements, messages: baseAgg.messages,
             frequency: baseAgg.reach > 0 ? (baseAgg.impressions / baseAgg.reach) : 0,
             cpr: baseAgg.reach > 0 ? (baseAgg.spend / baseAgg.reach) * 1000 : 0,
             cpm: baseAgg.impressions > 0 ? (baseAgg.spend / baseAgg.impressions) * 1000 : 0,
@@ -1415,7 +1429,7 @@ function renderTable() {
         };
         
         let cDer = {
-            reach: compAgg.reach, impressions: compAgg.impressions, engagements: compAgg.engagements, messages: compAgg.messages,
+            spend: compAgg.spend, reach: compAgg.reach, impressions: compAgg.impressions, engagements: compAgg.engagements, messages: compAgg.messages,
             frequency: compAgg.reach > 0 ? (compAgg.impressions / compAgg.reach) : 0,
             cpr: compAgg.reach > 0 ? (compAgg.spend / compAgg.reach) * 1000 : 0,
             cpm: compAgg.impressions > 0 ? (compAgg.spend / compAgg.impressions) * 1000 : 0,
@@ -1456,8 +1470,11 @@ function renderTable() {
         let monthlyTotals = {};
         let yearlyTotals = { spend: 0, reach: 0, impressions: 0, engagements: 0, messages: 0 };
         
+        // ใช้ข้อมูลของปีนั้นๆ (DATA_YEAR)
+        let currentYearData = allYearsData[DATA_YEAR] || {};
+
         monthNames.forEach(m => {
-            let data = mainDataByMonth[m] || [];
+            let data = currentYearData[m] || [];
             let tSpend = data.reduce((s,r)=>s+(r.spend||0), 0);
             let tReach = data.reduce((s,r)=>s+(r.reach||0), 0);
             let tImpr = data.reduce((s,r)=>s+(r.impressions||0), 0);
@@ -1471,6 +1488,7 @@ function renderTable() {
             yearlyTotals.messages += tMsg;
 
             monthlyTotals[m] = {
+                spend: tSpend,
                 reach: tReach,
                 impressions: tImpr,
                 engagements: tEng,
@@ -1484,6 +1502,7 @@ function renderTable() {
         });
 
         let totalMetrics = {
+            spend: yearlyTotals.spend,
             reach: yearlyTotals.reach,
             impressions: yearlyTotals.impressions,
             engagements: yearlyTotals.engagements,
@@ -1510,7 +1529,7 @@ function renderTable() {
                 </td>
                 ${monthNames.map(m => {
                     let val = monthlyTotals[m][row.key];
-                    let monthHasData = (mainDataByMonth[m] && mainDataByMonth[m].length > 0);
+                    let monthHasData = (currentYearData[m] && currentYearData[m].length > 0);
                     if (!monthHasData) return `<td class="num" style="text-align: right; color: var(--muted);">-</td>`;
                     return `<td class="num" style="text-align: right;">${formatter(val)}</td>`;
                 }).join('')}
