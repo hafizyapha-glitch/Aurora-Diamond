@@ -43,8 +43,8 @@
     * { box-sizing: border-box; margin: 0; padding: 0; }
     body { background: var(--bg); color: var(--text); font-family: 'Inter','Noto Sans Thai',sans-serif; min-height: 100vh; line-height: 1.5; }
 
-    .header { background: var(--card); border-bottom: 1px solid var(--border); padding: 16px 32px; display: flex; align-items: center; justify-content: space-between; position: sticky; top: 0; z-index: 100; box-shadow: var(--shadow-sm); }
-    .logo-area { display: flex; align-items: center; gap: 16px; }
+    .header { background: var(--card); border-bottom: 1px solid var(--border); padding: 16px 32px; display: flex; align-items: flex-start; justify-content: space-between; position: sticky; top: 0; z-index: 100; box-shadow: var(--shadow-sm); }
+    .logo-area { display: flex; align-items: center; gap: 16px; margin-top: 4px; }
     
     .logo-icon { width: 56px; height: 56px; border-radius: 12px; overflow: hidden; display: flex; align-items: center; justify-content: center; border: 1px solid var(--border); background: var(--surface); box-shadow: var(--shadow-sm); }
     .logo-icon img { width: 100%; height: 100%; object-fit: cover; }
@@ -61,6 +61,7 @@
     .btn-outline { background: var(--surface); border: 1px solid var(--border); color: var(--text); cursor: pointer; transition: all .2s; }
     .btn-outline:hover { border-color: var(--primary); color: var(--primary); }
 
+    /* Filter Row Styles */
     .filter-row { display: flex; gap: 12px; flex-wrap: wrap; align-items: center; }
     .filter-row select { background: var(--card); border: 1px solid var(--border); border-radius: 8px; color: var(--text); padding: 8px 32px 8px 16px; font-size: 13px; font-weight: 500; font-family: 'Inter','Noto Sans Thai',sans-serif; outline: none; cursor: pointer; transition: border-color .2s; appearance: none; background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='12' height='8'%3E%3Cpath d='M1 1l5 5 5-5' stroke='%2364748B' stroke-width='2' fill='none' stroke-linecap='round' stroke-linejoin='round'/%3E%3C/svg%3E"); background-repeat: no-repeat; background-position: right 12px center; box-shadow: var(--shadow-sm); }
     body.dark-mode .filter-row select { background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='12' height='8'%3E%3Cpath d='M1 1l5 5 5-5' stroke='%2394A3B8' stroke-width='2' fill='none' stroke-linecap='round' stroke-linejoin='round'/%3E%3C/svg%3E"); }
@@ -68,6 +69,12 @@
     .filter-label { font-size: 14px; font-weight: 500; color: var(--text-secondary); display: flex; align-items: center; gap: 6px; }
     .clear-btn { background: transparent; border: 1px solid transparent; border-radius: 8px; color: var(--muted); padding: 8px 12px; font-size: 13px; font-weight: 500; cursor: pointer; transition: all .2s; }
     .clear-btn:hover { color: var(--text); background: var(--surface); border-color: var(--border); }
+
+    /* Main Dashboard Tabs */
+    .dash-tabs-container { display: flex; gap: 8px; border-bottom: 1px solid var(--border); margin-bottom: 24px; padding: 0 32px; overflow-x: auto; }
+    .dash-tab-btn { background: transparent; border: none; border-bottom: 2px solid transparent; padding: 12px 24px; cursor: pointer; font-size: 15px; font-weight: 600; color: var(--text-secondary); transition: all 0.2s; font-family: 'Inter', 'Noto Sans Thai', sans-serif; white-space: nowrap; }
+    .dash-tab-btn:hover { color: var(--primary); }
+    .dash-tab-btn.active { color: var(--primary); border-bottom-color: var(--primary); }
 
     .kpi-group-label { font-size: 16px; font-weight: 600; color: var(--text); margin-bottom: 16px; margin-top: 8px; }
     .kpi-grid { display: grid; gap: 16px; margin-bottom: 8px; }
@@ -125,7 +132,7 @@
     th { font-size: 12px; font-weight: 600; color: var(--text-secondary); padding: 12px 24px; border-bottom: 1px solid var(--border); background: var(--surface); white-space: nowrap; }
     td { padding: 16px 24px; font-size: 13px; color: var(--text); border-bottom: 1px solid var(--border); white-space: nowrap; }
     tr:last-child td { border-bottom: none; }
-    tr.hoverable:hover td { background: var(--surface); } /* Added class specifically for standard table rows */
+    tr.hoverable:hover td { background: var(--surface); }
     .sortable { cursor: pointer; user-select: none; transition: color 0.2s; }
     .sortable:hover { color: var(--primary); }
     .sort-icon { display: inline-block; width: 12px; margin-left: 4px; font-size: 10px; color: var(--primary); }
@@ -197,6 +204,9 @@
     .charts-grid { grid-template-columns: 1fr; }
     .chart-card.wide { grid-column: span 1; }
     .kpi-grid.row7, .kpi-grid.row6, .kpi-grid.row3 { grid-template-columns: repeat(2,1fr); }
+    .header { flex-direction: column; gap: 16px; padding: 16px; }
+    .header-right { width: 100%; align-items: flex-start !important; }
+    .filter-row { justify-content: flex-start !important; }
   }
   @media (max-width: 600px) { .kpi-grid.row7, .kpi-grid.row6, .kpi-grid.row3 { grid-template-columns: 1fr; } }
   </style>
@@ -215,9 +225,9 @@
     </div>
   </div>
   
-  <div class="header-right" style="display: flex; flex-direction: column; align-items: flex-end; gap: 4px;">
+  <div class="header-right" style="display: flex; flex-direction: column; align-items: flex-end; gap: 12px;">
     <!-- แถวบน: Dropdown และปุ่มตั้งค่า -->
-    <div style="display: flex; align-items: center; gap: 16px;">
+    <div style="display: flex; align-items: center; gap: 16px; flex-wrap: wrap; justify-content: flex-end;">
       <!-- Dropdown เลือกเดือน (English) -->
       <select id="globalMonthSelect" onchange="loadAllData()" class="header-month-select" title="Select Month">
         <option value="January">January</option>
@@ -238,18 +248,9 @@
         <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="3"/><path d="M19.4 15a1.65 1.65 0 0 0 .33 1.82l.06.06a2 2 0 0 1 0 2.83 2 2 0 0 1-2.83 0l-.06-.06a1.65 1.65 0 0 0-1.82-.33 1.65 1.65 0 0 0-1 1.51V21a2 2 0 0 1-2 2 2 2 0 0 1-2-2v-.09A1.65 1.65 0 0 0 9 19.4a1.65 1.65 0 0 0-1.82.33l-.06.06a2 2 0 0 1-2.83 0 2 2 0 0 1 0-2.83l.06-.06a1.65 1.65 0 0 0 .33-1.82 1.65 1.65 0 0 0-1.51-1H3a2 2 0 0 1-2-2 2 2 0 0 1 2-2h.09A1.65 1.65 0 0 0 4.6 9a1.65 1.65 0 0 0-.33-1.82l-.06-.06a2 2 0 0 1 0-2.83 2 2 0 0 1 2.83 0l.06.06a1.65 1.65 0 0 0 1.82.33H9a1.65 1.65 0 0 0 1-1.51V3a2 2 0 0 1 2-2 2 2 0 0 1 2 2v.09a1.65 1.65 0 0 0 1 1.51 1.65 1.65 0 0 0 1.82-.33l.06-.06a2 2 0 0 1 2.83 0 2 2 0 0 1 0 2.83l-.06.06a1.65 1.65 0 0 0-.33 1.82V9a1.65 1.65 0 0 0 1.51 1H21a2 2 0 0 1 2 2 2 2 0 0 1-2 2h-.09a1.65 1.65 0 0 0-1.51 1z"/></svg>
       </button>
     </div>
-    
-    <!-- แถวล่าง: วันที่อัปเดตข้อมูล -->
-    <div id="lastUpdatedText" style="font-size: 11px; color: var(--muted); font-weight: 500; padding-right: 4px;">
-      กำลังโหลดข้อมูลอัปเดต...
-    </div>
-  </div>
-</div>
 
-<div class="main">
-  <div style="padding: 0 32px; margin-top: -8px;" id="innerMain">
-    <div id="statusBar"></div>
-    <div class="filter-row">
+    <!-- ย้าย Filter มาที่นี่ ใต้ส่วนของเดือนและตั้งค่า -->
+    <div class="filter-row" style="justify-content: flex-end;">
       <span class="filter-label">
         <svg xmlns="http://www.w3.org/2000/svg" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><line x1="21" y1="4" x2="14" y2="4"/><line x1="10" y1="4" x2="3" y2="4"/><line x1="21" y1="12" x2="12" y2="12"/><line x1="8" y1="12" x2="3" y2="12"/><line x1="21" y1="20" x2="16" y2="20"/><line x1="12" y1="20" x2="3" y2="20"/><line x1="14" y1="2" x2="14" y2="6"/><line x1="8" y1="10" x2="8" y2="14"/><line x1="16" y1="18" x2="16" y2="22"/></svg>
         Filter:
@@ -261,8 +262,27 @@
         <!-- จะถูก populate ด้วย JS -->
         <option value="">ทุก Objective</option>
       </select>
-      <button class="clear-btn" onclick="clearFilters()">✕ ล้างตัวกรอง</button>
+      <button class="clear-btn" onclick="clearFilters()" title="ล้างตัวกรอง">✕</button>
     </div>
+    
+    <!-- แถวล่าง: วันที่อัปเดตข้อมูล -->
+    <div id="lastUpdatedText" style="font-size: 11px; color: var(--muted); font-weight: 500; padding-right: 4px;">
+      กำลังโหลดข้อมูลอัปเดต...
+    </div>
+  </div>
+</div>
+
+<!-- Dashboard Level Tabs -->
+<div class="dash-tabs-container">
+    <button class="dash-tab-btn active" onclick="switchDashboardTab('overall')">1. Overall</button>
+    <button class="dash-tab-btn" onclick="switchDashboardTab('diamond')">2. Aurora Diamond</button>
+    <button class="dash-tab-btn" onclick="switchDashboardTab('pearl')">3. Aurora Pearl</button>
+</div>
+
+<div class="main" style="padding-top: 0;">
+  <div style="padding: 0 32px; margin-top: -8px;" id="innerMain">
+    
+    <div id="statusBar"></div>
 
     <div id="kpiSection"></div>
 
@@ -496,6 +516,7 @@ let currentGlobalMonth = 'January';
 let filteredData = [];
 let charts = {};
 
+let currentDashboardTab = 'overall'; // 'overall', 'diamond', 'pearl'
 let currentTableTab = 'campaign'; // 'campaign', 'ad', or 'yearly'
 let currentSortCol = 'spend';
 let currentSortAsc = false;
@@ -695,8 +716,7 @@ async function loadAllData() {
 
     allData = mainDataByMonth[month] || [];
     regionData = regionDataByMonth[month] || [];
-    filteredData = [...allData];
-
+    
     document.getElementById('filterCampaign').value = '';
     document.getElementById('filterObjective').value = '';
 
@@ -707,9 +727,9 @@ async function loadAllData() {
     }
 
     updateDataStatusUI();
-    populateFilters();
+    populateFilters(false);
+    applyFilters(); // This sets up filteredData including the dashboard tab logic
     renderAdLinkInputs();
-    renderAll();
     
     fetchAllAvailableMonths();
 }
@@ -725,7 +745,21 @@ function updateDataStatusUI() {
   }
 }
 
-// -- เพิ่มฟังก์ชันเปลี่ยนปี (Data Year) --
+// -- เปลี่ยน Dashboard Tab (Overall / Diamond / Pearl) --
+window.switchDashboardTab = function(tab) {
+    currentDashboardTab = tab;
+    // Update active UI
+    document.querySelectorAll('.dash-tab-btn').forEach(btn => btn.classList.remove('active'));
+    document.querySelector(`.dash-tab-btn[onclick="switchDashboardTab('${tab}')"]`).classList.add('active');
+    
+    // รีเซ็ต dropdown campaign เพราะตัวเลือกอาจเปลี่ยนไปตาม tab
+    document.getElementById('filterCampaign').value = '';
+    
+    populateFilters(true);
+    applyFilters();
+};
+
+// -- เปลี่ยนปี (Data Year) --
 window.changeDataYear = function() {
     DATA_YEAR = document.getElementById('dataYearSelect').value;
     
@@ -1005,6 +1039,16 @@ function generateMoMBadge(currentVal, prevVal, isCostMetric = false) {
     return `<span class="mom-badge" style="${colorClass}">${arrow} ${absPct}% MoM</span>`;
 }
 
+// Filter Helper based on Dashboard Tab
+function filterForDashboardTab(dataArray) {
+    return dataArray.filter(r => {
+        const campName = (r.campaign || '').toLowerCase();
+        if (currentDashboardTab === 'pearl' && !campName.includes('pearl')) return false;
+        if (currentDashboardTab === 'diamond' && campName.includes('pearl')) return false;
+        return true;
+    });
+}
+
 function renderAll() { renderKPIs(); renderCharts(); renderTable(); }
 
 function renderKPIs() {
@@ -1018,7 +1062,10 @@ function renderKPIs() {
       prevMonth = 'December';
       prevYearStr = (parseInt(DATA_YEAR) - 1).toString();
   }
-  const prevData = (allYearsData[prevYearStr] && allYearsData[prevYearStr][prevMonth]) ? allYearsData[prevYearStr][prevMonth] : [];
+  let prevData = (allYearsData[prevYearStr] && allYearsData[prevYearStr][prevMonth]) ? allYearsData[prevYearStr][prevMonth] : [];
+
+  // Filter prevData exactly like current data
+  prevData = filterForDashboardTab(prevData);
 
   const activeCampaign = document.getElementById('filterCampaign').value;
   const activeObjective = document.getElementById('filterObjective').value;
@@ -1277,7 +1324,11 @@ function renderCharts() {
   const activeMonthLabels = monthNames.filter(m => currentYearData[m] && currentYearData[m].length > 0);
   const displayLabels = activeMonthLabels.length > 0 ? activeMonthLabels : ['ไม่มีข้อมูล'];
 
-  const getMonthlySum = (m, key) => (m === 'ไม่มีข้อมูล' || !currentYearData[m]) ? 0 : currentYearData[m].reduce((sum, r) => sum + (r[key] || 0), 0);
+  const getMonthlySum = (m, key) => {
+      if (m === 'ไม่มีข้อมูล' || !currentYearData[m]) return 0;
+      let dArray = filterForDashboardTab(currentYearData[m]);
+      return dArray.reduce((sum, r) => sum + (r[key] || 0), 0);
+  };
 
   const mSpend = displayLabels.map(m => getMonthlySum(m, 'spend'));
   const mEng = displayLabels.map(m => getMonthlySum(m, 'engagements'));
@@ -1404,6 +1455,7 @@ function renderTable() {
         // Aggregate Base Range
         for (let i = compareState.base.startMonth; i <= compareState.base.endMonth; i++) {
             let dArray = (allYearsData[bYear] && allYearsData[bYear][monthNames[i]]) ? allYearsData[bYear][monthNames[i]] : [];
+            dArray = filterForDashboardTab(dArray); // Apply Dashboard Tab filter
             baseAgg.spend += dArray.reduce((s,r)=>s+(r.spend||0), 0);
             baseAgg.reach += dArray.reduce((s,r)=>s+(r.reach||0), 0);
             baseAgg.impressions += dArray.reduce((s,r)=>s+(r.impressions||0), 0);
@@ -1414,6 +1466,7 @@ function renderTable() {
         // Aggregate Compare Range
         for (let i = compareState.comp.startMonth; i <= compareState.comp.endMonth; i++) {
             let dArray = (allYearsData[cYear] && allYearsData[cYear][monthNames[i]]) ? allYearsData[cYear][monthNames[i]] : [];
+            dArray = filterForDashboardTab(dArray); // Apply Dashboard Tab filter
             compAgg.spend += dArray.reduce((s,r)=>s+(r.spend||0), 0);
             compAgg.reach += dArray.reduce((s,r)=>s+(r.reach||0), 0);
             compAgg.impressions += dArray.reduce((s,r)=>s+(r.impressions||0), 0);
@@ -1476,7 +1529,9 @@ function renderTable() {
         let currentYearData = allYearsData[DATA_YEAR] || {};
 
         monthNames.forEach(m => {
-            let data = currentYearData[m] || [];
+            let rawData = currentYearData[m] || [];
+            let data = filterForDashboardTab(rawData); // Apply Dashboard Tab filter
+
             let tSpend = data.reduce((s,r)=>s+(r.spend||0), 0);
             let tReach = data.reduce((s,r)=>s+(r.reach||0), 0);
             let tImpr = data.reduce((s,r)=>s+(r.impressions||0), 0);
@@ -1635,33 +1690,55 @@ function renderTable() {
   }).join('');
 }
 
-function populateFilters() {
-  const campaigns = [...new Set(allData.map(r=>r.campaign))].sort();
-  document.getElementById('filterCampaign').innerHTML = '<option value="">ทุก Campaign</option>'+campaigns.map(c=>`<option value="${c}">${c}</option>`).join('');
+function populateFilters(preserveSelection = false) {
+  // กรองตัวเลือกแคมเปญให้ตรงกับ Dashboard Tab ที่เลือกอยู่
+  const tabData = filterForDashboardTab(allData);
+  const campaigns = [...new Set(tabData.map(r=>r.campaign))].sort();
+  
+  const campSelect = document.getElementById('filterCampaign');
+  const currentCamp = preserveSelection ? campSelect.value : '';
 
-  document.getElementById('filterObjective').innerHTML = `
-    <option value="">ทุก Objective</option>
-    <option value="Awareness">Awareness</option>
-    <option value="Engage">Engage</option>
-    <option value="Message">Message</option>
-  `;
+  campSelect.innerHTML = '<option value="">ทุก Campaign</option>'+campaigns.map(c=>`<option value="${c}">${c}</option>`).join('');
+  
+  if (preserveSelection && campaigns.includes(currentCamp)) {
+      campSelect.value = currentCamp;
+  } else {
+      campSelect.value = '';
+  }
+
+  // Objective ไม่เปลี่ยนแปลงตามแคมเปญ
+  if (!preserveSelection) {
+      document.getElementById('filterObjective').innerHTML = `
+        <option value="">ทุก Objective</option>
+        <option value="Awareness">Awareness</option>
+        <option value="Engage">Engage</option>
+        <option value="Message">Message</option>
+      `;
+  }
 }
 
 function applyFilters() {
   const campaign = document.getElementById('filterCampaign').value;
   const objective = document.getElementById('filterObjective').value;
-  filteredData = allData.filter(r=>{
+  
+  // กรองตาม Dashboard Tab ก่อน
+  let tempFiltered = filterForDashboardTab(allData);
+  
+  // แล้วจึงกรองตามตัวเลือกใน Dropdown
+  filteredData = tempFiltered.filter(r=>{
     if (campaign && r.campaign !== campaign) return false;
     if (objective && r.objective !== objective) return false;
     return true;
   });
+  
   renderAll();
 }
 
 function clearFilters() {
   document.getElementById('filterCampaign').value = '';
   document.getElementById('filterObjective').value = '';
-  filteredData = [...allData];
+  // ยังคงต้องรักษาสถานะของ Dashboard Tab ไว้
+  filteredData = filterForDashboardTab(allData);
   renderAll();
 }
 
